@@ -11,7 +11,7 @@ import SnapKit
 final class AddExpenseModalView: UIView {
     
     private lazy var groupView = ExpenseGroupView()
-    private lazy var individualView = ExpenseIndividualView()
+    private(set) lazy var individualView = ExpenseIndividualView()
     
     private(set) lazy var typeExpenseControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["Групповые", "Индивидуальные"])
@@ -31,7 +31,6 @@ final class AddExpenseModalView: UIView {
     
     func setupView() {
         individualView.isHidden = true
-        individualView.backgroundColor = .systemGreen
         [typeExpenseControl, groupView, individualView].forEach(self.addSubview)
     }
     
