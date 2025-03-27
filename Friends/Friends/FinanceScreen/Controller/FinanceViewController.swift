@@ -14,6 +14,11 @@ import SnapKit
 class FinanceViewController: UIViewController {
 
     private let segmentController = UISegmentedControl(items: ["Долги", "Бюджеты"])
+    private let addDebtButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Добавить долг", for: .normal)
+        return button
+    }()
 
     let debtTableView = DebtsView()
     let budgetTableView = BudgetsView()
@@ -23,6 +28,7 @@ class FinanceViewController: UIViewController {
 
         segmentController.selectedSegmentIndex = 0
         segmentController.addTarget(self, action: #selector(onChange), for: .valueChanged)
+        addDebtButton.addTarget(self, action: #selector(onAddNewdebt), for: .touchUpInside)
 
         view.addSubview(segmentController)
 
@@ -36,16 +42,22 @@ class FinanceViewController: UIViewController {
     }
 
     private func setupView() {
+        view.addSubview(addDebtButton)
         view.addSubview(debtTableView)
         view.addSubview(budgetTableView)
 
-        debtTableView.snp.makeConstraints { make in
+        addDebtButton.snp.makeConstraints { make in
             make.top.equalTo(segmentController.snp.bottom).offset(20)
+            make.trailing.equalToSuperview().inset(20)
+        }
+
+        debtTableView.snp.makeConstraints { make in
+            make.top.equalTo(addDebtButton.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
 
         budgetTableView.snp.makeConstraints { make in
-            make.top.equalTo(segmentController.snp.bottom).offset(20)
+            make.top.equalTo(addDebtButton.snp.bottom).offset(20)
             make.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
         }
 
@@ -62,8 +74,18 @@ class FinanceViewController: UIViewController {
         toogle()
     }
 
+    @objc func onAddNewdebt(){
+        let modelviewcontroller = AddExpenceModalViewController()
+        let navigationController = UINavigationController(rootViewController: modalViewController)
+        navigationController.modalPresentationStyle = .pageSheet
+        navigationController.sheetPresentationController?.prefersGrabberVisible = true
+        present(navigationController, animated: true)
+    }
+
     private func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Деньги"
     }
 }
+
+
