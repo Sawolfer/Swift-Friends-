@@ -14,7 +14,7 @@ final class AddExpenseModalView: UIView {
     private lazy var individualView = ExpenseIndividualView()
     
     private(set) lazy var typeExpenseControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Доход", "Расход"])
+        let control = UISegmentedControl(items: ["Групповые", "Индивидуальные"])
         control.selectedSegmentIndex = 0
         
         return control
