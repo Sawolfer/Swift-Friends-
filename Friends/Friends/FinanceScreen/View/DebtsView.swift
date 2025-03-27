@@ -1,51 +1,48 @@
 //
-//  FinanceViewController.swift
+//  Debts.swift
 //  Friends
 //
-//  Created by Савва Пономарев on 26.03.2025.
+//  Created by Савва Пономарев on 27.03.2025.
 //
 
 import Foundation
 import UIKit
-import SnapKit
 
-class FinanceViewController: UIViewController {
+class DebtsView: UIView {
 
     private var persons = [
-        Person (name: "Kolya", debt: 1000),
+        Person (name: "kizaru", debt: 1000),
         Person(name: "Alyona", debt: 10)
     ]
 
-    private lazy var tableView = UITableView()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        configure()
-        setupNavigationBar()
-    }
-
-    private func configure() {
-
+    private lazy var tableView: UITableView = {
+        let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(PersonCell.self, forCellReuseIdentifier: PersonCell.personCellIdentifier)
+        return tableView
+    }()
 
-        view.addSubview(tableView)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func configure() {
+        addSubview(tableView)
 
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
     }
-
-    private func setupNavigationBar() {
-        navigationController?.navigationBar.prefersLargeTitles = true
-        title = "Деньги"
-
-    }
 }
 
-extension FinanceViewController: UITableViewDataSource, UITableViewDelegate {
+
+extension DebtsView: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return persons.count
     }

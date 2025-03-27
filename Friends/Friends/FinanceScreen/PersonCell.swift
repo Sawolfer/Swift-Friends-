@@ -8,15 +8,9 @@
 import UIKit
 import SnapKit
 
-
-struct Person {
-    var icon: UIImage {
-        return UIImage(named: "custom") ?? UIImage(systemName: "person.circle")!
-    }
-    var name: String
-    var debt: Double
-}
-
+// TODO
+// сделать свайпы для удаления долгова
+// сделать долг человека и задолжность перед ним разными цветами
 class PersonCell: UITableViewCell {
     static let personCellIdentifier = "PersonCell"
 
@@ -75,3 +69,4 @@ class PersonCell: UITableViewCell {
         debtLabel.text = "\(person.debt) р"
     }
 }
+
