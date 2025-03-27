@@ -14,7 +14,7 @@ class DebtsView: UIView {
         Person (name: "kizaru", debt: 1000),
         Person(name: "Alyona", debt: 10)
     ]
-
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
