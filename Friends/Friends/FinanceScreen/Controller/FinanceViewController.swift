@@ -75,7 +75,7 @@ class FinanceViewController: UIViewController {
     }
 
     @objc func onAddNewdebt(){
-        let modelviewcontroller = AddExpenceModalViewController()
+        let modalViewController = AddExpenseModalViewController()
         let navigationController = UINavigationController(rootViewController: modalViewController)
         navigationController.modalPresentationStyle = .pageSheet
         navigationController.sheetPresentationController?.prefersGrabberVisible = true
