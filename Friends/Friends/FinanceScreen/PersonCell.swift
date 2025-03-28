@@ -13,6 +13,10 @@ import SnapKit
 // сделать долг человека и задолжность перед ним разными цветами
 class PersonCell: UITableViewCell {
     static let personCellIdentifier = "PersonCell"
+    private var isEditable: Bool = false
+    private var person: Person?
+
+    weak var delegate: AddExpenseModalViewControllerDelegate?
 
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
@@ -28,11 +32,16 @@ class PersonCell: UITableViewCell {
         return label
     }()
 
-    private lazy var debtLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .gray
-        return label
+    private lazy var debtTextFieldView: UITextField = {
+        let textField = UITextField()
+        textField.borderStyle = .roundedRect
+        textField.textColor = .label
+        textField.font = .systemFont(ofSize: 16, weight: .regular)
+        textField.keyboardType = .numberPad
+        textField.textColor = .gray
+        textField.borderStyle = .none
+
+        return textField
     }()
 
     private lazy var stackView: UIStackView = {
@@ -56,17 +65,37 @@ class PersonCell: UITableViewCell {
         contentView.addSubview(stackView)
         stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(nameLabel)
-        stackView.addArrangedSubview(debtLabel)
+        stackView.addArrangedSubview(debtTextFieldView)
+
+        debtTextFieldView.delegate = self
 
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
         }
     }
 
-    func configure(with person: Person) {
+    func configure(with person: Person, isEditable: Bool = false, resetTextField: Bool = false) {
+        self.person = person
         iconImageView.image = person.icon
         nameLabel.text = person.name
-        debtLabel.text = "\(person.debt) р"
+        debtTextFieldView.text = resetTextField ? "" : "\(person.debt) ₽"
+        debtTextFieldView.placeholder = resetTextField ? "Сумма" : ""
+        self.isEditable = isEditable
     }
 }
 
+extension PersonCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        return isEditable
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        person?.debt = Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0
+        delegate?.updateSelectedPersonDebt(person: person)
+    }
+}
