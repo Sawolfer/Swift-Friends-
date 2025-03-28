@@ -14,6 +14,9 @@ import SnapKit
 class PersonCell: UITableViewCell {
     static let personCellIdentifier = "PersonCell"
     private var isEditable: Bool = false
+    private var person: Person?
+
+    weak var delegate: AddExpenseModalViewControllerDelegate?
 
     private lazy var iconImageView: UIImageView = {
         let imageView = UIImageView()
@@ -37,7 +40,7 @@ class PersonCell: UITableViewCell {
         textField.keyboardType = .numberPad
         textField.textColor = .gray
         textField.borderStyle = .none
-        
+
         return textField
     }()
 
@@ -63,7 +66,7 @@ class PersonCell: UITableViewCell {
         stackView.addArrangedSubview(iconImageView)
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(debtTextFieldView)
-        
+
         debtTextFieldView.delegate = self
 
         stackView.snp.makeConstraints { make in
@@ -72,6 +75,7 @@ class PersonCell: UITableViewCell {
     }
 
     func configure(with person: Person, isEditable: Bool = false, resetTextField: Bool = false) {
+        self.person = person
         iconImageView.image = person.icon
         nameLabel.text = person.name
         debtTextFieldView.text = resetTextField ? "" : "\(person.debt) ₽"
@@ -85,8 +89,13 @@ extension PersonCell: UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
-    
+
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return isEditable
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        person?.debt = Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0
+        delegate?.updateSelectedPersonDebt(person: person)
     }
 }
