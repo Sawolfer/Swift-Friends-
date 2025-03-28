@@ -14,6 +14,7 @@ final class ExpenseIndividualView: UIView {
         let searchBar = UISearchBar()
         searchBar.layer.cornerRadius = 10
         searchBar.placeholder = "Поиск"
+        searchBar.searchBarStyle = .minimal
 
         return searchBar
     }()
@@ -66,7 +67,7 @@ final class ExpenseIndividualView: UIView {
         tableView.snp.makeConstraints { make in
             make.top.equalTo(addButton.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(42)
+            make.bottom.equalToSuperview().inset(60)
         }
     }
 }
