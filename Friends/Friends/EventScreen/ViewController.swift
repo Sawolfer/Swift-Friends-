@@ -133,7 +133,7 @@ class ViewController: UIViewController {
         
         archiveTable.snp.makeConstraints { make in
             make.leading
-                .equalTo(eventsTable.snp.right)
+                .equalTo(eventsTable.snp.trailing)
                 .offset(Constants.tableAnimateOffsetMultiplier * Constants.tableOffsetH)
 
             make.width.equalTo(segmented.snp.width)

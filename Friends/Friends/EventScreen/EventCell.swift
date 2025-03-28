@@ -208,7 +208,7 @@ final class EventCell: UITableViewCell {
         wrapView.addSubview(firstFriendImageView)
         firstFriendImageView.snp.makeConstraints { make in
             make.leading.equalTo(image.snp.trailing).offset(Constants.titleOffsetH)
-            make.bottom.equalTo(wrapView.snp.bottom).offset(Constants.imageViewOffset)
+            make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)
         }
 
         for ind in 0..<friendsImageViews.count {
@@ -217,8 +217,9 @@ final class EventCell: UITableViewCell {
                 wrapView.addSubview(newFirstFriendImageView)
                 newFirstFriendImageView.snp.makeConstraints { make in
                     make.leading.equalTo(friendsImageViews[ind - 1].snp.trailing).offset(-Constants.overlapOffset)
-                    make.bottom.equalTo(wrapView.snp.bottom).offset(Constants.imageViewOffset)
+                    make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)
                 }
+
             }
             friendsImageViews[ind].snp.makeConstraints { make in
                 make.width.equalTo(Constants.friendsImagesSize)
@@ -240,7 +241,7 @@ final class EventCell: UITableViewCell {
         extraFriendView.backgroundColor = .lightGray
         extraFriendView.snp.makeConstraints { make in
             make.leading.equalTo(friendsImageViews[2].snp.trailing).offset(-Constants.overlapOffset)
-            make.bottom.equalTo(wrapView.snp.bottom).offset(Constants.imageViewOffset)
+            make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)
         }
 
         let counter = UILabel()
@@ -258,8 +259,8 @@ final class EventCell: UITableViewCell {
         wrapView.addSubview(statusImageView)
             
         statusImageView.snp.makeConstraints { make in
-            make.trailing.equalTo(wrapView.snp.trailing).offset(Constants.statusImageOffsetRight)
-            make.bottom.equalTo(wrapView.snp.bottom).offset(Constants.statusImageOffsetBottom)
+            make.trailing.equalTo(wrapView.snp.trailing).inset(Constants.statusImageOffsetRight)
+            make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.statusImageOffsetBottom)
             make.height.equalTo(Constants.statusImageSize)
             make.width.equalTo(Constants.statusImageSize)
         }
@@ -271,8 +272,8 @@ final class EventCell: UITableViewCell {
         statusLabel.numberOfLines = 1
             
         statusLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(statusImageView.snp.leading).offset(-Constants.statusLabelOffsetLeft)
-            make.bottom.equalTo(wrapView.snp.bottom).offset(Constants.imageViewOffset)
+            make.trailing.equalTo(statusImageView.snp.leading).inset(-Constants.statusLabelOffsetLeft)
+            make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)
             make.height.equalTo(Constants.infoLabelHeight)
         }
        
