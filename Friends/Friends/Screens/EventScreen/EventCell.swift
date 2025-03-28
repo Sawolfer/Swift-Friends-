@@ -116,8 +116,7 @@ final class EventCell: UITableViewCell {
             statusImageView.image = Constants.declinedStatusImage
             statusImageView.tintColor = .systemRed
         }
-        configureLocation(with: event.location)
-        
+        configureRegion(with: event)
     }
     
     // MARK: - UI Configuration
@@ -141,22 +140,17 @@ final class EventCell: UITableViewCell {
         }
     }
 
-    private func configureLocation(with locationCoordinate: CLLocationCoordinate2D) {
+    private func configureRegion(with event: EventModel) {
         mapView.frame = image.bounds
         mapView.layer.cornerRadius = Constants.imageRadius
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         image.addSubview(mapView)
            
-        let location = locationCoordinate
-        let region = MKCoordinateRegion(
-            center: location,
-            latitudinalMeters: 250,
-            longitudinalMeters: 250
-        )
+        let region = event.region
         mapView.setRegion(region, animated: true)
         
         let annotation = MKPointAnnotation()
-        annotation.coordinate = locationCoordinate
+        annotation.coordinate = event.location
         annotation.title = "Место"
         mapView.addAnnotation(annotation)
     }
@@ -238,7 +232,7 @@ final class EventCell: UITableViewCell {
             make.height.equalTo(Constants.friendsImagesSize)
         }
         extraFriendView.layer.cornerRadius = Constants.friendsImagesRadius
-        extraFriendView.backgroundColor = .lightGray
+        extraFriendView.backgroundColor = UIColor.extraFriendsBackground
         extraFriendView.snp.makeConstraints { make in
             make.leading.equalTo(friendsImageViews[2].snp.trailing).offset(-Constants.overlapOffset)
             make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)

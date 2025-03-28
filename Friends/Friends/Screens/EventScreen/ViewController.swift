@@ -34,6 +34,9 @@ class ViewController: UIViewController {
         static let tableAnimateOffsetMultiplier: CGFloat = 2
         
         static let segmentedOffset: CGFloat = 20
+        
+        static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
+        static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
     }
     
     // MARK: - Properties
@@ -47,6 +50,12 @@ class ViewController: UIViewController {
             address: "Surf Coffee",
             date: "15:15 Mar 27",
             location: CLLocationCoordinate2D(latitude: 43.395452, longitude: 39.973114),
+            region: MKCoordinateRegion(
+                center: CLLocationCoordinate2D(latitude: 43.395452, longitude: 39.973114),
+                latitudinalMeters: 250,
+                longitudinalMeters: 250
+            ),
+            friendsImages: [UIImage(named: "image")],
             status: .awaiting
         ),
         EventModel(),
@@ -78,6 +87,7 @@ class ViewController: UIViewController {
         eventsTable.backgroundColor = .clear
         eventsTable.separatorStyle = .none
         eventsTable.allowsSelection = true
+        eventsTable.showsVerticalScrollIndicator = false
         
         view.addSubview(eventsTable)
         
@@ -128,6 +138,7 @@ class ViewController: UIViewController {
         archiveTable.backgroundColor = .clear
         archiveTable.separatorStyle = .none
         archiveTable.allowsSelection = true
+        archiveTable.showsVerticalScrollIndicator = false
         
         view.addSubview(archiveTable)
         
@@ -235,15 +246,16 @@ extension ViewController: UITableViewDataSource {
                 let declinedEvent = self.events[indexPath.row]
                 declinedEvent.goingStatus = GoingStatus.declined
                 self.events.remove(at: indexPath.row)
-                self.eventsTable.reloadData()
+                self.eventsTable.deleteRows(at: [indexPath], with: .automatic)
                 self.archive.append(declinedEvent)
                 self.archiveTable.reloadData()
                 completionHandler(true)
             }
             
+            // TODO: Location span is changing after first accept interaction. That is bad
             let acceptAction = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
                 self.events[indexPath.row].goingStatus = GoingStatus.going
-                self.eventsTable.reloadData()
+                self.eventsTable.reloadRows(at: [indexPath], with: .automatic)
                 completionHandler(true)
             }
             
@@ -251,20 +263,17 @@ extension ViewController: UITableViewDataSource {
             declineAction.backgroundColor = view.backgroundColor
             acceptAction.backgroundColor = view.backgroundColor
 
-            let declineView = createRoundedSwipeView(text: "Decline", color: .systemRed)
-            let acceptView = createRoundedSwipeView(text: "Accept", color: .systemGreen)
-
-            declineAction.image = UIImage(view: declineView)
-            acceptAction.image = UIImage(view: acceptView)
+            declineAction.image = UIImage(named: "decline")
+            acceptAction.image = UIImage(named: "accept")
 
             return UISwipeActionsConfiguration(actions: [declineAction, acceptAction])
         case archiveTable:
             
-            let acceptAction = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
+            let acceptAction = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
                 let acceptedEvent = self.archive[indexPath.row]
                 acceptedEvent.goingStatus = GoingStatus.going
                 self.archive.remove(at: indexPath.row)
-                self.archiveTable.reloadData()
+                self.archiveTable.deleteRows(at: [indexPath], with: .automatic)
                 self.events.append(acceptedEvent)
                 self.eventsTable.reloadData()
                 completionHandler(true)
@@ -273,48 +282,12 @@ extension ViewController: UITableViewDataSource {
             // Создание кастомных вьюшек
             acceptAction.backgroundColor = view.backgroundColor
 
-            let acceptView = createRoundedSwipeView(text: "Accept", color: .systemGreen)
-
-            acceptAction.image = UIImage(view: acceptView)
+            acceptAction.image = UIImage(named: "accept")
             
             return UISwipeActionsConfiguration(actions: [acceptAction])
         default:
             return nil
         }
         
-    }
-    
-    // Функция создания кастомного вью с закруглёнными углами
-    private func createRoundedSwipeView(text: String, color: UIColor) -> UIView {
-        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        view.backgroundColor = color
-        view.layer.cornerRadius = 20
-        view.clipsToBounds = true
-
-        let label = UILabel(frame: view.bounds)
-        label.text = text
-        label.textColor = .white
-        label.font = .systemFont(ofSize: 14, weight: .bold)
-        label.textAlignment = .center
-
-        view.addSubview(label)
-        
-        return view
-    }
-}
-
-// Расширение для генерации UIImage из UIView (Vibe-code alert!)
-extension UIImage {
-    convenience init?(view: UIView) {
-        UIGraphicsBeginImageContextWithOptions(view.bounds.size, false, 0)
-        view.drawHierarchy(in: view.bounds, afterScreenUpdates: true)
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        if let cgImage = image?.cgImage {
-            self.init(cgImage: cgImage)
-        } else {
-            return nil
-        }
     }
 }

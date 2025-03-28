@@ -13,7 +13,8 @@ final class EventModel {
     var title: String = "Lectures"
     var address: String = "Sirius University"
     var date: String = "10:00 Mar 28"
-    var location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 43.414713, longitude: 39.950758)
+    var location: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 43.414516, longitude: 39.950750)
+    var region: MKCoordinateRegion
     var friendsImages: [UIImage?] = [
         UIImage(named: "image"),
         UIImage(named: "image3"),
@@ -34,14 +35,21 @@ final class EventModel {
     
     // MARK: - Lifecycle
     init() {
-        
+        self.region = MKCoordinateRegion(
+            center: location,
+            latitudinalMeters: 250,
+            longitudinalMeters: 250
+        )
     }
     
-    init(title: String, address: String, date: String, location: CLLocationCoordinate2D, status: GoingStatus) {
+    init(title: String, address: String, date: String, location: CLLocationCoordinate2D,
+         region: MKCoordinateRegion, friendsImages: [UIImage?], status: GoingStatus) {
         self.title = title
         self.address = address
         self.date = date
         self.location = location
+        self.region = region
+        self.friendsImages = friendsImages
         self.goingStatus = status
     }
 }
