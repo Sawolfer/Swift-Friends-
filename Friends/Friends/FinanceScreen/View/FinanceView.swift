@@ -10,7 +10,21 @@ import SnapKit
 
 class FinanceView: UIView {
 
-    private(set) lazy var segmentController = UISegmentedControl(items: ["Долги", "Бюджеты"])
+    private(set) lazy var segmentController = UISegmentedControl(items: ["Долги", "Должники"])
+    private lazy var overallDebt: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+//        switch segmentController.selectedSegmentIndex {
+//                case 0:
+//                overallDebt.textColor = .red
+//            default:
+//                overallDebt.textColor = .green
+//        }
+        label.text = PersonContainer.shared.getDebtsSum(dest: DebtType.from).description
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        return label
+    }()
+
     private(set) lazy var addDebtButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Добавить долг", for: .normal)
@@ -18,11 +32,10 @@ class FinanceView: UIView {
     }()
 
     let debtTableView = DebtsView()
-    let budgetTableView = BudgetsView()
+    let budgetTableView = DebitorsView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupView()
     }
 
@@ -34,6 +47,7 @@ class FinanceView: UIView {
         addSubview(segmentController)
         segmentController.selectedSegmentIndex = 0
 
+        addSubview(overallDebt)
         addSubview(addDebtButton)
         addSubview(debtTableView)
         addSubview(budgetTableView)
@@ -42,7 +56,7 @@ class FinanceView: UIView {
         budgetTableView.isHidden = true
     }
 
-    func toogle (){
+    func toogle() {
         debtTableView.isHidden.toggle()
         budgetTableView.isHidden.toggle()
     }
@@ -53,6 +67,11 @@ class FinanceView: UIView {
         segmentController.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
             make.height.equalTo(36)
+        }
+
+        overallDebt.snp.makeConstraints { make in
+            make.top.equalTo(segmentController.snp.bottom).offset(20)
+            make.leading.equalToSuperview().inset(20)
         }
 
         addDebtButton.snp.makeConstraints { make in

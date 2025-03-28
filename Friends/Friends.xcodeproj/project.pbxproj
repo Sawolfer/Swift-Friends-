@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CAC37B3F2D9440E10051FBE5 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = CAC37B3E2D9440E10051FBE5 /* SnapKit */; };
+		B4379C022D96D0E500B7E432 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = B4379C012D96D0E500B7E432 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4379BFA2D96CEE400B7E432 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -40,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAC37B3F2D9440E10051FBE5 /* SnapKit in Frameworks */,
+				B4379C022D96D0E500B7E432 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +52,7 @@
 			isa = PBXGroup;
 			children = (
 				39E396AC2D932EA300C43CC4 /* Friends */,
+				B4379BF92D96CEE400B7E432 /* Frameworks */,
 				39E396AB2D932EA300C43CC4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -60,6 +62,19 @@
 			children = (
 				39E396AA2D932EA300C43CC4 /* Friends.app */,
 			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B4379BF92D96CEE400B7E432 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B4379BFA2D96CEE400B7E432 /* Friends.xcodeproj */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B4379BFB2D96CEE400B7E432 /* Products */ = {
+			isa = PBXGroup;
 			name = Products;
 			sourceTree = "<group>";
 		};
@@ -73,6 +88,7 @@
 				39E396A62D932EA300C43CC4 /* Sources */,
 				39E396A72D932EA300C43CC4 /* Frameworks */,
 				39E396A82D932EA300C43CC4 /* Resources */,
+				B49B4CC42D96BEFE00A5EB3D /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -83,7 +99,7 @@
 			);
 			name = Friends;
 			packageProductDependencies = (
-				CAC37B3E2D9440E10051FBE5 /* SnapKit */,
+				B4379C012D96D0E500B7E432 /* SnapKit */,
 			);
 			productName = Friends;
 			productReference = 39E396AA2D932EA300C43CC4 /* Friends.app */;
@@ -114,11 +130,17 @@
 			mainGroup = 39E396A12D932EA300C43CC4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				CAC37B3D2D9440E10051FBE5 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				B4379C002D96D0E500B7E432 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 39E396AB2D932EA300C43CC4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = B4379BFB2D96CEE400B7E432 /* Products */;
+					ProjectRef = B4379BFA2D96CEE400B7E432 /* Friends.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				39E396A92D932EA300C43CC4 /* Friends */,
@@ -135,6 +157,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B49B4CC42D96BEFE00A5EB3D /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		39E396A62D932EA300C43CC4 /* Sources */ = {
@@ -155,6 +198,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W9P5JL4539;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Friends/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -182,6 +226,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W9P5JL4539;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Friends/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -344,7 +389,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CAC37B3D2D9440E10051FBE5 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		B4379C002D96D0E500B7E432 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -355,9 +400,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CAC37B3E2D9440E10051FBE5 /* SnapKit */ = {
+		B4379C012D96D0E500B7E432 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CAC37B3D2D9440E10051FBE5 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = B4379C002D96D0E500B7E432 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */

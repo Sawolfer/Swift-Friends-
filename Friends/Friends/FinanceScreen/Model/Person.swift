@@ -7,43 +7,54 @@
 
 import UIKit
 
-struct Person : Identifiable, Hashable{
+struct Person{
     var icon: UIImage {
         return UIImage(named: "custom") ?? UIImage(systemName: "person.circle")!
     }
     var name: String
-    var debt: Double
     var id = UUID()
+}
+
+extension Person : Identifiable, Equatable {
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        return lhs.id == rhs.id
+    }
 }
 
 // TODO: решить что мы будем использовать в качествве структуры данных
 
-class PersonContainer{
+class PersonContainer {
     static var shared: PersonContainer = PersonContainer()
-
-    private var persons = Dictionary<Person, [Debt]>()
-    private init(){}
-
-//    public func getPersons() -> [Person]{
-//
-//    }
-
-    public func addPerson(_ person: Person, title: String){
-        print("Adding person \(person.name)")
-        let debt = Debt(debt: person.debt, title: title)
-
-        if persons.keys.contains(person){
-            persons[person]?.append(debt)
-        } else {
-            persons[person] = []
-            persons[person]?.append(debt)
+    
+    private var debtFrom: [Debt]
+    private var debtTo: [Debt]
+    
+    private init() {
+        debtFrom = []
+        debtTo = []
+    }
+    public func getDebts(dest: DebtType) -> [Debt]{
+        switch dest {
+            case .from :
+                return debtFrom
+            case .to :
+                return debtTo
+            default:
+                return []
         }
     }
 
-    public func removePerson(_ person: Person){
-        print("Removing person \(person.name)")
-        persons[person] = nil
-    }
+    
 
-// TODO: возвращать из контейнера сразу собраный tableview чтобы во vc ничего не собирать
+    public func getDebtsSum(dest: DebtType) -> Double {
+        switch dest{
+            case .from :
+                return debtFrom.reduce(0) { $0 + $1.debt }
+            case .to :
+                return debtTo.reduce(0) { $0 + $1.debt }
+            default:
+                return 0
+
+        }
+    }
 }

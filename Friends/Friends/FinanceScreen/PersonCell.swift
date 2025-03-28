@@ -8,9 +8,6 @@
 import UIKit
 import SnapKit
 
-// TODO
-// сделать свайпы для удаления долгова
-// сделать долг человека и задолжность перед ним разными цветами
 class PersonCell: UITableViewCell {
     static let personCellIdentifier = "PersonCell"
 
@@ -63,10 +60,12 @@ class PersonCell: UITableViewCell {
         }
     }
 
-    func configure(with person: Person) {
+    func configure(with person: Person, isDebitor: Bool) {
         iconImageView.image = person.icon
         nameLabel.text = person.name
-        debtLabel.text = "\(person.debt) р"
+        debtLabel.text = "\(person) р"
+        let color = Color.getColor(isDebitor: isDebitor)
+        debtLabel.textColor = color 
     }
 }
 
