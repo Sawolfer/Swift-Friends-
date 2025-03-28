@@ -53,6 +53,7 @@ extension DebtsView: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: PersonCell.personCellIdentifier, for: indexPath)
 
         guard let personCell = cell as? PersonCell else { return UITableViewCell() }
+
         let person = debts[indexPath.row].personFrom
         personCell.configure(with: person, isDebitor: false)
 
