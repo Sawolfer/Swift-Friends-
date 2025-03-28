@@ -1,0 +1,7 @@
+excluded:
+  - Friends/App/AppDelegate.swift
+  - Friends/App/SceneDelegate.swift
+
+disabled_rules:
+  - trailing_whitespace
+
