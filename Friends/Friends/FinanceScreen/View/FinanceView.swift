@@ -20,7 +20,7 @@ class FinanceView: UIView {
 //            default:
 //                overallDebt.textColor = .green
 //        }
-        label.text = PersonContainer.shared.getDebtsSum(dest: DebtType.from).description
+        label.text = PersonContainer.shared.getDebtsSum(dest: .from).description
         label.font = .systemFont(ofSize: 24, weight: .bold)
         return label
     }()

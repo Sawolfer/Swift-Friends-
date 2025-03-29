@@ -36,11 +36,14 @@
 				<key>focused</key>
 				<string></string>
 				<key>leading</key>
-				<string>}
-
+				<string>            make.edges.equalToSuperview().inset(10)
+        }
 </string>
 				<key>trailing</key>
-				<string></string>
+				<string>    }
+
+    func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
+</string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>
@@ -77,11 +80,14 @@
 				<key>focused</key>
 				<string></string>
 				<key>leading</key>
-				<string>}
-
+				<string>            make.edges.equalToSuperview().inset(10)
+        }
 </string>
 				<key>trailing</key>
-				<string></string>
+				<string>    }
+
+    func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
+</string>
 			</dict>
 			<key>type</key>
 			<string>bookmark</string>

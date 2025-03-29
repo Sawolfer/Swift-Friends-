@@ -16,8 +16,8 @@ final class AddExpenseModalViewController: UIViewController {
     var isSearchActive: Bool = false
     var isAllPeopleShown: Bool = true
 
-    var people: [Person] = [Person(name: "kizaru", debt: 1000),
-                            Person(name: "Alyona", debt: 10)]
+    let people: [Person] = PersonContainer.shared.getPeople()
+
     var filteredPeople: [Person] = []
     var selectedPeople: Set<Person> = []
 
@@ -48,6 +48,11 @@ final class AddExpenseModalViewController: UIViewController {
 
         expenseView.individualView.addButton.addTarget(self, action: #selector(showAllPeople), for: .touchUpInside)
     }
+
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        print(1)
+//    }
 
     @objc func showAllPeople() {
         isAllPeopleShown = true
@@ -82,7 +87,7 @@ extension AddExpenseModalViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-
+        
         filteredPeople = people.filter({ (person) -> Bool in
             let tmp = NSString(string: person.name)
             let range = tmp.range(of: searchText, options: .caseInsensitive)
@@ -120,19 +125,21 @@ extension AddExpenseModalViewController: UITableViewDataSource {
         var person: Person!
         if isSearchActive && !filteredPeople.isEmpty {
             person = filteredPeople[indexPath.row]
-            cell.configure(with: person)
+            
+            cell.configure(with: person, isDebitor: PersonContainer.shared.isDebitor(person))
         } else if isAllPeopleShown {
             person = people[indexPath.row]
-            cell.configure(with: person)
+            cell.configure(with: person, isDebitor: PersonContainer.shared.isDebitor(person))
         } else {
-            var resetTextField = true
+            var resetTextField = false
             person = selectedPeople[selectedPeople.index(selectedPeople.startIndex, offsetBy: indexPath.row)]
 
-            if selectedPeople.contains(where: { $0.id == person.id && $0.debt != -1 }) {
-                resetTextField = false
+            if selectedPeople.contains(where: { $0.id == person.id && person.isSelectedFirstTime }) {
+                person.isSelectedFirstTime = false
+                resetTextField = true
             }
 
-            cell.configure(with: person, isEditable: !isAllPeopleShown, resetTextField: resetTextField)
+            cell.configure(with: person, isDebitor: true, isEditable: !isAllPeopleShown, resetTextField: resetTextField)
         }
         cell.delegate = self
 
@@ -149,9 +156,7 @@ extension AddExpenseModalViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         if isAllPeopleShown {
             if !selectedPeople.contains(where: { $0.id == people[indexPath.row].id }) {
-                var person = people[indexPath.row]
-                person.debt = -1
-                selectedPeople.insert(person)
+                selectedPeople.insert(people[indexPath.row])
             }
             isAllPeopleShown = false
             expenseView.individualView.addButton.isHidden = isAllPeopleShown

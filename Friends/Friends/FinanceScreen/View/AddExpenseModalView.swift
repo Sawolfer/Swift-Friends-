@@ -28,7 +28,7 @@ final class AddExpenseModalView: UIView {
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupView() {
         individualView.isHidden = true
         [typeExpenseControl, groupView, individualView].forEach(self.addSubview)
