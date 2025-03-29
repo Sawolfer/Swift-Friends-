@@ -84,11 +84,11 @@ final class EventCell: UITableViewCell {
         configureDateLabel()
         configureFriendsImages()
         configureStatus()
+        configureRegionView()
     }
     
     // MARK: - Cell Configuration
     func configure(with event: EventModel) {
-        
         titleLabel.text = event.title
         addressLabel.text = event.address
         dateLabel.text = event.date
@@ -99,7 +99,7 @@ final class EventCell: UITableViewCell {
             }
             friendsImageViews[ind].image = event.friendsImages[ind]
         }
-        switch event.goingStatus {
+        switch event.status {
         case .awaiting:
             statusLabel.text = "slide to accept"
             statusLabel.textColor = .systemOrange
@@ -119,7 +119,7 @@ final class EventCell: UITableViewCell {
         configureRegion(with: event)
     }
     
-    // MARK: - UI Configuration
+    // MARK: - Private functions
     private func configureWrap() {
         contentView.addSubview(wrapView)
         wrapView.backgroundColor = .white
@@ -138,20 +138,22 @@ final class EventCell: UITableViewCell {
             make.leading.equalTo(wrapView.snp.leading).offset(Constants.imageViewOffset)
             make.top.bottom.equalTo(wrapView).inset(Constants.imageViewOffset)
         }
+        image.image = Constants.awaitingStatusImage
     }
 
-    private func configureRegion(with event: EventModel) {
+    private func configureRegionView() {
         mapView.frame = image.bounds
         mapView.layer.cornerRadius = Constants.imageRadius
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         image.addSubview(mapView)
-           
-        let region = event.region
-        mapView.setRegion(region, animated: true)
+    }
+    
+    private func configureRegion(with event: EventModel) {
+        mapView.setRegion(event.region, animated: true)
         
         let annotation = MKPointAnnotation()
         annotation.coordinate = event.location
-        annotation.title = "Место"
+        annotation.title = event.address
         mapView.addAnnotation(annotation)
     }
     

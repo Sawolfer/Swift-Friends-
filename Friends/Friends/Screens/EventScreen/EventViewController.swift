@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Friends
 //
-//  Created by тимур on 25.03.2025.
+//  Created by Алексей on 25.03.2025.
 //
 
 import UIKit
@@ -11,7 +11,7 @@ import SnapKit
 
 typealias TableCellAnimation = (UITableViewCell, IndexPath, UITableView) -> Void
 
-class ViewController: UIViewController {
+class EventViewController: UIViewController, EventViewProtocol {
     // MARK: - Constants
     private enum Constants {
         static let backgroundLightHex: String = "F5F5F5"
@@ -40,37 +40,53 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Properties
+    var presenter: EventPresenterProtocol?
     let eventsTable: UITableView = UITableView()
-    private var eventsTableLeadingConstraint: NSLayoutConstraint?
-    private var eventsTableTrailingConstraint: NSLayoutConstraint?
+    private var eventsTableLeadingConstraint: Constraint?
+    private var eventsTableTrailingConstraint: Constraint?
     let archiveTable: UITableView = UITableView()
-    var events: [EventModel] = [
-        EventModel(
-            title: "Coffee",
-            address: "Surf Coffee",
-            date: "15:15 Mar 27",
-            location: CLLocationCoordinate2D(latitude: 43.395452, longitude: 39.973114),
-            region: MKCoordinateRegion(
-                center: CLLocationCoordinate2D(latitude: 43.395452, longitude: 39.973114),
-                latitudinalMeters: 250,
-                longitudinalMeters: 250
-            ),
-            friendsImages: [UIImage(named: "image")],
-            status: .awaiting
-        ),
-        EventModel(),
-        EventModel(),
-        EventModel()
-    ]
-    var archive: [EventModel] = []
     let segmented: SegmentedControlView = SegmentedControlView()
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        presenter?.viewLoaded()
     }
-
+    
+    // MARK: - Functions
+    func showEvents(events: [EventModel]) {
+        eventsTable.reloadData()
+    }
+    
+    func showArchiveEvents(events: [EventModel]) {
+        archiveTable.reloadData()
+    }
+    
+    func updateEvent(at index: Int, event: EventModel) {
+        eventsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
+    }
+    
+    func moveEventToArchive(event: EventModel, from index: Int) {
+        eventsTable.performBatchUpdates({
+            eventsTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
+        }, completion: { _ in
+            self.archiveTable.insertRows(at: [IndexPath(
+                row: self.archiveTable.numberOfRows(inSection: 0), section: 0
+            )], with: .right)
+        })
+    }
+    
+    func moveEventFromArchive(event: EventModel, from index: Int) {
+        archiveTable.performBatchUpdates({
+            archiveTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
+        }, completion: { _ in
+            self.eventsTable.insertRows(at: [IndexPath(
+                row: self.eventsTable.numberOfRows(inSection: 0), section: 0
+            )], with: .right)
+        })
+    }
+    
     // MARK: - Private functions
     private func configureUI() {
         view.backgroundColor = UIColor.background
@@ -91,26 +107,14 @@ class ViewController: UIViewController {
         
         view.addSubview(eventsTable)
         
-        eventsTable.translatesAutoresizingMaskIntoConstraints = false
-        
-        eventsTableLeadingConstraint = eventsTable
-            .leadingAnchor
-            .constraint(equalTo: view.leadingAnchor,
-                        constant: Constants.tableOffsetH)
-
-        eventsTableLeadingConstraint?.isActive = true
-        
-        eventsTableTrailingConstraint = eventsTable
-            .trailingAnchor
-            .constraint(equalTo: view.trailingAnchor,
-                        constant: Constants.tableOffsetH)
-        eventsTableTrailingConstraint?.isActive = true
-        
         eventsTable.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(Constants.tableOffsetH)
-            make.top.equalToSuperview().offset(Constants.tableViewTopOffset)
-            make.bottom.equalToSuperview()
-        }
+                self.eventsTableLeadingConstraint = make.leading.equalToSuperview()
+                    .inset(Constants.tableOffsetH).constraint
+                self.eventsTableTrailingConstraint = make.trailing.equalToSuperview()
+                    .inset(Constants.tableOffsetH).constraint
+                make.top.equalToSuperview().offset(Constants.tableViewTopOffset)
+                make.bottom.equalToSuperview()
+            }
     }
     
     private func moveUpBounceAnimation(rowHeight: CGFloat,
@@ -161,16 +165,17 @@ class ViewController: UIViewController {
         }
 
         segmented.segmentChanged = { [weak self] selectedIndex in
+            self?.presenter?.didSelectSegment(at: selectedIndex)
             self?.moveTables(to: selectedIndex)
         }
     }
     
     private func moveTables(to selectedIndex: Int) {
         let leftOffset = selectedIndex == 0 ? Constants.tableOffsetH : -view.frame.width - Constants.tableOffsetH
-        let rightOffset = selectedIndex == 0 ? Constants.tableOffsetH : -view.frame.width - Constants.tableOffsetH
-        
-        eventsTableLeadingConstraint?.constant = leftOffset
-        eventsTableTrailingConstraint?.constant = rightOffset
+        let rightOffset = selectedIndex == 0 ? -Constants.tableOffsetH : -view.frame.width - Constants.tableOffsetH
+            
+        eventsTableLeadingConstraint?.update(offset: leftOffset)
+        eventsTableTrailingConstraint?.update(offset: rightOffset)
 
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
@@ -186,7 +191,7 @@ class ViewController: UIViewController {
 }
 
 // MARK: - UITableViewDelegate
-extension ViewController: UITableViewDelegate {
+extension EventViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.heightForRow
@@ -194,6 +199,14 @@ extension ViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
+        switch tableView {
+        case eventsTable:
+            presenter?.didSelectEvent(at: indexPath.row)
+        case archiveTable:
+            break
+        default:
+            break
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -208,13 +221,13 @@ extension ViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension ViewController: UITableViewDataSource {
+extension EventViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
         case eventsTable:
-            return events.count
+            return presenter?.numberOfEvents() ?? .zero
         case archiveTable:
-            return archive.count
+            return presenter?.numberOfArchived() ?? .zero
         default:
             return .zero
         }
@@ -226,12 +239,10 @@ extension ViewController: UITableViewDataSource {
         guard let eventCell = cell as? EventCell else { return cell }
         switch tableView {
         case eventsTable:
-            eventCell.configure(with: events[indexPath.row])
-                
+            presenter?.configureEvent(cell: eventCell, at: indexPath.row)
             return eventCell
         case archiveTable:
-            eventCell.configure(with: archive[indexPath.row])
-                
+            presenter?.configureArchived(cell: eventCell, at: indexPath.row)
             return eventCell
         default:
             return UITableViewCell()
@@ -242,52 +253,42 @@ extension ViewController: UITableViewDataSource {
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         switch tableView {
         case eventsTable:
-            let declineAction = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
-                let declinedEvent = self.events[indexPath.row]
-                declinedEvent.goingStatus = GoingStatus.declined
-                self.events.remove(at: indexPath.row)
-                self.eventsTable.deleteRows(at: [indexPath], with: .automatic)
-                self.archive.append(declinedEvent)
-                self.archiveTable.reloadData()
+            let declineAction = UIContextualAction(
+                style: .destructive, title: nil
+            ) { [weak self] _, _, completionHandler in
+                self?.presenter?.didDeclineEvent(at: indexPath.row)
                 completionHandler(true)
             }
             
-            // TODO: Location span is changing after first accept interaction. That is bad
-            let acceptAction = UIContextualAction(style: .normal, title: nil) { _, _, completionHandler in
-                self.events[indexPath.row].goingStatus = GoingStatus.going
-                self.eventsTable.reloadRows(at: [indexPath], with: .automatic)
+            let acceptAction = UIContextualAction(
+                style: .normal, title: nil
+            ) { [weak self] _, _, completionHandler in
+                self?.presenter?.didAcceptEvent(at: indexPath.row)
                 completionHandler(true)
             }
             
-            // Создание кастомных вьюшек
             declineAction.backgroundColor = view.backgroundColor
             acceptAction.backgroundColor = view.backgroundColor
-
             declineAction.image = UIImage(named: "decline")
             acceptAction.image = UIImage(named: "accept")
 
             return UISwipeActionsConfiguration(actions: [declineAction, acceptAction])
-        case archiveTable:
             
-            let acceptAction = UIContextualAction(style: .destructive, title: nil) { _, _, completionHandler in
-                let acceptedEvent = self.archive[indexPath.row]
-                acceptedEvent.goingStatus = GoingStatus.going
-                self.archive.remove(at: indexPath.row)
-                self.archiveTable.deleteRows(at: [indexPath], with: .automatic)
-                self.events.append(acceptedEvent)
-                self.eventsTable.reloadData()
+        case archiveTable:
+            let acceptAction = UIContextualAction(
+                style: .destructive, title: nil
+            ) { [weak self] _, _, completionHandler in
+                self?.presenter?.didRestoreEventFromArchive(at: indexPath.row)
                 completionHandler(true)
             }
             
-            // Создание кастомных вьюшек
             acceptAction.backgroundColor = view.backgroundColor
-
             acceptAction.image = UIImage(named: "accept")
             
             return UISwipeActionsConfiguration(actions: [acceptAction])
+            
         default:
             return nil
         }
-        
     }
 }
