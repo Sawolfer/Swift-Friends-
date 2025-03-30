@@ -39,14 +39,9 @@ class DebtsView: UIView {
     }
 }
 
-extension DebtsView: UITableViewDataSource, UITableViewDelegate {
+extension DebtsView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return debts.count
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        print("Selected: \(debts[indexPath.row].personFrom.name)")
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,6 +53,13 @@ extension DebtsView: UITableViewDataSource, UITableViewDelegate {
         personCell.configure(with: person, isDebitor: false)
 
         return personCell
+    }
+}
+
+extension DebtsView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        print("Selected: \(debts[indexPath.row].personFrom.name)")
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

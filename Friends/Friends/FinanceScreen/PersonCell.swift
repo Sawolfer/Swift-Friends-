@@ -15,12 +15,15 @@ class PersonCell: UITableViewCell {
 
     weak var delegate: AddExpenseModalViewControllerDelegate?
 
-    private lazy var iconImageView: UIImageView = {
+    private let personImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 40
         imageView.clipsToBounds = true
+        imageView.layer.masksToBounds = true
         return imageView
     }()
+
 
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
@@ -60,7 +63,7 @@ class PersonCell: UITableViewCell {
 
     private func setupUI() {
         contentView.addSubview(stackView)
-        stackView.addArrangedSubview(iconImageView)
+        stackView.addArrangedSubview(personImageView)
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(debtTextFieldView)
 
@@ -73,7 +76,7 @@ class PersonCell: UITableViewCell {
 
     func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
         self.person = person
-        iconImageView.image = person.icon
+        personImageView.image = person.icon
         nameLabel.text = person.name
         print(person.id, person.name)
         debtTextFieldView.text = resetTextField ? "" : "\(PersonContainer.shared.getDebt(of: person)) ₽"

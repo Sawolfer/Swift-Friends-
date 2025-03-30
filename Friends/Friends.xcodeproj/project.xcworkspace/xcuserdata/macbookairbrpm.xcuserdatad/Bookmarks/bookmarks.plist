@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>71</string>
+					<string>75</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>71</string>
+					<string>74</string>
 					<key>Timestamp</key>
-					<string>764859590.816532</string>
+					<string>765061362.084928</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -34,15 +34,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string></string>
+				<string>    }
+</string>
 				<key>leading</key>
 				<string>            make.edges.equalToSuperview().inset(10)
         }
 </string>
 				<key>trailing</key>
-				<string>    }
-
+				<string>
     func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
+        self.person = person
 </string>
 			</dict>
 			<key>type</key>
@@ -56,13 +57,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>71</string>
+					<string>75</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>71</string>
+					<string>74</string>
 					<key>Timestamp</key>
-					<string>764859590.816548</string>
+					<string>765061362.084982</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -78,15 +79,16 @@
 			<key>text-context</key>
 			<dict>
 				<key>focused</key>
-				<string></string>
+				<string>    }
+</string>
 				<key>leading</key>
 				<string>            make.edges.equalToSuperview().inset(10)
         }
 </string>
 				<key>trailing</key>
-				<string>    }
-
+				<string>
     func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
+        self.person = person
 </string>
 			</dict>
 			<key>type</key>

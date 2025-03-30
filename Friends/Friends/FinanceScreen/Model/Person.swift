@@ -8,20 +8,26 @@
 import UIKit
 
 struct Person {
-    var icon: UIImage {
-        return UIImage(named: "custom") ?? UIImage(systemName: "person.circle")!
-    }
+    let id = UUID()
     var name: String
-    var id = UUID()
+    var imageURL: URL?
     var isSelectedFirstTime = true
-}
 
-extension Person : Identifiable, Equatable, Hashable {
+    var icon: UIImage {
+        if let imageURL = imageURL,
+           let imageData = try? Data(contentsOf: imageURL),
+           let image = UIImage(data: imageData) {
+            return image
+        }
+        return UIImage(systemName: "person.circle")!
+    }
+
     static func == (lhs: Person, rhs: Person) -> Bool {
         return lhs.id == rhs.id
     }
-
 }
+
+extension Person: Identifiable, Equatable, Hashable {}
 
 class PersonContainer {
     let user: Person
