@@ -41,7 +41,7 @@ final class EventPresenter: EventPresenterProtocol {
     }
     
     func didSelectSegment(at index: Int) {
-        // Логика переключения между таблицами
+        // TODO: Настроить логика переключения между таблицами
     }
     
     func didAcceptEvent(at index: Int) {
@@ -63,12 +63,12 @@ final class EventPresenter: EventPresenterProtocol {
     }
     
     func didSelectEvent(at index: Int) {
-        // Логика обработки выбора события
+        // TODO: Логика обработки выбора события
     }
     
     // MARK: - Private functions
     private func loadInitialData() {
-        // Здесь должна быть логика загрузки данных
+        // TODO: Здесь должна быть логика загрузки данных
         
         let events = dataManager.loadEvents()
         let archive = dataManager.loadArchive()

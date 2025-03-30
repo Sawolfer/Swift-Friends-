@@ -218,8 +218,7 @@ final class EventCell: UITableViewCell {
 
             }
             friendsImageViews[ind].snp.makeConstraints { make in
-                make.width.equalTo(Constants.friendsImagesSize)
-                make.height.equalTo(Constants.friendsImagesSize)
+                make.size.equalTo(Constants.friendsImagesSize)
             }
             friendsImageViews[ind].layer.cornerRadius = Constants.friendsImagesRadius
             friendsImageViews[ind].backgroundColor = .clear
@@ -257,8 +256,7 @@ final class EventCell: UITableViewCell {
         statusImageView.snp.makeConstraints { make in
             make.trailing.equalTo(wrapView.snp.trailing).inset(Constants.statusImageOffsetRight)
             make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.statusImageOffsetBottom)
-            make.height.equalTo(Constants.statusImageSize)
-            make.width.equalTo(Constants.statusImageSize)
+            make.size.equalTo(Constants.statusImageSize)
         }
         
         wrapView.addSubview(statusLabel)

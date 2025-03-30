@@ -199,14 +199,7 @@ extension EventViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
-        switch tableView {
-        case eventsTable:
-            presenter?.didSelectEvent(at: indexPath.row)
-        case archiveTable:
-            break
-        default:
-            break
-        }
+        presenter?.didSelectEvent(at: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
