@@ -8,19 +8,23 @@
 import SwiftUI
 
 struct SelectFriendsView: View {
-    @StateObject var viewModel: SelectFriendsViewModel
-
+    @ObservedObject var viewModel: AddEventViewModel
+    @Environment(\.dismiss) var dismiss
+    
     var body: some View {
-        VStack(spacing: 14) {
-            HStack {
-                Button("Cancel") {}
-                Spacer()
-                Text("Add Friends")
-                    .fontWeight(.medium)
-                Spacer()
-                Button("Add") {}
-                    .fontWeight(.bold)
-                    .disabled(viewModel.selectedFriends.isEmpty)
+        VStack {
+            ZStack(alignment: .trailing) {
+                HStack {
+                    Spacer()
+                    Text("Add Friends")
+                        .fontWeight(.medium)
+                    Spacer()
+                }
+                
+                Button("Done") {
+                    dismiss()
+                }
+                .fontWeight(.bold)
             }
             .padding([.horizontal, .top])
 
@@ -37,8 +41,4 @@ struct SelectFriendsView: View {
         }
         .background(Color.background)
     }
-}
-
-#Preview {
-    SelectFriendsView(viewModel: SelectFriendsViewModel())
 }

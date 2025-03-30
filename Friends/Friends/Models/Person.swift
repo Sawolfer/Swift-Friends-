@@ -7,21 +7,21 @@
 
 import UIKit
 
-struct Person: Identifiable {
+struct Person: Identifiable, Hashable {
     let id = UUID()
     let name: String
-    let photo: UIImage?
+    let photo: String?
 }
 
 #if DEBUG
 extension Person {
-    static let sampleData: [Person] = [
-        Person(name: "Timur", photo: UIImage(named: "image")),
-        Person(name: "Alex", photo: UIImage(named: "image1")),
-        Person(name: "John", photo: UIImage(named: "image2")),
-        Person(name: "Sarah", photo: UIImage(named: "image3")),
-        Person(name: "Michael", photo: UIImage(named: "image4")),
-        Person(name: "Emily", photo: UIImage(named: "image5")),
+    static let sampleData = [
+        Person(name: "Timur", photo: "image"),
+        Person(name: "Alex", photo: "image1"),
+        Person(name: "John", photo: "image2"),
+        Person(name: "Sarah", photo: "image3"),
+        Person(name: "Michael", photo: "image4"),
+        Person(name: "Emily", photo: "image5")
     ]
 }
 #endif

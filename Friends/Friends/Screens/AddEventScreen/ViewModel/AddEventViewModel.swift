@@ -6,13 +6,25 @@
 //
 
 import SwiftUI
+import MapKit
 
-final class AddEventViewModel: ObservableObject {
-    @Published var event: EventModel
-    @Published var selectedTimeOption: String = "Exact time"
-    @Published var selectedCells: Set<ScheduleMatrix.Cell> = []
-    var rows: Int = 0
-    var columns: Int = 0
+final class AddEventViewModel: NSObject, ObservableObject {
+    @Published var event = EventModels.Event.empty
+    @Published var friends: [Person] = Person.sampleData
+    @Published var selectedFriends: Set<UUID> = []
+    @Published var selectedCells: Set<TimeGrid.Cell> = []
+    @Published var addLocation: Bool = false
+    @Published var locationText: String = ""
+    private lazy var completer = MKLocalSearchCompleter()
+    private lazy var searchResults: [(title: String?, subtitle: String?, coordinate: CLLocationCoordinate2D?)] = []
+    private var searchCompletion: (([(title: String?, subtitle: String?, coordinate: CLLocationCoordinate2D?)]) -> Void)?
+    private var userRegionCoordinate: CLLocationCoordinate2D?
+    var selectedFriendsList: [Person] {
+        friends.filter { selectedFriends.contains($0.id) }
+    }
+
+    var rows: Int
+    var columns: Int
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"
@@ -20,8 +32,7 @@ final class AddEventViewModel: ObservableObject {
     }()
     private let generator = UIImpactFeedbackGenerator(style: .medium)
 
-    init(rows: Int, columns: Int, event: EventModel) {
-        self.event = event
+    init(rows: Int, columns: Int) {
         self.rows = rows
         self.columns = columns
     }
@@ -29,7 +40,7 @@ final class AddEventViewModel: ObservableObject {
     func selectAllCells() {
         for row in 0..<rows {
             for column in 0..<columns {
-                let cell = ScheduleMatrix.Cell(row: row, column: column)
+                let cell = TimeGrid.Cell(row: row, column: column)
                 selectedCells.insert(cell)
             }
         }
@@ -45,5 +56,25 @@ final class AddEventViewModel: ObservableObject {
     
     func hapticFeedback() {
         generator.impactOccurred()
+    }
+}
+
+extension AddEventViewModel: MKLocalSearchCompleterDelegate {
+    public func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        searchResults = completer.results.compactMap { result in
+            let street = result.title
+            let subtitle = result.subtitle
+            let searchRequest = MKLocalSearch.Request(completion: result)
+            let coordinate = searchRequest.region.center
+            
+            return (title: street, subtitle: subtitle, coordinate: coordinate)
+        }
+        print(searchResults)
+        searchCompletion?(searchResults)
+    }
+    
+    public func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        searchResults = []
+        searchCompletion?(searchResults)
     }
 }
