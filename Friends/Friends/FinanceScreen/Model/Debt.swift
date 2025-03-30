@@ -24,7 +24,6 @@ struct Debt: Identifiable {
     var personTo: Person
     var personFrom: Person
     var debt: Double
-    var title: String
     let id = UUID()
 }
 enum DebtType {

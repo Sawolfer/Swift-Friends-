@@ -97,7 +97,7 @@ extension PersonCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let person = person else { return }
         
-        PersonContainer.shared.editDebt(Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0, dest: .to ,person: person)
+//        PersonContainer.shared.editDebt(Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0, dest: .to ,person: person)
         delegate?.updateSelectedPersonDebt(person: person)
     }
 }

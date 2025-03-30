@@ -14,13 +14,18 @@ class FinanceView: UIView {
     private lazy var overallDebt: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
-//        switch segmentController.selectedSegmentIndex {
-//                case 0:
-//                overallDebt.textColor = .red
-//            default:
-//                overallDebt.textColor = .green
-//        }
-        label.text = PersonContainer.shared.getDebtsSum(dest: .from).description
+        switch segmentController.selectedSegmentIndex {
+            case 0:
+                label.text = PersonContainer.shared.getDebtsSum(dest: .from).description
+                label.textColor = .red
+            case 1:
+                label.text = PersonContainer.shared.getDebtsSum(dest: .to).description
+                label.textColor = .green
+            default:
+                label.text = "0"
+                label.textColor = .gray
+
+        }
         label.font = .systemFont(ofSize: 24, weight: .bold)
         return label
     }()
@@ -59,6 +64,21 @@ class FinanceView: UIView {
     func toogle() {
         debtTableView.isHidden.toggle()
         budgetTableView.isHidden.toggle()
+        updateOverallDebt()
+    }
+
+    private func updateOverallDebt() {
+        switch segmentController.selectedSegmentIndex {
+        case 0:
+            overallDebt.text = PersonContainer.shared.getDebtsSum(dest: .from).description
+            overallDebt.textColor = .red
+        case 1:
+            overallDebt.text = PersonContainer.shared.getDebtsSum(dest: .to).description
+            overallDebt.textColor = .green
+        default:
+            overallDebt.text = "0"
+            overallDebt.textColor = .gray
+        }
     }
 
     override func layoutSubviews() {

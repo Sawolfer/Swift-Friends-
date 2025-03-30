@@ -33,8 +33,8 @@ class PersonContainer {
 
     private init() {
         self.user = Person(name: "Jhon Swag")
-        debtTo = [Debt(personTo: Person(name: "Оксимирон"), personFrom: self.user, debt: 5, title: "детка")] /*Tempruary realization*/
-        debtFrom = [Debt(personTo: self.user, personFrom: Person(name: "kizaru"), debt: 123456, title: "Интерпол")] /*Tempruary realization*/
+        debtTo = [Debt(personTo: Person(name: "Оксимирон"), personFrom: self.user, debt: 5)] /*Tempruary realization*/
+        debtFrom = [Debt(personTo: self.user, personFrom: Person(name: "kizaru"), debt: 123456)] /*Tempruary realization*/
     }
 
     public func getDebts(dest: DebtType) -> [Debt]{
@@ -53,9 +53,9 @@ class PersonContainer {
         
         switch dest {
             case .from:
-                debtFrom.append(Debt(personTo: person, personFrom: PersonContainer.shared.user, debt: debt, title: ""))
+                debtFrom.append(Debt(personTo: person, personFrom: PersonContainer.shared.user, debt: debt))
             case .to:
-                debtTo.append(Debt(personTo: PersonContainer.shared.user, personFrom: person, debt: debt, title: ""))
+                debtTo.append(Debt(personTo: PersonContainer.shared.user, personFrom: person, debt: debt))
 
         }
     }
@@ -83,16 +83,43 @@ class PersonContainer {
     public func editDebt(_ debt: Double, dest: DebtType, person: Person?) {
         guard let person = person else { return }
 
+        guard debt > 0 else { return }
+
         switch dest {
-            case .from:
-                if let index = debtFrom.firstIndex(where: { $0.personFrom.id == person.id }) {
-                    debtFrom[index].debt = debt
-                }
-            case .to:
-                if let index = debtTo.firstIndex(where: { $0.personTo.id == person.id }) {
-                    debtTo[index].debt = debt
-                }
-        }
+                case .from:
+                    if let index = debtFrom.firstIndex(where: { $0.personFrom.id == person.id }) {
+                        debtFrom[index].debt += debt
+                    } else if let index = debtTo.firstIndex(where: { $0.personTo.id == person.id }) {
+                        if debtTo[index].debt > debt {
+                            debtTo[index].debt -= debt
+                        } else {
+                            let remainingDebt = debt - debtTo[index].debt
+                            debtTo.remove(at: index)
+                            if remainingDebt > 0 {
+                                debtFrom.append(Debt(personTo: person, personFrom: user, debt: remainingDebt))
+                            }
+                        }
+                    } else {
+                        debtFrom.append(Debt(personTo: person, personFrom: user, debt: debt))
+                    }
+
+                case .to:
+                    if let index = debtTo.firstIndex(where: { $0.personTo.id == person.id }) {
+                        debtTo[index].debt += debt
+                    } else if let index = debtFrom.firstIndex(where: { $0.personFrom.id == person.id }) {
+                        if debtFrom[index].debt > debt {
+                            debtFrom[index].debt -= debt
+                        } else {
+                            let remainingDebt = debt - debtFrom[index].debt
+                            debtFrom.remove(at: index)
+                            if remainingDebt > 0 {
+                                debtTo.append(Debt(personTo: user, personFrom: person, debt: remainingDebt))
+                            }
+                        }
+                    } else {
+                        debtTo.append(Debt(personTo: user, personFrom: person, debt: debt))
+                    }
+            }
     }
 
     public func getDebt(of person: Person) -> Double {
