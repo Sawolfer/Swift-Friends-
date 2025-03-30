@@ -17,4 +17,5 @@ protocol EventPresenterProtocol: AnyObject {
     func didDeclineEvent(at index: Int)
     func didRestoreEventFromArchive(at index: Int)
     func didSelectEvent(at index: Int)
+    func addEvent()
 }
