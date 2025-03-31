@@ -3,7 +3,6 @@
 //  Friends
 //
 //  Created by Савва Пономарев on 27.03.2025.
-//
 
 import UIKit
 
