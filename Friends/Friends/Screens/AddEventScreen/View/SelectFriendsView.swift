@@ -30,7 +30,7 @@ struct SelectFriendsView: View {
 
             List(viewModel.friends, selection: $viewModel.selectedFriends) { person in
                 HStack {
-                    Image(person.photo ?? "")
+                    Image(uiImage: person.icon)
                         .resizable()
                         .frame(width: 40.0, height: 40.0)
                         .clipShape(Circle())

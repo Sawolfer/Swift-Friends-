@@ -82,7 +82,7 @@ class PersonCell: UITableViewCell {
         print(person.id, person.name)
         debtTextFieldView.text = resetTextField ? "" : "\(PersonContainer.shared.getDebt(of: person)) ₽"
         debtTextFieldView.placeholder = resetTextField ? "Сумма" : ""
-        let color = Color.getColor(isDebitor: isDebitor)
+        let color = DebtColor.getColor(isDebitor: isDebitor)
         debtTextFieldView.textColor = color
         self.isEditable = isEditable
     }
