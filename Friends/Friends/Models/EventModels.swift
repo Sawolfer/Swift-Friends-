@@ -6,11 +6,11 @@
 //
 
 import UIKit
-import MapKit
 
 enum EventModels {
     struct Event {
         var title: String
+        var description: String
         var address: String
         var date: Date
         var location: Location
@@ -20,7 +20,7 @@ enum EventModels {
 
     struct FriendInfo {
         var id: UUID
-        var status: GoingStatus
+        var status: AttendanceStatus
         var pickedCellsForDate: [Date: [Int]]?
     }
     
@@ -28,4 +28,22 @@ enum EventModels {
         var latitude: Float
         var longitude: Float
     }
+    
+    enum AttendanceStatus {
+        case ttending
+        case declined
+        case noReply
+    }
+}
+
+extension EventModels.Event {
+    static let empty: EventModels.Event = .init(
+        title: "",
+        description: "",
+        address: "",
+        date: Date(),
+        location: .init(latitude: 0, longitude: 0),
+        hostId: UUID(),
+        attendiesId: []
+    )
 }

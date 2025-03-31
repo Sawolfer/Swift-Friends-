@@ -33,10 +33,18 @@ class EventViewController: UIViewController, EventViewProtocol {
         
         static let tableAnimateOffsetMultiplier: CGFloat = 2
         
-        static let segmentedOffset: CGFloat = 20
+        static let segmentedOffsetH: CGFloat = 20
+        static let segmentedOffsetBottom: CGFloat = 55
         
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
+        
+        static let addButtonTitle: String = "Add +"
+        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
+        static let addButtonOffsetBottom: CGFloat = 10
+        static let addButtonWidth: CGFloat = 70
+        static let addButtonHeight: CGFloat = 30
+        static let addButtonCornerRadius: CGFloat = 15
     }
     
     // MARK: - Properties
@@ -46,6 +54,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private var eventsTableTrailingConstraint: Constraint?
     let archiveTable: UITableView = UITableView()
     let segmented: SegmentedControlView = SegmentedControlView()
+    let addButton: UIButton = UIButton(type: .system)
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -87,12 +96,17 @@ class EventViewController: UIViewController, EventViewProtocol {
         })
     }
     
+    func displayAddEventViewController(_ viewController: UIViewController) {
+        self.navigationController?.present(viewController, animated: true)
+    }
+    
     // MARK: - Private functions
     private func configureUI() {
         view.backgroundColor = UIColor.background
         configureEvents()
         configureSegmented()
         configureArchive()
+        configureButton()
     }
     
     private func configureEvents() {
@@ -160,14 +174,31 @@ class EventViewController: UIViewController, EventViewProtocol {
     private func configureSegmented() {
         view.addSubview(segmented)
         segmented.snp.makeConstraints { make in
-            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.segmentedOffset)
-            make.leading.trailing.equalTo(view).inset(Constants.segmentedOffset)
+            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.segmentedOffsetBottom)
+            make.leading.trailing.equalTo(view).inset(Constants.segmentedOffsetH)
         }
 
         segmented.segmentChanged = { [weak self] selectedIndex in
             self?.presenter?.didSelectSegment(at: selectedIndex)
             self?.moveTables(to: selectedIndex)
         }
+    }
+    
+    private func configureButton() {
+        view.addSubview(addButton)
+        addButton.snp.makeConstraints { make in
+            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.addButtonOffsetBottom)
+            make.trailing.equalTo(eventsTable.snp.trailing)
+            make.width.equalTo(Constants.addButtonWidth)
+            make.height.equalTo(Constants.addButtonHeight)
+        }
+        addButton.layer.cornerRadius = Constants.addButtonCornerRadius
+        addButton.setTitle(Constants.addButtonTitle, for: .normal)
+        addButton.setTitleColor(.white, for: .normal)
+        addButton.contentHorizontalAlignment = .center
+        addButton.titleLabel?.font = Constants.addButtonTitleFont
+        addButton.backgroundColor = .systemGreen
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
     
     private func moveTables(to selectedIndex: Int) {
@@ -188,6 +219,10 @@ class EventViewController: UIViewController, EventViewProtocol {
         generator.selectionChanged()
     }
         
+    // MARK: - Actions
+    @objc func addButtonPressed() {
+        presenter?.addEvent()
+    }
 }
 
 // MARK: - UITableViewDelegate

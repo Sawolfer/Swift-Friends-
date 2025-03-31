@@ -8,22 +8,34 @@
 import SwiftUI
 
 struct AddEventView: View {
-    @StateObject private var viewModel = AddEventViewModel(rows: 16, columns: 7, event: EventModel())
+    @StateObject private var viewModel = AddEventViewModel(rows: 16, columns: 7)
+    @State var isShowingSelectFriendsView: Bool = false
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
-        VStack(spacing: 14) {
-            HStack {
-                Button("Cancel") {}
-                Spacer()
-                Text("New Event")
-                    .fontWeight(.medium)
-                Spacer()
-                Button("Add") {}
+        VStack {
+            ZStack(alignment: .trailing) {
+                HStack {
+                    Spacer()
+                    Text("New Event")
+                        .fontWeight(.medium)
+                    Spacer()
+                }
+                
+                HStack {
+                    Button("Cancel") {
+                        dismiss()
+                    }
+                    Spacer()
+                    Button("Create") {
+                        dismiss()
+                    }
+                    .disabled(viewModel.event.title.isEmpty || viewModel.selectedCells.isEmpty)
                     .fontWeight(.bold)
-                    .disabled(true)
+                }
             }
             .padding([.horizontal, .top])
-
+            
             List {
                 Section {
                     TextField("Title", text: $viewModel.event.title)
@@ -32,40 +44,46 @@ struct AddEventView: View {
                 
                 Section {
                     HStack {
-                        
+                        Image(systemName: "location.square.fill")
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .foregroundStyle(Color.blue)
+                        Toggle("Location", isOn: $viewModel.addLocation)
                     }
-                    
-                    HStack {
-                        
+                    if viewModel.addLocation {
+                        TextField("Start typing", text: $viewModel.locationText)
                     }
-                    
-                } header: {
-                    Text("friends")
                 }
 
                 Section {
+                    ForEach(viewModel.selectedFriendsList) { friend in
+                        HStack {
+                            Image(friend.photo ?? "")
+                                .resizable()
+                                .frame(width: 40.0, height: 40.0)
+                                .clipShape(Circle())
+                            Text(friend.name)
+                            Spacer()
+                        }
+                    }
+                    
+                    Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
+                        isShowingSelectFriendsView = true
+                    }
+                } header: {
+                    Text("friends")
+                }
+                
+                Section {
                     VStack(alignment: .trailing) {
                         HStack {
-//                            Button("Select All") {
-//                                viewModel.selectAllCells()
-//                            }
-//
-//                            Spacer()
-
-                            Button("Clear") {
-                                viewModel.clearCells()
-                            }
-                        }
-                        .padding(.vertical, 7)
-
-                        HStack {
-                            ForEach(0..<7) { offset in
-                                let date = Date().addingTimeInterval(TimeInterval(60 * 60 * 24 * offset))
-                                Text("\(viewModel.getFormattedDate(from: date))")
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(Color.gray)
-                                    .frame(maxWidth: .infinity)
-                            }
+                                ForEach(0..<7) { offset in
+                                    let date = Date().addingTimeInterval(TimeInterval(86400 * offset))
+                                    Text("\(viewModel.getFormattedDate(from: date))")
+                                        .font(.system(size: 16))
+                                        .foregroundStyle(Color.gray)
+                                        .frame(maxWidth: .infinity)
+                                }
                         }
                         .padding(.leading, 20)
 
@@ -80,42 +98,40 @@ struct AddEventView: View {
                                 }
                             }
 
-                            ScheduleMatrix(selectedCells: $viewModel.selectedCells, rows: 16, columns: 7)
+                            TimeGrid(selectedCells: $viewModel.selectedCells, rows: 16, columns: 7)
                         }
-                        .padding(.bottom)
                     }
+                    .padding(.vertical)
                     .listRowBackground(Color.white)
+                } header: {
+                    HStack {
+                        Text("Time")
+                        Spacer()
+                        Button(action: {
+                            viewModel.selectAllCells()
+                        }) {
+                            Text("Select All")
+                                .textCase(.none)
+                                .font(.system(size: 16))
+                                .fontWeight(.medium)
+                        }
+                        .padding(.trailing, 10)
+                        Button(action: {
+                            viewModel.clearCells()
+                        }) {
+                            Text("Clear")
+                                .textCase(.none)
+                                .font(.system(size: 16))
+                        }
+                    }
                 }
             }
             .scrollContentBackground(.hidden)
             .listStyle(.insetGrouped)
-
-            Spacer()
+            .sheet(isPresented: $isShowingSelectFriendsView) {
+                SelectFriendsView(viewModel: viewModel)
+            }
         }
         .background(Color.background)
     }
-}
-
-// Preview
-struct ContentView: View {
-    @State private var showModal = true
-
-    var body: some View {
-        VStack {
-            Text("Main View")
-                .font(.largeTitle)
-                .padding()
-
-            Button("Show Modal") {
-                showModal.toggle()
-            }
-            .sheet(isPresented: $showModal) {
-                AddEventView()
-            }
-        }
-    }
-}
-
-#Preview {
-    ContentView()
 }

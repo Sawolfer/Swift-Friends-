@@ -4,6 +4,7 @@
 //
 //  Created by Алексей on 29.03.2025.
 //
+import UIKit
 
 protocol EventViewProtocol: AnyObject {
     // MARK: Functions
@@ -12,4 +13,5 @@ protocol EventViewProtocol: AnyObject {
     func updateEvent(at index: Int, event: EventModel)
     func moveEventToArchive(event: EventModel, from index: Int)
     func moveEventFromArchive(event: EventModel, from index: Int)
+    func displayAddEventViewController(_ viewController: UIViewController)
 }

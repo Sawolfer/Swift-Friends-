@@ -66,6 +66,11 @@ final class EventPresenter: EventPresenterProtocol {
         // TODO: Логика обработки выбора события
     }
     
+    func addEvent() {
+        let addEventVC = AddEventViewController()
+        view?.displayAddEventViewController(addEventVC)
+    }
+    
     // MARK: - Private functions
     private func loadInitialData() {
         // TODO: Здесь должна быть логика загрузки данных
