@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class ExpenseIndividualView: UIView {
-    
+//        TODO: вынести в константу
     private(set) lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.layer.cornerRadius = 10
@@ -41,7 +41,8 @@ final class ExpenseIndividualView: UIView {
         super.init(frame: frame)
         setupView()
     }
-    
+
+    @available(*, unavailable)
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

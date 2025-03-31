@@ -13,20 +13,24 @@ protocol AddExpenseModalViewControllerDelegate: AnyObject {
 
 final class AddExpenseModalViewController: UIViewController {
 
+    // MARK: - Properties
+
     var isSearchActive: Bool = false
     var isAllPeopleShown: Bool = true
 
     let people: [Person] = PersonContainer.shared.getPeople()
-
     var filteredPeople: [Person] = []
     var selectedPeople: Set<Person> = []
 
     private var expenseView: AddExpenseModalView {
         guard let view = view as? AddExpenseModalView else {
-            fatalError()
+            assertionFailure("Failed to dequeue PersonCell") // Логируем ошибку для отладки
+            return AddExpenseModalView()
         }
         return view
     }
+
+    // MARK: - Lifecycle
 
     override func loadView() {
         self.view = AddExpenseModalView()
@@ -34,41 +38,44 @@ final class AddExpenseModalViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        expenseView.backgroundColor = .systemGray6
+        setupUI()
+        setupActions()
+    }
 
+    // MARK: - Setup Methods
+
+    private func setupUI() {
+        expenseView.backgroundColor = .systemGray6
         expenseView.individualView.searchBar.delegate = self
         expenseView.individualView.tableView.dataSource = self
         expenseView.individualView.tableView.delegate = self
+    }
 
+    private func setupActions() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tapGesture.cancelsTouchesInView = false
         expenseView.addGestureRecognizer(tapGesture)
 
         expenseView.typeExpenseControl.addTarget(self, action: #selector(changeTypeExpense), for: .valueChanged)
-
         expenseView.individualView.addButton.addTarget(self, action: #selector(showAllPeople), for: .touchUpInside)
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        print(1)
-//    }
+    // MARK: - Actions
 
-    @objc func showAllPeople() {
+    @objc private func showAllPeople() {
         isAllPeopleShown = true
         expenseView.individualView.addButton.isHidden = isAllPeopleShown
         expenseView.individualView.tableView.reloadData()
     }
 
-    @objc func changeTypeExpense() {
+    @objc private func changeTypeExpense() {
         expenseView.toggleViews()
     }
 
-    @objc func hideKeyboard() {
+    @objc private func hideKeyboard() {
         expenseView.endEditing(true)
     }
 }
-
 extension AddExpenseModalViewController: UISearchBarDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         isSearchActive = true
@@ -119,7 +126,8 @@ extension AddExpenseModalViewController: UITableViewDataSource {
             withIdentifier: PersonCell.personCellIdentifier,
             for: indexPath
         ) as? PersonCell else {
-            fatalError("Failed to dequeue EmployeeCell")
+            assertionFailure("Failed to dequeue PersonCell")
+            return UITableViewCell()
         }
 
         var person: Person!
@@ -147,6 +155,8 @@ extension AddExpenseModalViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        TODO: вынести в константу
+
         return 80
     }
 }
@@ -168,8 +178,8 @@ extension AddExpenseModalViewController: UITableViewDelegate {
         if editingStyle == .delete {
             selectedPeople.remove(at: selectedPeople.index(selectedPeople.startIndex, offsetBy: indexPath.row))
             tableView.deleteRows(at: [indexPath], with: .fade)
-
-            if selectedPeople.isEmpty { // как лучше сделать переход? анимация или задержка на главном потоке?
+//          TODO: как лучше сделать переход? анимация или задержка на главном потоке?
+            if selectedPeople.isEmpty {
                 isAllPeopleShown = true
                 expenseView.individualView.addButton.isHidden = isAllPeopleShown
                 tableView.reloadData()

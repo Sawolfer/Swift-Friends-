@@ -26,6 +26,7 @@ class DebtsView: UIView {
         configure()
     }
 
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -58,11 +59,11 @@ extension DebtsView: UITableViewDataSource {
 
 extension DebtsView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
         print("Selected: \(debts[indexPath.row].personFrom.name)")
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        TODO: вынести в константу 
         return 80
     }
 }

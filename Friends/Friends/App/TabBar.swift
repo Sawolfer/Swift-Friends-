@@ -20,6 +20,7 @@ class TabBarController: UITabBarController {
         let firstViewController = UINavigationController(rootViewController: FinanceViewController())
         firstViewController.tabBarItem = UITabBarItem(title: "Деньги", image: UIImage(systemName: "creditcard"),selectedImage: UIImage(systemName: "creditcard.fill"))
 
+//        TODO: указать экран встреч и выбора времени 
 //        let secondViewController: UINavigationController(rootViewController: MeeetingViewController())
 //        secondViewController.tabBarItem = UITabBarItem(title: "Встречи", image: UIImage(systemName: "person.3"), selectedImage: UIImage(systemName: "person.3.fill"))
 //

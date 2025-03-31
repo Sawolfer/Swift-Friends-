@@ -37,6 +37,7 @@ class PersonContainer {
     private var debtFrom: [Debt]
     private var debtTo: [Debt]
 
+//    TODO: убрать временную реализацию 
     private init() {
         self.user = Person(name: "Jhon Swag")
         debtTo = [Debt(personTo: Person(name: "Оксимирон"), personFrom: self.user, debt: 5)] /*Tempruary realization*/
