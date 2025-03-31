@@ -97,7 +97,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     }
     
     func displayAddEventViewController(_ viewController: UIViewController) {
-        self.navigationController?.pushViewController(viewController, animated: true)
+        self.navigationController?.present(viewController, animated: true)
     }
     
     // MARK: - Private functions
