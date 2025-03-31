@@ -56,13 +56,13 @@ struct AddEventView: View {
                 }
 
                 Section {
-                    ForEach(viewModel.selectedFriendsList) { friend in
+                    ForEach(viewModel.selectedFriendsList) { person in
                         HStack {
-                            Image(friend.photo ?? "")
+                            Image(uiImage: person.icon)
                                 .resizable()
                                 .frame(width: 40.0, height: 40.0)
                                 .clipShape(Circle())
-                            Text(friend.name)
+                            Text(person.name)
                             Spacer()
                         }
                     }

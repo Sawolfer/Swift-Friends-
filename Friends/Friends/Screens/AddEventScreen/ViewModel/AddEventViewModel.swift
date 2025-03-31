@@ -10,7 +10,7 @@ import MapKit
 
 final class AddEventViewModel: NSObject, ObservableObject {
     @Published var event = EventModels.Event.empty
-    @Published var friends: [Person] = Person.sampleData
+    @Published var friends: [Person] = []
     @Published var selectedFriends: Set<UUID> = []
     @Published var selectedCells: Set<TimeGrid.Cell> = []
     @Published var addLocation: Bool = false

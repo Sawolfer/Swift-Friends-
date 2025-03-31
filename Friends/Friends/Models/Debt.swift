@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum Color {
+enum DebtColor {
     case red
     case green
 
