@@ -53,7 +53,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     func getFormattedDate(from date: Date) -> String {
         dateFormatter.string(from: date)
     }
-    
+
     func hapticFeedback() {
         generator.impactOccurred()
     }
@@ -66,13 +66,13 @@ extension AddEventViewModel: MKLocalSearchCompleterDelegate {
             let subtitle = result.subtitle
             let searchRequest = MKLocalSearch.Request(completion: result)
             let coordinate = searchRequest.region.center
-            
+
             return (title: street, subtitle: subtitle, coordinate: coordinate)
         }
         print(searchResults)
         searchCompletion?(searchResults)
     }
-    
+
     public func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
         searchResults = []
         searchCompletion?(searchResults)

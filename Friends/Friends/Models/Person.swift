@@ -43,25 +43,25 @@ class PersonContainer {
         debtFrom = [Debt(personTo: self.user, personFrom: Person(name: "kizaru"), debt: 123456)] /*Tempruary realization*/
     }
 
-    public func getDebts(dest: DebtType) -> [Debt]{
+    public func getDebts(dest: DebtType) -> [Debt] {
         switch dest {
-            case .from :
-                return debtFrom
-            case .to :
-                return debtTo
-            default:
-                return []
+        case .from :
+            return debtFrom
+        case .to :
+            return debtTo
+        default:
+            return []
         }
     }
 
     public func addDebt(_ debt: Double, dest: DebtType, person: Person?) {
         guard let person = person else { return }
-        
+
         switch dest {
-            case .from:
-                debtFrom.append(Debt(personTo: person, personFrom: PersonContainer.shared.user, debt: debt))
-            case .to:
-                debtTo.append(Debt(personTo: PersonContainer.shared.user, personFrom: person, debt: debt))
+        case .from:
+            debtFrom.append(Debt(personTo: person, personFrom: PersonContainer.shared.user, debt: debt))
+        case .to:
+            debtTo.append(Debt(personTo: PersonContainer.shared.user, personFrom: person, debt: debt))
 
         }
     }

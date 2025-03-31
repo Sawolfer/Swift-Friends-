@@ -12,7 +12,7 @@ final class EventAssembly {
         let dataManager = DataManager()
         let presenter = EventPresenter(view: view, dataManager: dataManager)
         view.presenter = presenter
-        
+
         return view
     }
 }

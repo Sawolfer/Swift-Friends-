@@ -11,43 +11,45 @@ import MapKit
 
 final class EventCell: UITableViewCell {
     // MARK: - Constants
+
     private enum Constants {
         static let wrapOffsetV: CGFloat = 5
         static let wrapRadius: CGFloat = 20
-        
+
         static let imageViewWidth: CGFloat = 140
         static let imageViewOffset: CGFloat = 10
         static let imageRadius: CGFloat = 9
-        
+
         static let titleOffsetH: CGFloat = 25
         static let titleHeight: CGFloat = 35
         static let titleFont: UIFont = .systemFont(ofSize: 24)
-        
+
         static let infoLabelHeight: CGFloat = 16
         static let infoLabelFont: UIFont = .systemFont(ofSize: 12)
         static let infoRadius: CGFloat = 5
         static let infoOffsetTop: CGFloat = 5
-        
+
         static let friendsImagesSize: CGFloat = 25
         static let friendsImagesRadius: CGFloat = 12.5
-        
+
         static let counterFont: UIFont = .systemFont(ofSize: 10)
-        
+
         static let overlapOffset: CGFloat = 12
-        
+
         static let awaitingStatusImage: UIImage? = UIImage(systemName: "questionmark.circle.fill")
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
         static let statusImageSize: CGFloat = 12
         static let statusImageOffsetBottom: CGFloat = 12
         static let statusImageOffsetRight: CGFloat = 15
-        
+
         static let statusLabelOffsetLeft: CGFloat = 2
     }
-    
+
     // MARK: - Properties
+
     static let reuseIdentifier: String = "EventCell"
-        
+
     private let wrapView: UIView = UIView()
     private let titleLabel: UILabel = UILabel()
     private let addressLabel: UILabel = UILabel()
@@ -61,19 +63,21 @@ final class EventCell: UITableViewCell {
     ]
     private let statusLabel: UILabel = UILabel()
     private let statusImageView: UIImageView = UIImageView()
-    
+
     // MARK: - Initialization
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Private functions
+
     private func configureUI() {
         backgroundColor = .clear
         selectionStyle = .none
@@ -86,8 +90,9 @@ final class EventCell: UITableViewCell {
         configureStatus()
         configureRegionView()
     }
-    
+
     // MARK: - Cell Configuration
+
     func configure(with event: EventModel) {
         titleLabel.text = event.title
         addressLabel.text = event.address
@@ -118,19 +123,20 @@ final class EventCell: UITableViewCell {
         }
         configureRegion(with: event)
     }
-    
+
     // MARK: - Private functions
+
     private func configureWrap() {
         contentView.addSubview(wrapView)
         wrapView.backgroundColor = .white
         wrapView.layer.cornerRadius = Constants.wrapRadius
-        
+
         wrapView.snp.makeConstraints { make in
             make.top.bottom.equalTo(contentView).inset(Constants.wrapOffsetV)
             make.leading.trailing.equalTo(contentView)
         }
     }
-    
+
     private func configureImage() {
         wrapView.addSubview(image)
         image.snp.makeConstraints { make in
@@ -147,16 +153,16 @@ final class EventCell: UITableViewCell {
         mapView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         image.addSubview(mapView)
     }
-    
+
     private func configureRegion(with event: EventModel) {
         mapView.setRegion(event.region, animated: true)
-        
+
         let annotation = MKPointAnnotation()
         annotation.coordinate = event.location
         annotation.title = event.address
         mapView.addAnnotation(annotation)
     }
-    
+
     private func configureTitleLabel() {
         wrapView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -170,7 +176,7 @@ final class EventCell: UITableViewCell {
         titleLabel.textAlignment = .left
         titleLabel.font = Constants.titleFont
     }
-    
+
     private func configureAddressLabel() {
         wrapView.addSubview(addressLabel)
         addressLabel.snp.makeConstraints { make in
@@ -184,7 +190,7 @@ final class EventCell: UITableViewCell {
         addressLabel.textAlignment = .left
         addressLabel.font = Constants.infoLabelFont
     }
-    
+
     private func configureDateLabel() {
         wrapView.addSubview(dateLabel)
         dateLabel.snp.makeConstraints { make in
@@ -198,7 +204,7 @@ final class EventCell: UITableViewCell {
         dateLabel.textAlignment = .left
         dateLabel.font = Constants.infoLabelFont
     }
-    
+
     private func configureFriendsImages() {
         let firstFriendImageView = friendsImageViews[0]
         wrapView.addSubview(firstFriendImageView)
@@ -224,7 +230,7 @@ final class EventCell: UITableViewCell {
             friendsImageViews[ind].backgroundColor = .clear
         }
     }
-    
+
     private func configureExtraFriends(with event: EventModel) {
         let extraFriendView = UIView()
         wrapView.addSubview(extraFriendView)
@@ -249,28 +255,28 @@ final class EventCell: UITableViewCell {
             make.center.equalTo(extraFriendView)
         }
     }
-    
+
     private func configureStatus() {
         wrapView.addSubview(statusImageView)
-            
+
         statusImageView.snp.makeConstraints { make in
             make.trailing.equalTo(wrapView.snp.trailing).inset(Constants.statusImageOffsetRight)
             make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.statusImageOffsetBottom)
             make.size.equalTo(Constants.statusImageSize)
         }
-        
+
         wrapView.addSubview(statusLabel)
-        
+
         statusLabel.textAlignment = .right
         statusLabel.font = Constants.infoLabelFont
         statusLabel.numberOfLines = 1
-            
+
         statusLabel.snp.makeConstraints { make in
             make.trailing.equalTo(statusImageView.snp.leading).inset(-Constants.statusLabelOffsetLeft)
             make.bottom.equalTo(wrapView.snp.bottom).inset(Constants.imageViewOffset)
             make.height.equalTo(Constants.infoLabelHeight)
         }
-       
+
         let leadingConstraint = statusLabel
             .leadingAnchor
             .constraint(greaterThanOrEqualTo: image.trailingAnchor,

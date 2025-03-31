@@ -21,7 +21,7 @@ struct AddEventView: View {
                         .fontWeight(.medium)
                     Spacer()
                 }
-                
+
                 HStack {
                     Button("Cancel") {
                         dismiss()
@@ -35,13 +35,13 @@ struct AddEventView: View {
                 }
             }
             .padding([.horizontal, .top])
-            
+
             List {
                 Section {
                     TextField("Title", text: $viewModel.event.title)
                     TextField("Description", text: $viewModel.event.description)
                 }
-                
+
                 Section {
                     HStack {
                         Image(systemName: "location.square.fill")
@@ -66,14 +66,14 @@ struct AddEventView: View {
                             Spacer()
                         }
                     }
-                    
+
                     Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
                         isShowingSelectFriendsView = true
                     }
                 } header: {
                     Text("friends")
                 }
-                
+
                 Section {
                     VStack(alignment: .trailing) {
                         HStack {

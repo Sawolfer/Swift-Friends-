@@ -9,7 +9,6 @@ import UIKit
 import MapKit
 
 struct EventModel {
-    // MARK: - Variables
     var title: String
     var address: String
     var date: String

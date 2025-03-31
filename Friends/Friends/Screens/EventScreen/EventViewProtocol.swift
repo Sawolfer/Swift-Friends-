@@ -7,7 +7,6 @@
 import UIKit
 
 protocol EventViewProtocol: AnyObject {
-    // MARK: Functions
     func showEvents(events: [EventModel])
     func showArchiveEvents(events: [EventModel])
     func updateEvent(at index: Int, event: EventModel)

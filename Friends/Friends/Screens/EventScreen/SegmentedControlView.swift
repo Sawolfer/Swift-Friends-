@@ -9,11 +9,13 @@ import UIKit
 
 final class SegmentedControlView: UIView {
     // MARK: - Constants
+
     private enum Constants {
         static let segmentedControlHeight: CGFloat = 32
     }
-    
+
     // MARK: - Properties
+
     private let segmentedControl: UISegmentedControl = {
         let control = UISegmentedControl(items: ["Активные", "Архив"])
         control.selectedSegmentIndex = 0
@@ -26,6 +28,7 @@ final class SegmentedControlView: UIView {
     var segmentChanged: ((Int) -> Void)?
 
     // MARK: - Iniitialization
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -37,18 +40,19 @@ final class SegmentedControlView: UIView {
     }
 
     // MARK: - Private functions
+
     private func setupUI() {
         addSubview(segmentedControl)
-        
+
         segmentedControl.snp.makeConstraints { make in
             make.leading.trailing.equalTo(self)
             make.top.bottom.equalTo(self)
             make.height.equalTo(Constants.segmentedControlHeight)
         }
-        
+
         segmentedControl.addTarget(self, action: #selector(segmentValueChanged), for: .valueChanged)
     }
-    
+
     // MARK: - Actions
     @objc
     private func segmentValueChanged() {
