@@ -4,6 +4,7 @@ excluded:
   - UITests
   - DerivedData
 
+
 analyzer_rules:
   - unused_import
   - unused_declaration
