@@ -94,14 +94,14 @@ extension AddExpenseModalViewController: UISearchBarDelegate {
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+
         filteredPeople = people.filter({ (person) -> Bool in
             let tmp = NSString(string: person.name)
             let range = tmp.range(of: searchText, options: .caseInsensitive)
             return range.location != NSNotFound
         })
 
-        if filteredPeople.count == 0 {
+        if filteredPeople.isEmpty {
             isSearchActive = false
         } else {
             isSearchActive = true
@@ -133,7 +133,7 @@ extension AddExpenseModalViewController: UITableViewDataSource {
         var person: Person!
         if isSearchActive && !filteredPeople.isEmpty {
             person = filteredPeople[indexPath.row]
-            
+
             cell.configure(with: person, isDebitor: PersonContainer.shared.isDebitor(person))
         } else if isAllPeopleShown {
             person = people[indexPath.row]

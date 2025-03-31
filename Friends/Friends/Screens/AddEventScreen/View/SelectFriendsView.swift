@@ -10,7 +10,7 @@ import SwiftUI
 struct SelectFriendsView: View {
     @ObservedObject var viewModel: AddEventViewModel
     @Environment(\.dismiss) var dismiss
-    
+
     var body: some View {
         VStack {
             ZStack(alignment: .trailing) {
@@ -20,7 +20,7 @@ struct SelectFriendsView: View {
                         .fontWeight(.medium)
                     Spacer()
                 }
-                
+
                 Button("Done") {
                     dismiss()
                 }

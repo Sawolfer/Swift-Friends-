@@ -13,32 +13,33 @@ typealias TableCellAnimation = (UITableViewCell, IndexPath, UITableView) -> Void
 
 class EventViewController: UIViewController, EventViewProtocol {
     // MARK: - Constants
+
     private enum Constants {
         static let backgroundLightHex: String = "F5F5F5"
-                
+
         static let tableViewTopOffset: CGFloat = 175
         static let tableOffsetH: CGFloat = 20
         static let heightForRow: CGFloat = 170
         static let heightForRowAnimated: CGFloat = 100
-        
+
         static let parametersOffsetBottom: CGFloat = 10
         static let parametersOffsetLeft: CGFloat = 20
-        
+
         static let navigationBarHeight: CGFloat = 120
-        
+
         static let usingSpringWithDampingValue: CGFloat = 0.55
         static let initialSpringVelocityValue: CGFloat = 0.35
         static let cellsAnimationDuration: CGFloat = 0.85
         static let delayFactor: CGFloat = 0.05
-        
+
         static let tableAnimateOffsetMultiplier: CGFloat = 2
-        
+
         static let segmentedOffsetH: CGFloat = 20
         static let segmentedOffsetBottom: CGFloat = 55
-        
+
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
-        
+
         static let addButtonTitle: String = "Add +"
         static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
         static let addButtonOffsetBottom: CGFloat = 10
@@ -46,8 +47,9 @@ class EventViewController: UIViewController, EventViewProtocol {
         static let addButtonHeight: CGFloat = 30
         static let addButtonCornerRadius: CGFloat = 15
     }
-    
+
     // MARK: - Properties
+
     var presenter: EventPresenterProtocol?
     let eventsTable: UITableView = UITableView()
     private var eventsTableLeadingConstraint: Constraint?
@@ -57,25 +59,27 @@ class EventViewController: UIViewController, EventViewProtocol {
     let addButton: UIButton = UIButton(type: .system)
 
     // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
         presenter?.viewLoaded()
     }
-    
+
     // MARK: - Functions
+
     func showEvents(events: [EventModel]) {
         eventsTable.reloadData()
     }
-    
+
     func showArchiveEvents(events: [EventModel]) {
         archiveTable.reloadData()
     }
-    
+
     func updateEvent(at index: Int, event: EventModel) {
         eventsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
-    
+
     func moveEventToArchive(event: EventModel, from index: Int) {
         eventsTable.performBatchUpdates({
             eventsTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
@@ -85,7 +89,7 @@ class EventViewController: UIViewController, EventViewProtocol {
             )], with: .right)
         })
     }
-    
+
     func moveEventFromArchive(event: EventModel, from index: Int) {
         archiveTable.performBatchUpdates({
             archiveTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
@@ -95,12 +99,13 @@ class EventViewController: UIViewController, EventViewProtocol {
             )], with: .right)
         })
     }
-    
+
     func displayAddEventViewController(_ viewController: UIViewController) {
         self.navigationController?.present(viewController, animated: true)
     }
-    
+
     // MARK: - Private functions
+
     private func configureUI() {
         view.backgroundColor = UIColor.background
         configureEvents()
@@ -108,19 +113,19 @@ class EventViewController: UIViewController, EventViewProtocol {
         configureArchive()
         configureButton()
     }
-    
+
     private func configureEvents() {
         eventsTable.register(EventCell.self, forCellReuseIdentifier: EventCell.reuseIdentifier)
         eventsTable.delegate = self
         eventsTable.dataSource = self
-        
+
         eventsTable.backgroundColor = .clear
         eventsTable.separatorStyle = .none
         eventsTable.allowsSelection = true
         eventsTable.showsVerticalScrollIndicator = false
-        
+
         view.addSubview(eventsTable)
-        
+
         eventsTable.snp.makeConstraints { make in
                 self.eventsTableLeadingConstraint = make.leading.equalToSuperview()
                     .inset(Constants.tableOffsetH).constraint
@@ -130,7 +135,7 @@ class EventViewController: UIViewController, EventViewProtocol {
                 make.bottom.equalToSuperview()
             }
     }
-    
+
     private func moveUpBounceAnimation(rowHeight: CGFloat,
                                        duration: TimeInterval, delayFactor: Double) -> TableCellAnimation {
         return { cell, indexPath, _ in
@@ -147,19 +152,19 @@ class EventViewController: UIViewController, EventViewProtocol {
             )
         }
     }
-    
+
     private func configureArchive() {
         archiveTable.register(EventCell.self, forCellReuseIdentifier: EventCell.reuseIdentifier)
         archiveTable.delegate = self
         archiveTable.dataSource = self
-        
+
         archiveTable.backgroundColor = .clear
         archiveTable.separatorStyle = .none
         archiveTable.allowsSelection = true
         archiveTable.showsVerticalScrollIndicator = false
-        
+
         view.addSubview(archiveTable)
-        
+
         archiveTable.snp.makeConstraints { make in
             make.leading
                 .equalTo(eventsTable.snp.trailing)
@@ -170,7 +175,7 @@ class EventViewController: UIViewController, EventViewProtocol {
             make.top.equalTo(view).offset(Constants.tableViewTopOffset)
         }
     }
-    
+
     private func configureSegmented() {
         view.addSubview(segmented)
         segmented.snp.makeConstraints { make in
@@ -183,7 +188,7 @@ class EventViewController: UIViewController, EventViewProtocol {
             self?.moveTables(to: selectedIndex)
         }
     }
-    
+
     private func configureButton() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
@@ -200,11 +205,11 @@ class EventViewController: UIViewController, EventViewProtocol {
         addButton.backgroundColor = .systemGreen
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
-    
+
     private func moveTables(to selectedIndex: Int) {
         let leftOffset = selectedIndex == 0 ? Constants.tableOffsetH : -view.frame.width - Constants.tableOffsetH
         let rightOffset = selectedIndex == 0 ? -Constants.tableOffsetH : -view.frame.width - Constants.tableOffsetH
-            
+
         eventsTableLeadingConstraint?.update(offset: leftOffset)
         eventsTableTrailingConstraint?.update(offset: rightOffset)
 
@@ -212,22 +217,23 @@ class EventViewController: UIViewController, EventViewProtocol {
             self.view.layoutIfNeeded()
         })
     }
-    
+
     private func triggerSelectionFeedback() {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
         generator.selectionChanged()
     }
-        
+
     // MARK: - Actions
+
     @objc func addButtonPressed() {
         presenter?.addEvent()
     }
 }
 
 // MARK: - UITableViewDelegate
+
 extension EventViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.heightForRow
     }
@@ -236,7 +242,7 @@ extension EventViewController: UITableViewDelegate {
         triggerSelectionFeedback()
         presenter?.didSelectEvent(at: indexPath.row)
     }
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let animation = moveUpBounceAnimation(
             rowHeight: Constants.heightForRowAnimated,
@@ -249,6 +255,7 @@ extension EventViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
+
 extension EventViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch tableView {
@@ -260,10 +267,10 @@ extension EventViewController: UITableViewDataSource {
             return .zero
         }
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EventCell.reuseIdentifier, for: indexPath)
-            
+
         guard let eventCell = cell as? EventCell else { return cell }
         switch tableView {
         case eventsTable:
@@ -276,7 +283,7 @@ extension EventViewController: UITableViewDataSource {
             return UITableViewCell()
         }
     }
-    
+
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         switch tableView {
@@ -287,21 +294,21 @@ extension EventViewController: UITableViewDataSource {
                 self?.presenter?.didDeclineEvent(at: indexPath.row)
                 completionHandler(true)
             }
-            
+
             let acceptAction = UIContextualAction(
                 style: .normal, title: nil
             ) { [weak self] _, _, completionHandler in
                 self?.presenter?.didAcceptEvent(at: indexPath.row)
                 completionHandler(true)
             }
-            
+
             declineAction.backgroundColor = view.backgroundColor
             acceptAction.backgroundColor = view.backgroundColor
             declineAction.image = UIImage(named: "decline")
             acceptAction.image = UIImage(named: "accept")
 
             return UISwipeActionsConfiguration(actions: [declineAction, acceptAction])
-            
+
         case archiveTable:
             let acceptAction = UIContextualAction(
                 style: .destructive, title: nil
@@ -309,12 +316,12 @@ extension EventViewController: UITableViewDataSource {
                 self?.presenter?.didRestoreEventFromArchive(at: indexPath.row)
                 completionHandler(true)
             }
-            
+
             acceptAction.backgroundColor = view.backgroundColor
             acceptAction.image = UIImage(named: "accept")
-            
+
             return UISwipeActionsConfiguration(actions: [acceptAction])
-            
+
         default:
             return nil
         }

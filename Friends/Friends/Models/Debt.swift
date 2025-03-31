@@ -11,12 +11,12 @@ enum DebtColor {
     case red
     case green
 
-    static func getColor(isDebitor: Bool) -> UIColor{
+    static func getColor(isDebitor: Bool) -> UIColor {
         switch isDebitor {
-            case true:
-                return .green
-            case false:
-                return .red
+        case true:
+            return .green
+        case false:
+            return .red
         }
     }
 }

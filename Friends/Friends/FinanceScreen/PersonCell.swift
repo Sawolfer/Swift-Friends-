@@ -24,7 +24,6 @@ class PersonCell: UITableViewCell {
         return imageView
     }()
 
-
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .medium)
@@ -100,7 +99,7 @@ extension PersonCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         guard let person = person else { return }
-        
+
 //        PersonContainer.shared.editDebt(Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0, dest: .to ,person: person)
         delegate?.updateSelectedPersonDebt(person: person)
     }

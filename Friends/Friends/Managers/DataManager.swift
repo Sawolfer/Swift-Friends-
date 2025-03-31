@@ -8,6 +8,7 @@ import MapKit
 
 final class DataManager: DataManagerProtocol {
     // MARK: - Properties
+
     private var events: [EventModel] = [
         EventModel(
             title: "Coffee",
@@ -50,30 +51,31 @@ final class DataManager: DataManagerProtocol {
         )
     ]
     private var archive: [EventModel] = []
-    
+
     // MARK: - Functions
+
     func loadEvents() -> [EventModel] {
         return events
     }
-    
+
     func addEvent(_ event: EventModel) {
         events.append(event)
     }
     func updateEventStatus(status: GoingStatus, at index: Int) {
         events[index].status = status
     }
-    
+
     func loadArchive() -> [EventModel] {
         return archive
     }
-    
+
     func moveToArchive(eventIndex: Int) {
         guard eventIndex >= 0 && eventIndex < events.count else { return }
         var event = events.remove(at: eventIndex)
         event.status = .declined
         archive.append(event)
     }
-    
+
     func restoreFromArchive(eventIndex: Int) {
         guard eventIndex >= 0 && eventIndex < archive.count else { return }
         var event = archive.remove(at: eventIndex)

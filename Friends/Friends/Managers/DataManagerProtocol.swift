@@ -6,7 +6,6 @@
 //
 
 protocol DataManagerProtocol {
-    // MARK: - Functions
     func loadEvents() -> [EventModel]
     func addEvent(_ event: EventModel)
     func updateEventStatus(status: GoingStatus, at index: Int)
