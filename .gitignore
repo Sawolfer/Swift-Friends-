@@ -73,6 +73,7 @@ fastlane/test_output
 *.xcuserstate
 project.xcworkspace/
 xcuserdata/
+project.pbxproj
 
 # Generated files
 *.o
