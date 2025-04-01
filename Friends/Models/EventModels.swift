@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import MapKit
 
 enum EventModels {
     struct Event {
@@ -24,12 +23,12 @@ enum EventModels {
         var status: AttendanceStatus
         var pickedCellsForDate: [Date: [Int]]?
     }
-    
+
     struct Location {
         var latitude: Float
         var longitude: Float
     }
-    
+
     enum AttendanceStatus {
         case ttending
         case declined
