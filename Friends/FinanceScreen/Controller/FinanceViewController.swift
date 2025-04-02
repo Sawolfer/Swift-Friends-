@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 class FinanceViewController: UIViewController {
-
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
