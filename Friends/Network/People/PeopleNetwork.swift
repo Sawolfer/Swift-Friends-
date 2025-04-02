@@ -13,9 +13,9 @@ class PeopleNetwork: PeopleNetworkProtocol {
     private let firestore = Firestore.firestore()
     private let storage = Storage.storage()
     private let usersCollection = "users"
+//TODO: make authorization and login systems 
 
 // MARK: - User Account Logic
-    
     func createAccount(_ person: Person, completion: @escaping (Bool) -> Void) {
         let userRef = firestore.collection(usersCollection).document(
             person.id.uuidString)
@@ -52,6 +52,8 @@ class PeopleNetwork: PeopleNetworkProtocol {
             print("User successfully deleted")
         }
     }
+//   MARK: - Upload new icon
+//    TODO: remove previous icon before adding new one
     func uploadIcon(for person: Person, image: UIImage) {
         guard let imageData = person.icon.pngData() else {
             print("No image data available")
@@ -76,6 +78,7 @@ class PeopleNetwork: PeopleNetworkProtocol {
 
     }
 //  MARK: - Friends Management
+//    TODO: add friends from both sides
     func addFriend(
         _ person: Person, to friendId: UUID,
         completion: @escaping (Bool) -> Void
@@ -137,6 +140,7 @@ class PeopleNetwork: PeopleNetworkProtocol {
                 }
             }
     }
+//    TODO: remove friends from both sides
     func removeFriend(
         person: Person, with friendId: UUID,
         completion: @escaping (Bool) -> Void
