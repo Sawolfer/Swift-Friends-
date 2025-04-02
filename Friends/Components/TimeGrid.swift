@@ -11,9 +11,12 @@ struct TimeGrid: View {
         case deselect
     }
 
+    var cells = [Cell: Double]()
     @Binding var selectedCells: Set<Cell>
     let rows: Int
     let columns: Int
+    var onCellTapAction: (Cell) -> Void = {_ in }
+    var isEditable = true
     @State private var tempSelectedCells: Set<Cell> = []
     @State private var tempDeselectedCells: Set<Cell> = []
     @State private var startCell: Cell?
@@ -33,9 +36,14 @@ struct TimeGrid: View {
                     HStack(spacing: 1) {
                         ForEach(0..<columns, id: \.self) { column in
                             Rectangle()
-                                .fill(isHighlighted(Cell(row: row, column: column)) ? Color.green : Color.gray.opacity(0.15))
+                                .fill(getFillColor(for: Cell(row: row, column: column)))
                                 .onTapGesture {
-                                    toggleCell(Cell(row: row, column: column))
+                                    let cell = Cell(row: row, column: column)
+                                    if isEditable {
+                                        toggleCell(cell)
+                                    }
+
+                                    onCellTapAction(cell)
                                     generator.impactOccurred()
                                 }
                         }
@@ -97,6 +105,16 @@ struct TimeGrid: View {
 
     private func isHighlighted(_ cell: Cell) -> Bool {
         return !tempDeselectedCells.contains(cell) && (tempSelectedCells.contains(cell) || selectedCells.contains(cell))
+    }
+
+    private func getFillColor(for cell: Cell) -> Color {
+        if isHighlighted(cell) {
+            return .green
+        } else if let opacity = cells[cell] {
+            return .green.opacity(opacity)
+        }
+
+        return .gray.opacity(0.2)
     }
 
     private func toggleCell(_ cell: Cell) {

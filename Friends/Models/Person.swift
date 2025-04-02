@@ -18,6 +18,7 @@ struct Person {
            let image = UIImage(data: imageData) {
             return image
         }
+
         return UIImage(systemName: "person.circle")!
     }
 
