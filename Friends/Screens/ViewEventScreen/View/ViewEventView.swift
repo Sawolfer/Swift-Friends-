@@ -28,7 +28,7 @@ struct ViewEventView: View {
                 }
 
                 Section {
-                    FriendsList(viewModel: viewModel, isShowingSelectFriendsView: $isShowingSelectFriendsView)
+                    FriendsList(attendiesInfo: viewModel.attendiesInfo)
                 } header: {
                     Text("friends")
                 }
@@ -73,6 +73,9 @@ struct ViewEventView: View {
             .listStyle(.insetGrouped)
         }
         .background(Color.background)
+        .onAppear {
+            viewModel.loadEvent()
+        }
     }
 
     private struct Header: View {
@@ -83,8 +86,10 @@ struct ViewEventView: View {
             ZStack(alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text("New Event")
-                        .fontWeight(.medium)
+                    if viewModel.isHost {
+                        Text(viewModel.event.isTimeFixed ? "View Event" : "Choose Time")
+                            .fontWeight(.medium)
+                    }
                     Spacer()
                 }
 
@@ -104,23 +109,27 @@ struct ViewEventView: View {
     }
 
     private struct FriendsList: View {
-        @ObservedObject var viewModel: ViewEventViewModel
+        let attendiesInfo: [(Person, EventModels.AttendanceStatus)]
 
         var body: some View {
-            ForEach(viewModel.attendiesInfo) { person in
+            ForEach(attendiesInfo, id: \.0.id) { info in
                 HStack {
-                    Image(uiImage: person.icon)
+                    Image(uiImage: info.0.icon)
                         .resizable()
                         .frame(width: 40.0, height: 40.0)
                         .clipShape(Circle())
-                    Text(person.name)
+                    Text(info.0.name)
                     Spacer()
-                    if viewModel.attendiesInfo[person] == .attending {
+                    switch info.1 {
+                    case .attending:
                         Image(systemName: "checkmark.circle.fill")
                             .foregroundStyle(Color.green)
-                    } else {
+                    case .declined:
                         Image(systemName: "xmark.circle.fill")
                             .foregroundStyle(Color.red)
+                    case .noReply:
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundStyle(Color.yellow)
                     }
                 }
             }
@@ -147,7 +156,7 @@ struct ViewEventView: View {
         var body: some View {
             HStack {
                 ForEach(0..<7) { offset in
-                    let date = Date().addingTimeInterval(TimeInterval(86400 * offset))
+                    let date = viewModel.event.creationDate.addingTimeInterval(TimeInterval(86400 * offset))
                     Text("\(viewModel.getFormattedDate(from: date))")
                         .font(.system(size: 16))
                         .foregroundStyle(Color.gray)
