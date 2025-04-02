@@ -15,6 +15,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -56,6 +57,11 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		39BBDF872D9DA89200DDCDDA /* Products */ = {
+			isa = PBXGroup;
+			name = Products;
+			sourceTree = "<group>";
+		};
 		39E396A12D932EA300C43CC4 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +148,10 @@
 			productRefGroup = 39E396AB2D932EA300C43CC4 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 39BBDF872D9DA89200DDCDDA /* Products */;
+					ProjectRef = 39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */;
+				},
 				{
 					ProductGroup = 39EE0B9F2D99B301005E6AF4 /* Products */;
 					ProjectRef = 39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */;

@@ -1,14 +1,14 @@
 //
-//  AddEventView.swift
+//  EventView.swift
 //  Friends
 //
-//  Created by тимур on 27.03.2025.
+//  Created by тимур on 31.03.2025.
 //
 
 import SwiftUI
 
-struct AddEventView: View {
-    @StateObject private var viewModel = AddEventViewModel()
+struct ViewEventView: View {
+    @StateObject private var viewModel = ViewEventViewModel(eventId: UUID())
     @State var isShowingSelectFriendsView: Bool = false
     @Environment(\.dismiss) var dismiss
 
@@ -24,7 +24,7 @@ struct AddEventView: View {
                 }
 
                 Section {
-                    LocationView(addLocation: $viewModel.addLocation, address: $viewModel.event.address)
+                    LocationView(address: viewModel.event.address)
                 }
 
                 Section {
@@ -52,34 +52,31 @@ struct AddEventView: View {
                         Spacer()
                         Button(action: {
                             viewModel.selectAllCells()
-                        }, label: {
+                        }) {
                             Text("Select All")
                                 .textCase(.none)
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
-                        })
+                        }
                         .padding(.trailing, 10)
                         Button(action: {
                             viewModel.clearCells()
-                        }, label: {
+                        }) {
                             Text("Clear")
                                 .textCase(.none)
                                 .font(.system(size: 16))
-                        })
+                        }
                     }
                 }
             }
             .scrollContentBackground(.hidden)
             .listStyle(.insetGrouped)
-            .sheet(isPresented: $isShowingSelectFriendsView) {
-                SelectFriendsView(friends: viewModel.friends, selectedFriends: $viewModel.selectedFriends)
-            }
         }
         .background(Color.background)
     }
 
     private struct Header: View {
-        @ObservedObject var viewModel: AddEventViewModel
+        @ObservedObject var viewModel: ViewEventViewModel
         @Environment(\.dismiss) var dismiss
 
         var body: some View {
@@ -107,11 +104,10 @@ struct AddEventView: View {
     }
 
     private struct FriendsList: View {
-        @ObservedObject var viewModel: AddEventViewModel
-        @Binding var isShowingSelectFriendsView: Bool
+        @ObservedObject var viewModel: ViewEventViewModel
 
         var body: some View {
-            ForEach(Array(viewModel.selectedFriends)) { person in
+            ForEach(viewModel.attendiesInfo) { person in
                 HStack {
                     Image(uiImage: person.icon)
                         .resizable()
@@ -119,18 +115,20 @@ struct AddEventView: View {
                         .clipShape(Circle())
                     Text(person.name)
                     Spacer()
+                    if viewModel.attendiesInfo[person] == .attending {
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.green)
+                    } else {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.red)
+                    }
                 }
-            }
-
-            Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
-                isShowingSelectFriendsView = true
             }
         }
     }
 
     private struct LocationView: View {
-        @Binding var addLocation: Bool
-        @Binding var address: String
+        let address: String
 
         var body: some View {
             HStack {
@@ -138,17 +136,13 @@ struct AddEventView: View {
                     .resizable()
                     .frame(width: 25, height: 25)
                     .foregroundStyle(Color.blue)
-                Toggle("Location", isOn: $addLocation)
-            }
-
-            if addLocation {
-                TextField("Start typing", text: $address)
+                Text(address)
             }
         }
     }
 
     private struct DaysView: View {
-        @ObservedObject var viewModel: AddEventViewModel
+        @ObservedObject var viewModel: ViewEventViewModel
 
         var body: some View {
             HStack {
@@ -179,5 +173,5 @@ struct AddEventView: View {
 }
 
 #Preview {
-    AddEventView()
+    ViewEventView()
 }

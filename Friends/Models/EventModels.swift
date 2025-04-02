@@ -13,17 +13,19 @@ enum EventModels {
         var title: String
         var description: String
         var address: String
-        var date: Date
-        var location: Location
         var hostId: UUID
-        var invitedFriends: [UUID]
-        var attendiesId: [UUID]
+        var attendiesInfo: [AttendeeInfo]
+        var isTimeFixed: Bool
+        var creationDate: Date
+        var startTime: Date?
+        var endTime: Date?
+        var location: Location?
     }
 
-    struct FriendInfo: Codable {
+    struct AttendeeInfo {
         var id: UUID
         var status: AttendanceStatus
-        var pickedCellsForDate: [Date: [Int]]?
+        var pickedCells: Set<TimeGrid.Cell>?
     }
 
     struct Location: Codable {
@@ -31,7 +33,7 @@ enum EventModels {
         var longitude: Float
     }
 
-    enum AttendanceStatus: String, Codable {
+    enum AttendanceStatus {
         case attending
         case declined
         case noReply
@@ -39,15 +41,5 @@ enum EventModels {
 }
 
 extension EventModels.Event {
-    static let empty: EventModels.Event = .init(
-        id: UUID(),
-        title: "",
-        description: "",
-        address: "",
-        date: Date(),
-        location: .init(latitude: 0, longitude: 0),
-        hostId: UUID(),
-        invitedFriends: [],
-        attendiesId: []
-    )
+    static let empty: EventModels.Event = .init(title: "", description: "", address: "", hostId: UUID(), attendiesInfo: [], isTimeFixed: false, creationDate: Date())
 }
