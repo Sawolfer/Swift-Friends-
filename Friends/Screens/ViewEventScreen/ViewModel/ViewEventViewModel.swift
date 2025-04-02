@@ -16,8 +16,10 @@ final class ViewEventViewModel: ObservableObject {
     // MARK: - Published
 
     @Published var event = EventModels.Event.empty
+    @Published var cellsOpacity = [TimeGrid.Cell: Double]()
+    @Published var cellFriendLists: [TimeGrid.Cell: [Person]] = [:]
     @Published var selectedCells = Set<TimeGrid.Cell>()
-    @Published var attendiesInfo = [Person: EventModels.AttendanceStatus]()
+    @Published var attendiesInfo = [(Person, EventModels.AttendanceStatus)]()
 
     // MARK: - Private properties
 
@@ -37,6 +39,18 @@ final class ViewEventViewModel: ObservableObject {
         return true
     }
 
+    var title: String {
+        if isHost {
+            return event.isTimeFixed ? "View Event" : "Choose Time"
+        }
+
+        return "View Event"
+    }
+
+    var headerButtonText: String {
+        "Confirm"
+    }
+
     // MARK: - Initializers
 
     init(eventId: UUID) {
@@ -44,11 +58,22 @@ final class ViewEventViewModel: ObservableObject {
     }
 
     func loadEvent() {
-        event = EventModels.Event(title: "Coffee", description: "Coffee", address: "Adress", hostId: UUID(), attendiesInfo: [EventModels.AttendeeInfo(id: UUID(), status: .attending, pickedCells: [TimeGrid.Cell(row: 1, column: 1)])], isTimeFixed: false, creationDate: Date())
-        event.attendiesInfo.forEach({ info in
-            let person = Person(name: "Masha")
-            attendiesInfo[person] = info.status
+        event = EventModels.Event(title: "Coffee", description: "Coffee", address: "Adress", hostId: UUID(), attendiesInfo: [
+            EventModels.AttendeeInfo(id: UUID(), status: .attending, pickedCells: [TimeGrid.Cell(row: 1, column: 1)]),
+            EventModels.AttendeeInfo(id: UUID(), status: .noReply, pickedCells: [TimeGrid.Cell(row: 1, column: 1)]),
+            EventModels.AttendeeInfo(id: UUID(), status: .declined, pickedCells: [TimeGrid.Cell(row: 1, column: 1)])
+        ], isTimeFixed: false, creationDate: Date())
+        attendiesInfo = event.attendiesInfo.map({ info in
+            (Person(name: "Masha"), info.status)
         })
+
+        event.attendiesInfo.forEach { info in
+            if let pickedCells = info.pickedCells {
+                pickedCells.forEach { cell in
+                    cellFriendLists[cell]?.append(info.id)
+                }
+            }
+        }
     }
 
     func selectAllCells() {
@@ -66,5 +91,9 @@ final class ViewEventViewModel: ObservableObject {
 
     func getFormattedDate(from date: Date) -> String {
         dateFormatter.string(from: date)
+    }
+
+    func isMe(id: UUID) -> Bool {
+        return id == UUID(uuidString: "1")
     }
 }

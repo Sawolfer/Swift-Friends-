@@ -11,7 +11,7 @@ struct TimeGrid: View {
         case deselect
     }
 
-    var cells = [Cell: Double]()
+    var cellsOpacity = [Cell: Double]()
     @Binding var selectedCells: Set<Cell>
     let rows: Int
     let columns: Int
@@ -110,7 +110,7 @@ struct TimeGrid: View {
     private func getFillColor(for cell: Cell) -> Color {
         if isHighlighted(cell) {
             return .green
-        } else if let opacity = cells[cell] {
+        } else if let opacity = cellsOpacity[cell] {
             return .green.opacity(opacity)
         }
 
