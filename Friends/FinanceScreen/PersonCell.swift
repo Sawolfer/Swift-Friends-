@@ -13,7 +13,7 @@ class PersonCell: UITableViewCell {
     private var isEditable: Bool = false
     private var person: Person?
 
-    weak var delegate: AddExpenseModalViewControllerDelegate?
+    weak var delegate: NewExpenseModalViewControllerDelegate?
 
     private let personImageView: UIImageView = {
         let imageView = UIImageView()
@@ -31,7 +31,7 @@ class PersonCell: UITableViewCell {
         return label
     }()
 
-    private lazy var debtTextFieldView: UITextField = {
+    private(set) lazy var debtTextFieldView: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.textColor = .label
@@ -51,6 +51,12 @@ class PersonCell: UITableViewCell {
         return stack
     }()
 
+    private lazy var borderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemGray5
+        return view
+    }()
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -63,14 +69,22 @@ class PersonCell: UITableViewCell {
 
     private func setupUI() {
         contentView.addSubview(stackView)
+        contentView.addSubview(borderView)
         stackView.addArrangedSubview(personImageView)
         stackView.addArrangedSubview(nameLabel)
         stackView.addArrangedSubview(debtTextFieldView)
 
         debtTextFieldView.delegate = self
+        debtTextFieldView.addTarget(self, action: #selector(debtTextFieldDidChange), for: .editingChanged)
 
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
+        }
+
+        borderView.snp.makeConstraints { make in
+            make.bottom.trailing.equalToSuperview()
+            make.width.equalToSuperview().multipliedBy(0.95)
+            make.height.equalTo(1)
         }
     }
 
@@ -97,10 +111,10 @@ extension PersonCell: UITextFieldDelegate {
         return isEditable
     }
 
-    func textFieldDidEndEditing(_ textField: UITextField) {
+    @objc private func debtTextFieldDidChange(_ textField: UITextField) {
         guard let person = person else { return }
 
-//        PersonContainer.shared.editDebt(Double(textField.text?.split(separator: " ")[0] ?? "") ?? 0, dest: .to ,person: person)
-        delegate?.updateSelectedPersonDebt(person: person)
+        let debtText = textField.text?.replacingOccurrences(of: "₽", with: "").trimmingCharacters(in: .whitespaces) ?? "0"
+        delegate?.updateSelectedPersonDebt(personId: person.id, debt: Double(debtText) ?? 0)
     }
 }
