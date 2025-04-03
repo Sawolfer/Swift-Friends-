@@ -47,8 +47,8 @@ class FriendsNetwork: FriendsNetworkProtocol {
         }
     }
 
-    func loadFriends(person: Person, completion: @escaping (Result<[Person], NetworkError>) -> Void) {
-        firestore.collection(usersCollection).document(person.id.uuidString)
+    func loadFriends(id: UUID, completion: @escaping (Result<[Person], NetworkError>) -> Void) {
+        firestore.collection(usersCollection).document(id.uuidString)
             .getDocument { snapshot, error in
                 if let error = error {
                     completion(.failure(.custom(errorCode: 433, description: error.localizedDescription)))
@@ -72,7 +72,6 @@ class FriendsNetwork: FriendsNetworkProtocol {
                             group.leave()
                             return
                         }
-
                         if let friendData = friendSnapshot?.data(),
                            let friend = try? Firestore.Decoder().decode(Person.self, from: friendData) {
                             friends.append(friend)

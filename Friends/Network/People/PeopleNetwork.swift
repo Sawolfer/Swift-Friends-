@@ -91,8 +91,8 @@ class PeopleNetwork: PeopleNetworkProtocol {
         let end = prefix + "\u{f8ff}"
 
         firestore.collection(usersCollection)
-            .whereField("name", isGreaterThanOrEqualTo: start)
-            .whereField("name", isLessThan: end)
+            .whereField("username", isGreaterThanOrEqualTo: start)
+            .whereField("username", isLessThan: end)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(.custom(errorCode: 435, description: error.localizedDescription)))

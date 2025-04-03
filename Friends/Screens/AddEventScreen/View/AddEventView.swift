@@ -76,6 +76,9 @@ struct AddEventView: View {
             }
         }
         .background(Color.background)
+        .onAppear {
+            viewModel.loadFriends()
+        }
     }
 
     private struct Header: View {

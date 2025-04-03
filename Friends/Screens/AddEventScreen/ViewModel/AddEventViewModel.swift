@@ -24,12 +24,26 @@ final class AddEventViewModel: NSObject, ObservableObject {
         return formatter
     }()
     private let generator = UIImpactFeedbackGenerator(style: .medium)
+    private let friendsProvider = FriendsNetwork()
 
     func selectAllCells() {
         for row in 0..<rows {
             for column in 0..<columns {
                 let cell = TimeGrid.Cell(row: row, column: column)
                 selectedCells.insert(cell)
+            }
+        }
+    }
+
+    func loadFriends() {
+        let id = UUID(uuidString: "FD22EB46-86C7-48FC-9B35-2A916D4BCF17")!
+        friendsProvider.loadFriends(id: id) { [weak self] result in
+            switch result {
+            case .success(let friends):
+                self?.friends = friends
+                print(friends)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
         }
     }
