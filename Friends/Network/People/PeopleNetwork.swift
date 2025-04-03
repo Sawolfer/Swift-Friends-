@@ -15,6 +15,7 @@ class PeopleNetwork: PeopleNetworkProtocol {
     private let usersCollection = "users"
 
     // MARK: - User Account Logic
+
     func createAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         let userRef = firestore.collection(usersCollection).document(person.id.uuidString)
         do {
@@ -61,7 +62,7 @@ class PeopleNetwork: PeopleNetworkProtocol {
                     return
                 }
                 userStorage.downloadURL { url, error in
-                    if let error = error {
+                    if error != nil {
                         completion(.failure(.download))
                         return
                     }
