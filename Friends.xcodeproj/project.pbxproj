@@ -20,6 +20,7 @@
 		39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
+		8ADAE96B2D9F171000D75599 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -101,6 +102,13 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		8ADAE96C2D9F171000D75599 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -167,6 +175,10 @@
 				{
 					ProductGroup = 394D95572D9EB92D00187B5D /* Products */;
 					ProjectRef = 394D95562D9EB92D00187B5D /* Friends.xcodeproj */;
+				},
+				{
+					ProductGroup = 8ADAE96C2D9F171000D75599 /* Products */;
+					ProjectRef = 8ADAE96B2D9F171000D75599 /* Friends.xcodeproj */;
 				},
 				{
 					ProductGroup = 39BBDF872D9DA89200DDCDDA /* Products */;
