@@ -1,14 +1,14 @@
 //
-//  AddEventView.swift
+//  EventView.swift
 //  Friends
 //
-//  Created by тимур on 27.03.2025.
+//  Created by тимур on 31.03.2025.
 //
 
 import SwiftUI
 
-struct AddEventView: View {
-    @StateObject private var viewModel = AddEventViewModel()
+struct ViewEventView: View {
+    @StateObject private var viewModel = ViewEventViewModel(eventId: UUID())
     @State var isShowingSelectFriendsView: Bool = false
     @Environment(\.dismiss) var dismiss
 
@@ -24,11 +24,11 @@ struct AddEventView: View {
                 }
 
                 Section {
-                    LocationView(addLocation: $viewModel.addLocation, address: $viewModel.event.address)
+                    LocationView(address: viewModel.event.address)
                 }
 
                 Section {
-                    FriendsList(viewModel: viewModel, isShowingSelectFriendsView: $isShowingSelectFriendsView)
+                    FriendsList(attendiesInfo: viewModel.attendiesInfo)
                 } header: {
                     Text("friends")
                 }
@@ -52,42 +52,44 @@ struct AddEventView: View {
                         Spacer()
                         Button(action: {
                             viewModel.selectAllCells()
-                        }, label: {
+                        }) {
                             Text("Select All")
                                 .textCase(.none)
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
-                        })
+                        }
                         .padding(.trailing, 10)
                         Button(action: {
                             viewModel.clearCells()
-                        }, label: {
+                        }) {
                             Text("Clear")
                                 .textCase(.none)
                                 .font(.system(size: 16))
-                        })
+                        }
                     }
                 }
             }
             .scrollContentBackground(.hidden)
             .listStyle(.insetGrouped)
-            .sheet(isPresented: $isShowingSelectFriendsView) {
-                SelectFriendsView(friends: viewModel.friends, selectedFriends: $viewModel.selectedFriends)
-            }
         }
         .background(Color.background)
+        .onAppear {
+            viewModel.loadEvent()
+        }
     }
 
     private struct Header: View {
-        @ObservedObject var viewModel: AddEventViewModel
+        @ObservedObject var viewModel: ViewEventViewModel
         @Environment(\.dismiss) var dismiss
 
         var body: some View {
             ZStack(alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text("New Event")
-                        .fontWeight(.medium)
+                    if viewModel.isHost {
+                        Text(viewModel.event.isTimeFixed ? "View Event" : "Choose Time")
+                            .fontWeight(.medium)
+                    }
                     Spacer()
                 }
 
@@ -107,30 +109,35 @@ struct AddEventView: View {
     }
 
     private struct FriendsList: View {
-        @ObservedObject var viewModel: AddEventViewModel
-        @Binding var isShowingSelectFriendsView: Bool
+        let attendiesInfo: [(Person, EventModels.AttendanceStatus)]
 
         var body: some View {
-            ForEach(Array(viewModel.selectedFriends)) { person in
+            ForEach(attendiesInfo, id: \.0.id) { info in
                 HStack {
-                    Image(uiImage: person.icon)
+                    Image(uiImage: info.0.icon)
                         .resizable()
                         .frame(width: 40.0, height: 40.0)
                         .clipShape(Circle())
-                    Text(person.name)
+                    Text(info.0.name)
                     Spacer()
+                    switch info.1 {
+                    case .attending:
+                        Image(systemName: "checkmark.circle.fill")
+                            .foregroundStyle(Color.green)
+                    case .declined:
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundStyle(Color.red)
+                    case .noReply:
+                        Image(systemName: "questionmark.circle.fill")
+                            .foregroundStyle(Color.yellow)
+                    }
                 }
-            }
-
-            Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
-                isShowingSelectFriendsView = true
             }
         }
     }
 
     private struct LocationView: View {
-        @Binding var addLocation: Bool
-        @Binding var address: String
+        let address: String
 
         var body: some View {
             HStack {
@@ -138,22 +145,18 @@ struct AddEventView: View {
                     .resizable()
                     .frame(width: 25, height: 25)
                     .foregroundStyle(Color.blue)
-                Toggle("Location", isOn: $addLocation)
-            }
-
-            if addLocation {
-                TextField("Start typing", text: $address)
+                Text(address)
             }
         }
     }
 
     private struct DaysView: View {
-        @ObservedObject var viewModel: AddEventViewModel
+        @ObservedObject var viewModel: ViewEventViewModel
 
         var body: some View {
             HStack {
                 ForEach(0..<7) { offset in
-                    let date = Date().addingTimeInterval(TimeInterval(86400 * offset))
+                    let date = viewModel.event.creationDate.addingTimeInterval(TimeInterval(86400 * offset))
                     Text("\(viewModel.getFormattedDate(from: date))")
                         .font(.system(size: 16))
                         .foregroundStyle(Color.gray)
@@ -179,5 +182,5 @@ struct AddEventView: View {
 }
 
 #Preview {
-    AddEventView()
+    ViewEventView()
 }

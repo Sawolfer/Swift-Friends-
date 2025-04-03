@@ -21,15 +21,20 @@ struct Person: Codable {
             let image = UIImage(data: imageData) {
             return image
         }
-        return UIImage(systemName: "person.circle") ?? UIImage()
+
+        return UIImage(systemName: "person.circle")!
     }
 }
-// MARK: - Equatable
+//MARK: - Equatable
+extension Person: Identifiable, Equatable, Hashable {
+    static func == (lhs: Person, rhs: Person) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
 
 extension Person: Identifiable, Hashable{}
 
-// MARK: - Debt Functions
-
+//MARK: - Debt Functions
 extension Person {
     func getDebts() -> [Debt] {
         debts.filter { $0.personFrom == self }

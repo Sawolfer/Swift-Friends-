@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct SelectFriendsView: View {
-    @ObservedObject var viewModel: AddEventViewModel
     @Environment(\.dismiss) var dismiss
+    let friends: [Person]
+    @State private var internalSelection: Set<Person.ID> = []
+    @Binding var selectedFriends: Set<Person>
 
     var body: some View {
         VStack {
@@ -22,13 +24,14 @@ struct SelectFriendsView: View {
                 }
 
                 Button("Done") {
+                    selectedFriends = Set(friends.filter({ internalSelection.contains($0.id) }))
                     dismiss()
                 }
                 .fontWeight(.bold)
             }
             .padding([.horizontal, .top])
 
-            List(viewModel.friends, selection: $viewModel.selectedFriends) { person in
+            List(friends, selection: $internalSelection) { person in
                 HStack {
                     Image(uiImage: person.icon)
                         .resizable()
@@ -38,6 +41,9 @@ struct SelectFriendsView: View {
                 }
             }
             .environment(\.editMode, .constant(.active))
+        }
+        .onAppear {
+            internalSelection = Set(selectedFriends.map { $0.id })
         }
         .background(Color.background)
     }
