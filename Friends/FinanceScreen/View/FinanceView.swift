@@ -10,23 +10,22 @@ import SnapKit
 
 class FinanceView: UIView {
 
-    let personNetwork = PeopleNetwork()
-    let debts = personNetwork.
-
-
     private(set) lazy var segmentController = UISegmentedControl(items: ["Долги", "Должники"])
     private lazy var overallDebt: UILabel = {
         let label = UILabel()
-        
         label.textAlignment = .center
         switch segmentController.selectedSegmentIndex {
         case 0:
-            label.text = 
+            label.text = PersonContainer.shared.getDebtsSum(dest: .from).description
             label.textColor = .red
         case 1:
             label.text = PersonContainer.shared.getDebtsSum(dest: .to).description
             label.textColor = .green
+        default:
+            label.text = "0"
+            label.textColor = .gray
 
+        }
         label.font = .systemFont(ofSize: 24, weight: .bold)
         return label
     }()
