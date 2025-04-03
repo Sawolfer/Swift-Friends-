@@ -14,6 +14,7 @@ enum EventModels {
         var description: String
         var address: String
         var hostId: UUID
+        var pickedCells: Set<TimeGrid.Cell>
         var attendiesInfo: [AttendeeInfo]
         var isTimeFixed: Bool
         var creationDate: Date
@@ -41,5 +42,5 @@ enum EventModels {
 }
 
 extension EventModels.Event {
-    static let empty: EventModels.Event = .init(id: UUID(), title: "", description: "", address: "", hostId: UUID(), attendiesInfo: [], isTimeFixed: false, creationDate: Date())
+    static let empty: EventModels.Event = .init(id: UUID(), title: "", description: "", address: "", hostId: UUID(), pickedCells: Set<TimeGrid.Cell>(), attendiesInfo: [], isTimeFixed: false, creationDate: Date())
 }

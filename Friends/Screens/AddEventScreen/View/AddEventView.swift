@@ -100,6 +100,7 @@ struct AddEventView: View {
                     }
                     Spacer()
                     Button("Create") {
+                        viewModel.addEvent()
                         dismiss()
                     }
                     .disabled(viewModel.event.title.isEmpty || viewModel.selectedCells.isEmpty)

@@ -25,6 +25,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }()
     private let generator = UIImpactFeedbackGenerator(style: .medium)
     private let friendsProvider = FriendsNetwork()
+    private let eventProvider = EventsNetworkCommunications()
 
     func selectAllCells() {
         for row in 0..<rows {
@@ -36,7 +37,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func loadFriends() {
-        let id = UUID(uuidString: "FD22EB46-86C7-48FC-9B35-2A916D4BCF17")!
+        let id = UUID(uuidString: "C33A54A8-29C2-426A-BFA3-F3097F5F938D")!
         friendsProvider.loadFriends(id: id) { [weak self] result in
             switch result {
             case .success(let friends):
@@ -46,6 +47,13 @@ final class AddEventViewModel: NSObject, ObservableObject {
                 print(error.localizedDescription)
             }
         }
+    }
+
+    func addEvent() {
+        event.id = UUID()
+        event.attendiesInfo = Array(selectedFriends).map { EventModels.AttendeeInfo(id: $0.id, status: .noReply) }
+        event.pickedCells = selectedCells
+        eventProvider.addEvent(event)
     }
 
     func clearCells() {

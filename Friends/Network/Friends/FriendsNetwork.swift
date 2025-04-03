@@ -60,7 +60,6 @@ class FriendsNetwork: FriendsNetworkProtocol {
                     completion(.success([]))
                     return
                 }
-
                 let group = DispatchGroup()
                 var friends: [Person] = []
 
