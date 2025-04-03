@@ -9,8 +9,16 @@ import MapKit
 final class DataManager: DataManagerProtocol {
     // MARK: - Properties
 
+    private var eventNetworkManager: EventsNetworkCommunications
     private var events: [EventModels.Event] = []
     private var archive: [EventModels.Event] = []
+
+    // MARK: - Initialization
+
+    init(eventNetworkManager: EventsNetworkCommunications) {
+        self.eventNetworkManager = eventNetworkManager
+        loadEventsFromNetwork()
+    }
 
     // MARK: - Functions
 
@@ -18,12 +26,20 @@ final class DataManager: DataManagerProtocol {
         return events
     }
 
+    func loadEventsFromNetwork() {
+        eventNetworkManager.loadEvents { [weak self] loadedEvents in
+            self?.events = loadedEvents
+        }
+    }
+
     func addEvent(_ event: EventModels.Event) {
         events.append(event)
     }
 
-    func updateEventAttendanceStatus(status: EventModels.AttendanceStatus, at index: Int) {
-        events[index].attendiesInfo[0].status = status
+    func updateEventAttendanceStatus(status: EventModels.AttendanceStatus, at eventIndex: Int) {
+        guard eventIndex >= 0 && eventIndex < events.count else { return }
+        events[eventIndex].attendiesInfo[0].status = status
+        eventNetworkManager.updateEvent(events[eventIndex])
     }
 
     func loadArchive() -> [EventModels.Event] {
