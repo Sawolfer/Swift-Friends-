@@ -7,37 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3917E29B2D94778400B51000 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 3917E29A2D94778400B51000 /* SnapKit */; };
-		B46C74CA2D9E84FE0021BF26 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = B46C74C92D9E84FE0021BF26 /* FirebaseAuth */; };
-		B46C74CC2D9E84FE0021BF26 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B46C74CB2D9E84FE0021BF26 /* FirebaseFirestore */; };
-		B46C74CE2D9E84FE0021BF26 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = B46C74CD2D9E84FE0021BF26 /* FirebaseMessaging */; };
-		B46C74D02D9E84FE0021BF26 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = B46C74CF2D9E84FE0021BF26 /* FirebaseStorage */; };
+		8ABBE6452D96C679002009E5 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 8ABBE6442D96C679002009E5 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		394D942D2D9EB71C00187B5D /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
-		394D95562D9EB92D00187B5D /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
-		39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		39E396BC2D932EA500C43CC4 /* Exceptions for "Friends" folder in "Friends" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				App/Info.plist,
-			);
-			target = 39E396A92D932EA300C43CC4 /* Friends */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		39E396AC2D932EA300C43CC4 /* Friends */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				39E396BC2D932EA500C43CC4 /* Exceptions for "Friends" folder in "Friends" target */,
-			);
 			path = Friends;
 			sourceTree = "<group>";
 		};
@@ -48,36 +27,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B46C74CE2D9E84FE0021BF26 /* FirebaseMessaging in Frameworks */,
-				3917E29B2D94778400B51000 /* SnapKit in Frameworks */,
-				B46C74CA2D9E84FE0021BF26 /* FirebaseAuth in Frameworks */,
-				B46C74D02D9E84FE0021BF26 /* FirebaseStorage in Frameworks */,
-				B46C74CC2D9E84FE0021BF26 /* FirebaseFirestore in Frameworks */,
+				8ABBE6452D96C679002009E5 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		394D942E2D9EB71C00187B5D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		394D95572D9EB92D00187B5D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		39BBDF872D9DA89200DDCDDA /* Products */ = {
-			isa = PBXGroup;
-			name = Products;
-			sourceTree = "<group>";
-		};
 		39E396A12D932EA300C43CC4 = {
 			isa = PBXGroup;
 			children = (
@@ -94,13 +50,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		39EE0B9F2D99B301005E6AF4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -108,7 +57,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 39E396BD2D932EA500C43CC4 /* Build configuration list for PBXNativeTarget "Friends" */;
 			buildPhases = (
-				395402EA2D95CED400E6DBEE /* SwiftLint */,
+				8ABBE5F62D959EAC002009E5 /* Run SwiftLint */,
 				39E396A62D932EA300C43CC4 /* Sources */,
 				39E396A72D932EA300C43CC4 /* Frameworks */,
 				39E396A82D932EA300C43CC4 /* Resources */,
@@ -122,11 +71,7 @@
 			);
 			name = Friends;
 			packageProductDependencies = (
-				3917E29A2D94778400B51000 /* SnapKit */,
-				B46C74C92D9E84FE0021BF26 /* FirebaseAuth */,
-				B46C74CB2D9E84FE0021BF26 /* FirebaseFirestore */,
-				B46C74CD2D9E84FE0021BF26 /* FirebaseMessaging */,
-				B46C74CF2D9E84FE0021BF26 /* FirebaseStorage */,
+				8ABBE6442D96C679002009E5 /* SnapKit */,
 			);
 			productName = Friends;
 			productReference = 39E396AA2D932EA300C43CC4 /* Friends.app */;
@@ -157,30 +102,11 @@
 			mainGroup = 39E396A12D932EA300C43CC4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				3917E2992D94778400B51000 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				8ABBE6432D96C679002009E5 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 39E396AB2D932EA300C43CC4 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 394D95572D9EB92D00187B5D /* Products */;
-					ProjectRef = 394D95562D9EB92D00187B5D /* Friends.xcodeproj */;
-				},
-				{
-					ProductGroup = 39BBDF872D9DA89200DDCDDA /* Products */;
-					ProjectRef = 39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */;
-				},
-				{
-					ProductGroup = 394D942E2D9EB71C00187B5D /* Products */;
-					ProjectRef = 394D942D2D9EB71C00187B5D /* Friends.xcodeproj */;
-				},
-				{
-					ProductGroup = 39EE0B9F2D99B301005E6AF4 /* Products */;
-					ProjectRef = 39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				39E396A92D932EA300C43CC4 /* Friends */,
@@ -199,24 +125,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		395402EA2D95CED400E6DBEE /* SwiftLint */ = {
+		8ABBE5F62D959EAC002009E5 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
 			);
 			inputPaths = (
 			);
-			name = SwiftLint;
+			name = "Run SwiftLint";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n\n";
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -239,7 +165,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W9P5JL4539;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Friends/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -270,7 +195,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = W9P5JL4539;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Friends/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -330,7 +254,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -393,7 +317,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -436,7 +360,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		3917E2992D94778400B51000 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		8ABBE6432D96C679002009E5 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -444,41 +368,13 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 11.11.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		3917E29A2D94778400B51000 /* SnapKit */ = {
+		8ABBE6442D96C679002009E5 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3917E2992D94778400B51000 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 8ABBE6432D96C679002009E5 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		B46C74C92D9E84FE0021BF26 /* FirebaseAuth */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
-		};
-		B46C74CB2D9E84FE0021BF26 /* FirebaseFirestore */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestore;
-		};
-		B46C74CD2D9E84FE0021BF26 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
-		};
-		B46C74CF2D9E84FE0021BF26 /* FirebaseStorage */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B46C74C82D9E84FE0021BF26 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseStorage;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -106,17 +106,17 @@ final class EventCell: UITableViewCell {
         }
         switch event.status {
         case .awaiting:
-            statusLabel.text = "slide to accept"
+            statusLabel.text = "потяните влево"
             statusLabel.textColor = .systemOrange
             statusImageView.image = Constants.awaitingStatusImage
             statusImageView.tintColor = .systemOrange
         case .going:
-            statusLabel.text = "going"
+            statusLabel.text = "иду"
             statusLabel.textColor = .systemGreen
             statusImageView.image = Constants.goingStatusImage
             statusImageView.tintColor = .systemGreen
         case .declined:
-            statusLabel.text = "declined"
+            statusLabel.text = "не иду"
             statusLabel.textColor = .systemRed
             statusImageView.image = Constants.declinedStatusImage
             statusImageView.tintColor = .systemRed
