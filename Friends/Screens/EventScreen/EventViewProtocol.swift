@@ -7,10 +7,10 @@
 import UIKit
 
 protocol EventViewProtocol: AnyObject {
-    func showEvents(events: [EventModel])
-    func showArchiveEvents(events: [EventModel])
-    func updateEvent(at index: Int, event: EventModel)
-    func moveEventToArchive(event: EventModel, from index: Int)
-    func moveEventFromArchive(event: EventModel, from index: Int)
+    func showEvents(events: [EventModels.Event])
+    func showArchiveEvents(events: [EventModels.Event])
+    func updateEvent(at index: Int, event: EventModels.Event)
+    func moveEventToArchive(event: EventModels.Event, from index: Int)
+    func moveEventFromArchive(event: EventModels.Event, from index: Int)
     func displayAddEventViewController(_ viewController: UIViewController)
 }

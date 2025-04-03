@@ -12,7 +12,7 @@ enum DebtColor {
     case green
 
     static func getColor(isDebitor: Bool) -> UIColor {
-        return isDebitor ? .green : .red
+        return isDebitor ? .systemGreen : .systemRed
     }
 }
 struct Debt: Identifiable, Hashable, Codable {

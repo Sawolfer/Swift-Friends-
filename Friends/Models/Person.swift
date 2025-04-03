@@ -25,12 +25,10 @@ struct Person: Codable {
         return UIImage(systemName: "person.circle")!
     }
 }
-//MARK: - Equatable
-extension Person: Identifiable, Equatable, Hashable {
-    static func == (lhs: Person, rhs: Person) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
+
+// MARK: - Equatable
+
+extension Person: Identifiable, Hashable {}
 
 //MARK: - Debt Functions
 extension Person {

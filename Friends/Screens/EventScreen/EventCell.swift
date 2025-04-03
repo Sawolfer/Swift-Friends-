@@ -93,24 +93,25 @@ final class EventCell: UITableViewCell {
 
     // MARK: - Cell Configuration
 
-    func configure(with event: EventModel) {
+    func configure(with event: EventModels.Event) {
         titleLabel.text = event.title
         addressLabel.text = event.address
-        dateLabel.text = event.date
-        for ind in 0..<event.friendsImages.count {
+        dateLabel.text = event.startTime?.description
+        for ind in 0..<event.attendiesInfo.count {
             if ind == 3 {
                 configureExtraFriends(with: event)
                 break
             }
-            friendsImageViews[ind].image = event.friendsImages[ind]
+            // TODO: Обновить структуру для добавления картинки
+            // friendsImageViews[ind].image = event.attendiesInfo[ind].
         }
-        switch event.status {
-        case .awaiting:
+        switch event.attendiesInfo[0].status {
+        case .noReply:
             statusLabel.text = "потяните влево"
             statusLabel.textColor = .systemOrange
             statusImageView.image = Constants.awaitingStatusImage
             statusImageView.tintColor = .systemOrange
-        case .going:
+        case .attending:
             statusLabel.text = "иду"
             statusLabel.textColor = .systemGreen
             statusImageView.image = Constants.goingStatusImage
@@ -154,11 +155,24 @@ final class EventCell: UITableViewCell {
         image.addSubview(mapView)
     }
 
-    private func configureRegion(with event: EventModel) {
-        mapView.setRegion(event.region, animated: true)
+    private func configureRegion(with event: EventModels.Event) {
+        guard let location = event.location else {
+            return
+        }
+
+        let coordinate = CLLocationCoordinate2D(
+            latitude: CLLocationDegrees(location.latitude),
+            longitude: CLLocationDegrees(location.longitude)
+        )
+
+        let region = MKCoordinateRegion(
+            center: coordinate,
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        )
+        mapView.setRegion(region, animated: true)
 
         let annotation = MKPointAnnotation()
-        annotation.coordinate = event.location
+        annotation.coordinate = coordinate
         annotation.title = event.address
         mapView.addAnnotation(annotation)
     }
@@ -231,7 +245,7 @@ final class EventCell: UITableViewCell {
         }
     }
 
-    private func configureExtraFriends(with event: EventModel) {
+    private func configureExtraFriends(with event: EventModels.Event) {
         let extraFriendView = UIView()
         wrapView.addSubview(extraFriendView)
         extraFriendView.snp.makeConstraints { make in
@@ -246,7 +260,7 @@ final class EventCell: UITableViewCell {
         }
 
         let counter = UILabel()
-        counter.text = "+" + String(event.friendsImages.count - (friendsImageViews.count))
+        counter.text = "+" + String(event.attendiesInfo.count - (friendsImageViews.count))
         counter.textColor = .gray
         counter.font = Constants.counterFont
         counter.textAlignment = .center

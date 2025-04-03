@@ -17,7 +17,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private enum Constants {
         static let backgroundLightHex: String = "F5F5F5"
 
-        static let tableViewTopOffset: CGFloat = 245
+        static let tableViewTopOffset: CGFloat = 215
         static let tableOffsetH: CGFloat = 20
         static let heightForRow: CGFloat = 170
         static let heightForRowAnimated: CGFloat = 100
@@ -34,16 +34,16 @@ class EventViewController: UIViewController, EventViewProtocol {
 
         static let tableAnimateOffsetMultiplier: CGFloat = 2
 
-        static let segmentedOffsetH: CGFloat = 20
+        static let segmentedOffsetH: CGFloat = 15
         static let segmentedOffsetBottom: CGFloat = 55
 
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
 
-        static let addButtonTitle: String = "Добавить +"
-        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
+        static let addButtonTitle: String = "Add +"
+        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
         static let addButtonOffsetBottom: CGFloat = 10
-        static let addButtonWidth: CGFloat = 100
+        static let addButtonWidth: CGFloat = 70
         static let addButtonHeight: CGFloat = 30
         static let addButtonCornerRadius: CGFloat = 15
     }
@@ -62,26 +62,87 @@ class EventViewController: UIViewController, EventViewProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
         configureUI()
         presenter?.viewLoaded()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.subviews.forEach { subview in
+                if subview is UILabel {
+                    subview.removeFromSuperview()
+                }
+            }
+        }
+    }
+
     // MARK: - Functions
 
-    func showEvents(events: [EventModel]) {
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Встречи"
+        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
+
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.leading.equalTo(navigationBar.snp.leading).offset(16)
+                make.centerY.equalTo(navigationBar.snp.centerY)
+                make.trailing.lessThanOrEqualTo(navigationBar.snp.trailing).offset(-16)
+            }
+        }
+
+        let avatarButton = UIButton(type: .custom)
+        avatarButton.setImage(UIImage(named: "image"), for: .normal) // TODO: load user image
+        avatarButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        avatarButton.clipsToBounds = true
+        avatarButton.layer.cornerRadius = 20
+
+        avatarButton.addAction(UIAction { [weak self] _ in
+            let profileVC = ProfileViewController()
+            self?.navigationItem.backButtonTitle = "Назад"
+            self?.navigationController?.pushViewController(profileVC, animated: true)
+        }, for: .touchUpInside)
+
+        let buttonContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        buttonContainerView.addSubview(avatarButton)
+
+        avatarButton.center = CGPoint(x: buttonContainerView.bounds.midX, y: buttonContainerView.bounds.midY)
+
+        let barButtonItem = UIBarButtonItem(customView: buttonContainerView)
+        navigationItem.rightBarButtonItem = barButtonItem
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .background
+        appearance.shadowColor = nil
+
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+    }
+
+    func showEvents(events: [EventModels.Event]) {
         eventsTable.reloadData()
     }
 
-    func showArchiveEvents(events: [EventModel]) {
+    func showArchiveEvents(events: [EventModels.Event]) {
         archiveTable.reloadData()
     }
 
-    func updateEvent(at index: Int, event: EventModel) {
+    func updateEvent(at index: Int, event: EventModels.Event) {
         eventsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
-    func moveEventToArchive(event: EventModel, from index: Int) {
+    func moveEventToArchive(event: EventModels.Event, from index: Int) {
         eventsTable.performBatchUpdates({
             eventsTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
         }, completion: { _ in
@@ -91,7 +152,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         })
     }
 
-    func moveEventFromArchive(event: EventModel, from index: Int) {
+    func moveEventFromArchive(event: EventModels.Event, from index: Int) {
         archiveTable.performBatchUpdates({
             archiveTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
         }, completion: { _ in
@@ -180,12 +241,11 @@ class EventViewController: UIViewController, EventViewProtocol {
     private func configureSegmented() {
         view.addSubview(segmented)
         segmented.snp.makeConstraints { make in
-            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.segmentedOffsetBottom)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).inset(30)
             make.leading.trailing.equalTo(view).inset(Constants.segmentedOffsetH)
         }
 
         segmented.segmentChanged = { [weak self] selectedIndex in
-            self?.presenter?.didSelectSegment(at: selectedIndex)
             self?.moveTables(to: selectedIndex)
         }
     }
@@ -193,7 +253,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private func configureButton() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
-            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.addButtonOffsetBottom)
+            make.top.equalTo(segmented.snp.bottom).offset(Constants.addButtonOffsetBottom)
             make.trailing.equalTo(eventsTable.snp.trailing)
             make.width.equalTo(Constants.addButtonWidth)
             make.height.equalTo(Constants.addButtonHeight)
@@ -214,7 +274,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         eventsTableLeadingConstraint?.update(offset: leftOffset)
         eventsTableTrailingConstraint?.update(offset: rightOffset)
 
-        UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
         })
     }
@@ -223,11 +283,6 @@ class EventViewController: UIViewController, EventViewProtocol {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
         generator.selectionChanged()
-    }
-
-    private func setupNavigationBar() {
-        title = "Встречи"
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     // MARK: - Actions

@@ -8,7 +8,7 @@
 import Foundation
 import Security
 
-class CahcheUserInfo {
+class UserDataCache {
 
     private let service = "sirius.Friends.cacheinfo"
     private let account = "userCredentials"

@@ -20,7 +20,8 @@
 		39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
-		39F56A552D9F190B009EEE50 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
+		8ADAE96B2D9F171000D75599 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
+		8ADAEB912D9F522F00D75599 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -102,7 +103,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		39F56A562D9F190B009EEE50 /* Products */ = {
+		8ADAE96C2D9F171000D75599 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8ADAEB922D9F522F00D75599 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -177,6 +185,10 @@
 					ProjectRef = 394D95562D9EB92D00187B5D /* Friends.xcodeproj */;
 				},
 				{
+					ProductGroup = 8ADAE96C2D9F171000D75599 /* Products */;
+					ProjectRef = 8ADAE96B2D9F171000D75599 /* Friends.xcodeproj */;
+				},
+				{
 					ProductGroup = 39BBDF872D9DA89200DDCDDA /* Products */;
 					ProjectRef = 39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */;
 				},
@@ -185,8 +197,8 @@
 					ProjectRef = 394D942D2D9EB71C00187B5D /* Friends.xcodeproj */;
 				},
 				{
-					ProductGroup = 39F56A562D9F190B009EEE50 /* Products */;
-					ProjectRef = 39F56A552D9F190B009EEE50 /* Friends.xcodeproj */;
+					ProductGroup = 8ADAEB922D9F522F00D75599 /* Products */;
+					ProjectRef = 8ADAEB912D9F522F00D75599 /* Friends.xcodeproj */;
 				},
 				{
 					ProductGroup = 39EE0B9F2D99B301005E6AF4 /* Products */;

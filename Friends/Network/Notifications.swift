@@ -46,7 +46,8 @@ class Notifications {
     // MARK: - Send Notification
 
     func sendFCMMessage(to tokens: [String], title: String, body: String) {
-        guard let url = URL(string: "https://your-cloud-function-url/sendNotification") else { return }
+// TODO: paste url
+        guard let url = URL(string: "") else { return }
 
         let payload: [String: Any] = [
             "tokens": tokens,

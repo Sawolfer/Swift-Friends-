@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum AuthError: Error{
+enum AuthError: Error {
     case auth
     case login
     case custom(errorCode: Int, description: String)
