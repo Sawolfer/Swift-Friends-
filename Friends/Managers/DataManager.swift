@@ -37,7 +37,9 @@ final class DataManager: DataManagerProtocol {
     }
 
     func updateEventAttendanceStatus(status: EventModels.AttendanceStatus, at eventIndex: Int) {
-        guard eventIndex >= 0 && eventIndex < events.count else { return }
+        guard eventIndex >= 0 && eventIndex < events.count else { 
+            return 
+        }
         events[eventIndex].attendiesInfo[0].status = status
         eventNetworkManager.updateEvent(events[eventIndex])
     }
@@ -47,16 +49,22 @@ final class DataManager: DataManagerProtocol {
     }
 
     func moveToArchive(eventIndex: Int) {
-        guard eventIndex >= 0 && eventIndex < events.count else { return }
-        let event = events.remove(at: eventIndex)
-        events[eventIndex].attendiesInfo[0].status = .declined
+        guard eventIndex >= 0 && eventIndex < events.count else {
+            return
+        }
+        var event = events.remove(at: eventIndex)
+        if !event.attendiesInfo.isEmpty {
+            event.attendiesInfo[0].status = .declined
+        }
         archive.append(event)
     }
 
     func restoreFromArchive(eventIndex: Int) {
-        guard eventIndex >= 0 && eventIndex < archive.count else { return }
-        let event = archive.remove(at: eventIndex)
-        events[eventIndex].attendiesInfo[0].status = .attending
+        guard eventIndex >= 0 && eventIndex < archive.count else {
+            return
+        }
+        var event = archive.remove(at: eventIndex)
+        event.attendiesInfo[0].status = .attending
         events.append(event)
     }
 }
