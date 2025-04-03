@@ -10,11 +10,7 @@ import MapKit
 
 final class AddEventViewModel: NSObject, ObservableObject {
     @Published var event = EventModels.Event.empty
-    @Published var friends = [
-        Person(name: "Lexa", imageURL: URL(filePath: "https://www.fakepersongenerator.com/Face/female/female1023241532165.jpg")!),
-        Person(name: "Maya", imageURL: URL(filePath: "https://www.fakepersongenerator.com/Face/female/female1023241532165.jpg")!),
-        Person(name: "Jane", imageURL: URL(filePath: "https://www.fakepersongenerator.com/Face/female/female1023241532165.jpg")!)
-    ]
+    @Published var friends = [Person]()
     @Published var selectedFriends = Set<Person>()
     @Published var selectedCells: Set<TimeGrid.Cell> = []
     @Published var addLocation: Bool = false

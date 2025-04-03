@@ -58,22 +58,6 @@ final class ViewEventViewModel: ObservableObject {
     }
 
     func loadEvent() {
-        event = EventModels.Event(title: "Coffee", description: "Coffee", address: "Adress", hostId: UUID(), attendiesInfo: [
-            EventModels.AttendeeInfo(id: UUID(), status: .attending, pickedCells: [TimeGrid.Cell(row: 1, column: 1)]),
-            EventModels.AttendeeInfo(id: UUID(), status: .noReply, pickedCells: [TimeGrid.Cell(row: 1, column: 1)]),
-            EventModels.AttendeeInfo(id: UUID(), status: .declined, pickedCells: [TimeGrid.Cell(row: 1, column: 1)])
-        ], isTimeFixed: false, creationDate: Date())
-        attendiesInfo = event.attendiesInfo.map({ info in
-            (Person(name: "Masha"), info.status)
-        })
-
-        event.attendiesInfo.forEach { info in
-            if let pickedCells = info.pickedCells {
-                pickedCells.forEach { cell in
-                    cellFriendLists[cell]?.append(info.id)
-                }
-            }
-        }
     }
 
     func selectAllCells() {

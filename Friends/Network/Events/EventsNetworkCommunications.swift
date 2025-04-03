@@ -83,15 +83,15 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
         sendPushNotification(to: eventId, message: message)
     }
     private func sendInvitations(for event: EventModels.Event) {
-        event.invitedFriends.forEach { friendId in
+        event.attendiesInfo.forEach { info in
             let message = "You have been invited to the event \(event.title)."
-            sendPushNotification(to: friendId.uuidString, message: message)
+            sendPushNotification(to: info.id.uuidString, message: message)
         }
     }
     private func sendEditNotification(for event: EventModels.Event) {
-        event.invitedFriends.forEach { friendId in
+        event.attendiesInfo.forEach { info in
             let message = "You have been invited to the event \(event.title)."
-            sendPushNotification(to: friendId.uuidString, message: message)
+            sendPushNotification(to: info.id.uuidString, message: message)
         }
     }
     private func sendPushNotification(to userId: String, message: String) {

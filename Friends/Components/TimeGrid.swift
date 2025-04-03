@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct TimeGrid: View {
-    struct Cell: Hashable {
+    struct Cell: Hashable, Codable {
         let row: Int
         let column: Int
     }

@@ -22,7 +22,7 @@ enum EventModels {
         var location: Location?
     }
 
-    struct AttendeeInfo {
+    struct AttendeeInfo: Codable {
         var id: UUID
         var status: AttendanceStatus
         var pickedCells: Set<TimeGrid.Cell>?
@@ -33,7 +33,7 @@ enum EventModels {
         var longitude: Float
     }
 
-    enum AttendanceStatus {
+    enum AttendanceStatus: String, Codable {
         case attending
         case declined
         case noReply
@@ -41,5 +41,5 @@ enum EventModels {
 }
 
 extension EventModels.Event {
-    static let empty: EventModels.Event = .init(title: "", description: "", address: "", hostId: UUID(), attendiesInfo: [], isTimeFixed: false, creationDate: Date())
+    static let empty: EventModels.Event = .init(id: UUID(), title: "", description: "", address: "", hostId: UUID(), attendiesInfo: [], isTimeFixed: false, creationDate: Date())
 }
