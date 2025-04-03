@@ -18,6 +18,7 @@ class DebtsView: UIView {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .background
         tableView.register(PersonCell.self, forCellReuseIdentifier: PersonCell.personCellIdentifier)
         return tableView
     }()

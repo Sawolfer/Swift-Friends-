@@ -17,13 +17,13 @@ class FinanceView: UIView {
         switch segmentController.selectedSegmentIndex {
         case 0:
             label.text = PersonContainer.shared.getDebtsSum(dest: .from).description
-            label.textColor = .red
+            label.textColor = .systemRed
         case 1:
             label.text = PersonContainer.shared.getDebtsSum(dest: .to).description
-            label.textColor = .green
+            label.textColor = .systemGreen
         default:
             label.text = "0"
-            label.textColor = .gray
+            label.textColor = .systemGray
 
         }
         label.font = .systemFont(ofSize: 24, weight: .bold)
@@ -72,13 +72,13 @@ class FinanceView: UIView {
         switch segmentController.selectedSegmentIndex {
         case 0:
             overallDebt.text = PersonContainer.shared.getDebtsSum(dest: .from).description
-            overallDebt.textColor = .red
+            overallDebt.textColor = .systemRed
         case 1:
             overallDebt.text = PersonContainer.shared.getDebtsSum(dest: .to).description
-            overallDebt.textColor = .green
+            overallDebt.textColor = .systemGreen
         default:
             overallDebt.text = "0"
-            overallDebt.textColor = .gray
+            overallDebt.textColor = .systemGray
         }
     }
 
@@ -86,8 +86,9 @@ class FinanceView: UIView {
         super.layoutSubviews()
 
         segmentController.snp.makeConstraints { make in
-            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(20)
-            make.height.equalTo(36)
+            make.top.leading.trailing.equalTo(self.safeAreaLayoutGuide).inset(30)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(33)
         }
 
         overallDebt.snp.makeConstraints { make in

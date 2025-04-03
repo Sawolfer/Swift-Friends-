@@ -9,7 +9,6 @@ import FirebaseFirestore
 import FirebaseStorage
 import Foundation
 
-
 class PeopleNetwork: PeopleNetworkProtocol {
     private let firestore = Firestore.firestore()
     private let storage = Storage.storage()

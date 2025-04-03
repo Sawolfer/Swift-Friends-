@@ -34,8 +34,9 @@ extension Person: Identifiable, Equatable, Hashable {
     }
 }
 
-// MARK: - Debt Functions
+extension Person: Identifiable, Hashable{}
 
+//MARK: - Debt Functions
 extension Person {
     func getDebts() -> [Debt] {
         debts.filter { $0.personFrom == self }

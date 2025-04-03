@@ -10,7 +10,6 @@ import FirebaseStorage
 import Foundation
 import CryptoKit
 
-
 class AuthNetwork {
     private let firestore = Firestore.firestore()
     private let storage = Storage.storage()
@@ -18,6 +17,7 @@ class AuthNetwork {
     private let authCollection = "auth"
 
 // MARK: - Account Creation
+
     func createAccount(name: String, username: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -27,11 +27,13 @@ class AuthNetwork {
                     return
                 }
 // MARK: - check for unique username
+
                 if let snapshot = snapshot, !snapshot.documents.isEmpty {
                     completion(.failure(.custom(errorCode: 409, description: "Username already exists")))
                     return
                 }
 // MARK: - create new person
+
                 let personId = UUID()
                 let person = Person(
                     id: personId,
@@ -43,11 +45,12 @@ class AuthNetwork {
                     debts: []
                 )
 // MARK: - create auth document
+
                 let authData: [String: Any] = [
                     "userId": personId.uuidString,
                     "name": name,
                     "username": username,
-                    "password": self.hashPassword(password),
+                    "password": self.hashPassword(password)
                 ]
 
                 let batch = self.firestore.batch()
@@ -73,6 +76,7 @@ class AuthNetwork {
     }
 
 // MARK: - Login
+
     func login(name: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -107,16 +111,18 @@ class AuthNetwork {
     }
 
 // MARK: - Cache Account (placeholder)
+
     private func cacheUserData(person: Person) {
-        let cache = CahcheUserInfo()
+        let cache = UserDataCache()
         let userInfo: [String: Any] = [
-            "username" : person.username,
-            "password" : person.password
+            "username": person.username,
+            "password": person.password
         ]
         cache.saveUserInfo(userInfo: userInfo)
     }
 
 // MARK: - Name Unique check
+
     func checkNameAvailability(name: String, completion: @escaping (Result<Bool, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -131,6 +137,7 @@ class AuthNetwork {
             }
     }
 // MARK: - Hash Password
+
     func hashPassword(_ password: String) -> String {
         let data = Data(password.utf8)
         let hash = SHA256.hash(data: data)
