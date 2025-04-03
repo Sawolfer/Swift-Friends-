@@ -18,7 +18,7 @@ class AuthNetwork {
     private let authCollection = "auth"
 
     // MARK: - Account Creation
-    func createAccount(name: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
+    func createAccount(name: String, username: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
             .getDocuments { snapshot, error in
@@ -36,6 +36,7 @@ class AuthNetwork {
                 let person = Person(
                     id: personId,
                     name: name,
+                    username: username,
                     password: password,
                     imageURL: nil,
                     friends: [],
@@ -45,6 +46,7 @@ class AuthNetwork {
                 let authData: [String: Any] = [
                     "userId": personId.uuidString,
                     "name": name,
+                    "username": username,
                     "password": self.hashPassword(password),
                 ]
 
@@ -106,8 +108,12 @@ class AuthNetwork {
 
 // MARK: - Cache Account (placeholder)
     private func cacheUserData(person: Person) {
-        //    TODO: cache user data with keychain
-        print("Caching user data for \(person.name)")
+        let cache = CahcheUserInfo()
+        let userInfo: [String: Any] = [
+            "username" : person.username,
+            "password" : person.password
+        ]
+        cache.saveUserInfo(userInfo: userInfo)
     }
 
 //  MARK: - Name Unique check
