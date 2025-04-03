@@ -59,6 +59,7 @@ struct AuthView: View {
                 .padding(.bottom, 10)
 
                 Button(viewModel.mode == .login ? "CreateAccount" : "Login") {
+                    viewModel.showErrorAlert = false
                     if viewModel.mode == .login {
                         viewModel.mode = .registration
                     } else {
@@ -70,8 +71,4 @@ struct AuthView: View {
         }
         .background(Color.background)
     }
-}
-
-#Preview {
-    AuthView()
 }
