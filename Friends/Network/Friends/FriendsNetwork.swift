@@ -67,7 +67,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
                 for friendId in friendsIds {
                     group.enter()
                     self.firestore.collection(self.usersCollection).document(friendId).getDocument { friendSnapshot, error in
-                        if let error = error {
+                        if error != nil {
                             completion(.failure(.download))
                             group.leave()
                             return

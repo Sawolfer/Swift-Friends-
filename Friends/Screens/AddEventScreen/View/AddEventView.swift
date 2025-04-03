@@ -109,20 +109,20 @@ struct AddEventView: View {
                         Spacer()
                         Button(action: {
                             viewModel.selectAllCells()
-                        }) {
+                        }, label: {
                             Text("Select All")
                                 .textCase(.none)
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
-                        }
+                        })
                         .padding(.trailing, 10)
                         Button(action: {
                             viewModel.clearCells()
-                        }) {
+                        }, label: {
                             Text("Clear")
                                 .textCase(.none)
                                 .font(.system(size: 16))
-                        }
+                        })
                     }
                 }
             }

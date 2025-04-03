@@ -18,11 +18,14 @@ class TabBarController: UITabBarController {
 
     private func setupUI() {
         let firstViewController = UINavigationController(rootViewController: FinanceViewController())
-        firstViewController.tabBarItem = UITabBarItem(title: "Деньги", image: UIImage(systemName: "creditcard"),
+        firstViewController.tabBarItem = UITabBarItem(title: "Деньги",
+                                                      image: UIImage(systemName: "creditcard"),
                                                       selectedImage: UIImage(systemName: "creditcard.fill"))
 
         let secondViewController = UINavigationController(rootViewController: EventViewController())
-        secondViewController.tabBarItem = UITabBarItem(title: "Встречи", image: UIImage(systemName: "person.3"), selectedImage: UIImage(systemName: "person.3.fill"))
+        secondViewController.tabBarItem = UITabBarItem(title: "Встречи",
+                                                       image: UIImage(systemName: "person.3"),
+                                                       selectedImage: UIImage(systemName: "person.3.fill"))
 
         viewControllers = [firstViewController, secondViewController]
 

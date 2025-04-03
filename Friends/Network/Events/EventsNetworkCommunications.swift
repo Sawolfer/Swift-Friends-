@@ -12,7 +12,8 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
     private let firestore = Firestore.firestore()
     private let eventsCollection = "events"
 
-    //  MARK: - Events Logic
+    // MARK: - Events Logic
+
     func loadEvents(completion: @escaping ([EventModels.Event]) -> Void) {
         firestore.collection(eventsCollection).getDocuments { snapshot, error in
             if let error = error {
@@ -20,9 +21,7 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
                 completion([])
                 return
             }
-            let events =
-                snapshot?.documents.compactMap {
-                    document -> EventModels.Event? in
+            let events = snapshot?.documents.compactMap { document -> EventModels.Event? in
                     try? document.data(as: EventModels.Event.self)
                 } ?? []
             completion(events)
@@ -65,8 +64,7 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
         }
     }
     func deleteEvent(eventId: String) {
-        firestore.collection(eventsCollection).document(eventId).delete {
-            error in
+        firestore.collection(eventsCollection).document(eventId).delete { error in
             if let error = error {
                 print("Error deleting event: \(error.localizedDescription)")
             } else {
@@ -75,7 +73,8 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
         }
     }
 
-    //  MARK: - Notifications
+    // MARK: - Notifications
+
     private func notifyHost(
         eventId: String, userId: String, status: EventModels.AttendanceStatus
     ) {
@@ -100,8 +99,8 @@ class EventsNetworkCommunications: EventsNetworkCommunicationsProtocol {
             "to": "/topics/\(userId)",
             "notification": [
                 "title": "Event Update",
-                "body": message,
-            ],
+                "body": message
+            ]
         ]
         // TODO: make temp realization via local notifications
         print("Sending push notification: \(payload)")

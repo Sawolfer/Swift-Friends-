@@ -10,7 +10,8 @@ import Firebase
 
 class Notifications {
 
-//    MARK: - User Account Interactions
+    // MARK: - User Account Interactions
+
     func saveFCMToken(for userId: String, token: String) {
         let db = Firestore.firestore()
         db.collection("users").document(userId).setData(["fcmToken": token], merge: true) { error in
@@ -29,7 +30,7 @@ class Notifications {
 
         userIds.forEach { userId in
             group.enter()
-            db.collection("users").document(userId).getDocument { document, error in
+            db.collection("users").document(userId).getDocument { document, _ in
                 if let token = document?.data()?["fcmToken"] as? String {
                     tokens.append(token)
                 }
@@ -42,7 +43,8 @@ class Notifications {
         }
     }
 
-//    MARK: - Send Notification
+    // MARK: - Send Notification
+
     func sendFCMMessage(to tokens: [String], title: String, body: String) {
         guard let url = URL(string: "https://your-cloud-function-url/sendNotification") else { return }
 
@@ -63,7 +65,7 @@ class Notifications {
             return
         }
 
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        URLSession.shared.dataTask(with: request) { _, _, error in
             if let error = error {
                 print("Error sending notification: \(error.localizedDescription)")
             } else {
