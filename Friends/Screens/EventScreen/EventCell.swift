@@ -106,7 +106,7 @@ final class EventCell: UITableViewCell {
         }
         switch event.status {
         case .awaiting:
-            statusLabel.text = "свайп влево"
+            statusLabel.text = "потяните влево"
             statusLabel.textColor = .systemOrange
             statusImageView.image = Constants.awaitingStatusImage
             statusImageView.tintColor = .systemOrange

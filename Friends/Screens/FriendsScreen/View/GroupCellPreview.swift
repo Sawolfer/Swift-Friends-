@@ -31,6 +31,7 @@ struct GroupCellPreview: View {
                         .resizable()
                         .clipShape(Circle())
                         .frame(width: Constants.imageSize, height: Constants.imageSize)
+                        .matchedGeometryEffect(id: "image\(index)", in: namespace)
                     Text(friends[index].name)
                         .font(.system(size: Constants.imageSubtitleFontSize, weight: .regular))
                         .matchedGeometryEffect(id: "text\(index)", in: namespace)
@@ -43,7 +44,6 @@ struct GroupCellPreview: View {
                         .frame(width: Constants.imageSize, height: Constants.imageSize)
                     Text("+" + String(viewModel.getFriendsAndPreviewDifference(friendsCount: friends.count)))
                         .foregroundStyle(.gray)
-                        .matchedGeometryEffect(id: "extraText", in: namespace)
                 }
             }
         }
