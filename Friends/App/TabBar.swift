@@ -21,14 +21,10 @@ class TabBarController: UITabBarController {
         firstViewController.tabBarItem = UITabBarItem(title: "Деньги", image: UIImage(systemName: "creditcard"),
                                                       selectedImage: UIImage(systemName: "creditcard.fill"))
 
-//        TODO: указать экран встреч и выбора времени 
-//        let secondViewController = UINavigationController(rootViewController: EventViewController())
-//        secondViewController.tabBarItem = UITabBarItem(title: "Встречи", image: UIImage(systemName: "person.3"), selectedImage: UIImage(systemName: "person.3.fill"))
-//
-//        let thirdViewController: UIViewController = UIHostingController(rootView: AboutView())
-//        thirdViewController.tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(systemName: "ca;endar"), selectedImage: UIImage(systemName: "calendar.fill"))
+        let secondViewController = UINavigationController(rootViewController: EventViewController())
+        secondViewController.tabBarItem = UITabBarItem(title: "Встречи", image: UIImage(systemName: "person.3"), selectedImage: UIImage(systemName: "person.3.fill"))
 
-        viewControllers = [firstViewController]
+        viewControllers = [firstViewController, secondViewController]
 
         selectedIndex = 0
     }
