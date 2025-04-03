@@ -16,12 +16,12 @@ struct SelectFriendsView: View {
             ZStack(alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text("Add Friends")
+                    Text("Добавить друзей")
                         .fontWeight(.medium)
                     Spacer()
                 }
 
-                Button("Done") {
+                Button("Готово") {
                     dismiss()
                 }
                 .fontWeight(.bold)

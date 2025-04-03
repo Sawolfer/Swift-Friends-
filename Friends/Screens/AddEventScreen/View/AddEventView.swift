@@ -67,11 +67,11 @@ struct AddEventView: View {
                         }
                     }
 
-                    Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
+                    Button(viewModel.selectedFriends.isEmpty ? "Добавить друзей" : "Редактировать") {
                         isShowingSelectFriendsView = true
                     }
                 } header: {
-                    Text("friends")
+                    Text("Друзья")
                 }
 
                 Section {

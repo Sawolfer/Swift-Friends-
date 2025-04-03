@@ -18,12 +18,12 @@ struct SelectFriendsViewExpence: View {
             ZStack(alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text("Add Friends")
+                    Text("Добавить друзей")
                         .fontWeight(.medium)
                     Spacer()
                 }
 
-                Button("Done") {
+                Button("Готово") {
                     selectedFriends = friends.filter({ internalSelection.contains($0.id) })
                     dismiss()
                 }

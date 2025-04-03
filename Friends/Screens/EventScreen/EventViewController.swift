@@ -17,7 +17,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private enum Constants {
         static let backgroundLightHex: String = "F5F5F5"
 
-        static let tableViewTopOffset: CGFloat = 175
+        static let tableViewTopOffset: CGFloat = 215
         static let tableOffsetH: CGFloat = 20
         static let heightForRow: CGFloat = 170
         static let heightForRowAnimated: CGFloat = 100
@@ -66,7 +66,69 @@ class EventViewController: UIViewController, EventViewProtocol {
         presenter?.viewLoaded()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationBar()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.subviews.forEach { subview in
+                if subview is UILabel {
+                    subview.removeFromSuperview()
+                }
+            }
+        }
+    }
+
     // MARK: - Functions
+
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = false
+
+        let titleLabel = UILabel()
+        titleLabel.text = "Встречи"
+        titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
+
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.addSubview(titleLabel)
+            titleLabel.snp.makeConstraints { make in
+                make.leading.equalTo(navigationBar.snp.leading).offset(16)
+                make.centerY.equalTo(navigationBar.snp.centerY)
+                make.trailing.lessThanOrEqualTo(navigationBar.snp.trailing).offset(-16)
+            }
+        }
+
+        let avatarButton = UIButton(type: .custom)
+        avatarButton.setImage(UIImage(named: "image"), for: .normal) // TODO: load user image
+        avatarButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        avatarButton.clipsToBounds = true
+        avatarButton.layer.cornerRadius = 20
+
+        avatarButton.addAction(UIAction { [weak self] _ in
+            let profileVC = ProfileViewController()
+            self?.navigationItem.backButtonTitle = "Назад"
+            self?.navigationController?.pushViewController(profileVC, animated: true)
+        }, for: .touchUpInside)
+
+        let buttonContainerView = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        buttonContainerView.addSubview(avatarButton)
+
+        avatarButton.center = CGPoint(x: buttonContainerView.bounds.midX, y: buttonContainerView.bounds.midY)
+
+        let barButtonItem = UIBarButtonItem(customView: buttonContainerView)
+        navigationItem.rightBarButtonItem = barButtonItem
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .background
+        appearance.shadowColor = nil
+
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+    }
 
     func showEvents(events: [EventModel]) {
         eventsTable.reloadData()
@@ -179,7 +241,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private func configureSegmented() {
         view.addSubview(segmented)
         segmented.snp.makeConstraints { make in
-            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.segmentedOffsetBottom)
+            make.top.equalTo(self.view.safeAreaLayoutGuide).inset(30)
             make.leading.trailing.equalTo(view).inset(Constants.segmentedOffsetH)
         }
 
@@ -192,7 +254,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private func configureButton() {
         view.addSubview(addButton)
         addButton.snp.makeConstraints { make in
-            make.bottom.equalTo(eventsTable.snp.top).offset(-Constants.addButtonOffsetBottom)
+            make.top.equalTo(segmented.snp.bottom).offset(Constants.addButtonOffsetBottom)
             make.trailing.equalTo(eventsTable.snp.trailing)
             make.width.equalTo(Constants.addButtonWidth)
             make.height.equalTo(Constants.addButtonHeight)
