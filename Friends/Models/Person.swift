@@ -9,8 +9,8 @@ import UIKit
 struct Person: Codable {
     var id: UUID
     var name: String
+    var password: String
     var imageURL: URL?
-    var isSelectedFirstTime = true
     var friends: [UUID] = []
     var debts: [Debt]
 
@@ -58,7 +58,7 @@ class PersonContainer {
 
     //    TODO: убрать временную реализацию
     private init() {
-        self.user = Person(id: UUID(), name: "TestUser", debts: [])
+        self.user = Person(id: UUID(), name: "TestUser", password: "12435-adsfa-34141234", debts: [])
         self.debtFrom = []
         self.debtTo = []
     }
