@@ -214,7 +214,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         eventsTableLeadingConstraint?.update(offset: leftOffset)
         eventsTableTrailingConstraint?.update(offset: rightOffset)
 
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
         })
     }
