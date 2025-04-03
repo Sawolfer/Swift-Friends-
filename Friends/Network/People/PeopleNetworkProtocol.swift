@@ -6,14 +6,14 @@
 //
 
 import Foundation
-
+import UIKit
 
 protocol PeopleNetworkProtocol {
-    func createAccount(_ person: Person, completion: @escaping (Bool) -> Void)
-    func updateAccount(_ person: Person, completion: @escaping (Bool) -> Void)
-    func deleteAccount(with id: UUID, completion: @escaping (Bool) -> Void)
-    func addFriend(_ person: Person, to friendId: UUID, completion: @escaping (Bool) -> Void)
-    func loadFriends(person: Person, completion: @escaping ([Person]) -> Void)
-    func removeFriend(person: Person, with friendId: UUID, completion: @escaping (Bool) -> Void)
-    func findUser(by prefix: String, completion: @escaping ([Person]) -> Void)
+    // MARK: - User Account Logic
+    func createAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func updateAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func deleteAccount(with id: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func uploadIcon(for person: Person, image: UIImage, completion: @escaping (Result<URL, NetworkError>) -> Void)
+    // MARK: - Find Users
+    func findUser(by prefix: String, completion: @escaping (Result<[Person], NetworkError>) -> Void)
 }

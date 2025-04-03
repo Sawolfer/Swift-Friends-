@@ -19,7 +19,7 @@ struct Debt: Identifiable, Hashable, Codable {
     var personTo: Person
     var personFrom: Person
     var debt: Double
-    let id = UUID()
+    var id = UUID()
 }
 enum DebtType {
     case from
