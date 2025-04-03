@@ -17,6 +17,7 @@ class DebitorsView: UIView {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
         tableView.register(PersonCell.self, forCellReuseIdentifier: PersonCell.personCellIdentifier)
         return tableView
     }()
