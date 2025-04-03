@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 import SnapKit
 
-class AddEventViewController: UIViewController {
+final class AddEventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
