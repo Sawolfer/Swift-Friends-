@@ -28,13 +28,7 @@ struct Person: Codable {
 
 // MARK: - Equatable
 
-extension Person: Identifiable, Equatable, Hashable {
-    static func == (lhs: Person, rhs: Person) -> Bool {
-        return lhs.id == rhs.id
-    }
-}
-
-extension Person: Identifiable, Hashable{}
+extension Person: Identifiable, Hashable {}
 
 //MARK: - Debt Functions
 extension Person {

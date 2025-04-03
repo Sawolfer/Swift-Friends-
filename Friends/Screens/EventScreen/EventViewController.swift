@@ -130,7 +130,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         navigationController?.navigationBar.compactAppearance = appearance
     }
 
-    func showEvents(events: [EventModel]) {
+    func showEvents(events: [EventModels.Event]) {
         eventsTable.reloadData()
     }
 
