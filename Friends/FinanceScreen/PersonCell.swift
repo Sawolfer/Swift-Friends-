@@ -9,6 +9,9 @@ import UIKit
 import SnapKit
 
 class PersonCell: UITableViewCell {
+
+    // MARK: - Properties
+
     static let personCellIdentifier = "PersonCell"
     private var isEditable: Bool = false
     private var person: Person?
@@ -57,6 +60,8 @@ class PersonCell: UITableViewCell {
         return view
     }()
 
+    // MARK: - Initializers
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -75,7 +80,6 @@ class PersonCell: UITableViewCell {
         stackView.addArrangedSubview(debtTextFieldView)
 
         debtTextFieldView.delegate = self
-        debtTextFieldView.addTarget(self, action: #selector(debtTextFieldDidChange), for: .editingChanged)
 
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(10)
@@ -86,6 +90,8 @@ class PersonCell: UITableViewCell {
             make.width.equalToSuperview().multipliedBy(0.95)
             make.height.equalTo(1)
         }
+
+        setupTextField()
     }
 
     func configure(with person: Person, isDebitor: Bool, isEditable: Bool = false, resetTextField: Bool = false) {
@@ -99,7 +105,29 @@ class PersonCell: UITableViewCell {
         debtTextFieldView.textColor = color
         self.isEditable = isEditable
     }
+
+    private func setupTextField() {
+        let editingAction = UIAction { [weak self] _ in
+            self?.handleDebtTextChange()
+        }
+        debtTextFieldView.addAction(editingAction, for: .editingChanged)
+    }
+
+    private func handleDebtTextChange() {
+        guard let person = person else { return }
+
+        let debtText = debtTextFieldView.text?
+            .replacingOccurrences(of: "₽", with: "")
+            .trimmingCharacters(in: .whitespaces) ?? "0"
+
+        delegate?.updateSelectedPersonDebt(
+            personId: person.id,
+            debt: Double(debtText) ?? 0
+        )
+    }
 }
+
+// MARK: - Extensions
 
 extension PersonCell: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -109,12 +137,5 @@ extension PersonCell: UITextFieldDelegate {
 
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         return isEditable
-    }
-
-    @objc private func debtTextFieldDidChange(_ textField: UITextField) {
-        guard let person = person else { return }
-
-        let debtText = textField.text?.replacingOccurrences(of: "₽", with: "").trimmingCharacters(in: .whitespaces) ?? "0"
-        delegate?.updateSelectedPersonDebt(personId: person.id, debt: Double(debtText) ?? 0)
     }
 }

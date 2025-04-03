@@ -8,11 +8,15 @@
 import UIKit
 import SwiftUI
 
+// MARK: - Protocols
+
 protocol NewExpenseModalViewControllerDelegate: AnyObject {
     func updateSelectedPersonDebt(personId: UUID, debt: Double)
 }
 
 final class NewExpenseModalViewController: UIViewController {
+
+    // MARK: - Properties
 
     private var isSplitEven: Bool = true
     private var debts: [Double] = []
@@ -35,7 +39,7 @@ final class NewExpenseModalViewController: UIViewController {
 
     private var expenseView: NewExpenseModalView {
         guard let view = view as? NewExpenseModalView else {
-            assertionFailure("Failed to dequeue PersonCell") // Логируем ошибку для отладки
+            assertionFailure("Failed to dequeue PersonCell")
             return NewExpenseModalView()
         }
         return view
@@ -65,13 +69,20 @@ final class NewExpenseModalViewController: UIViewController {
     }
 
     private func setupActions() {
-        expenseView.splitButton.addTarget(self, action: #selector(showSplitMenu), for: .touchUpInside)
+        setupSplitButton()
     }
 
     private func setupNavigationBar() {
         navigationItem.title = "Новая трата"
-        let cancelButton = UIBarButtonItem(title: "Отмена", style: .plain, target: self, action: #selector(cancelTapped))
-        let addButton = UIBarButtonItem(title: "Добавить", style: .done, target: self, action: #selector(addTapped))
+        let cancelButton = UIBarButtonItem(title: "Отмена",
+                                           primaryAction: UIAction { [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+
+        let addButton = UIBarButtonItem(title: "Добавить",
+                                        primaryAction: UIAction { [weak self] _ in
+            self?.dismiss(animated: true)
+        })
 
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = addButton
@@ -81,58 +92,45 @@ final class NewExpenseModalViewController: UIViewController {
         addButton.isEnabled = false
     }
 
-    @objc private func cancelTapped() {
-        dismiss(animated: true)
-    }
-
-    @objc private func addTapped() {
-        dismiss(animated: true)
-    }
-
-    @objc private func addFriendTapped() {
-        print("Add Friend tapped")
-
-        let selectedFriendsBinding = Binding<[Person]>(
-            get: { [weak self] in
-                self?.friends ?? []
-            },
-            set: { [weak self] newValue in
-                self?.friends = newValue
-            }
-        )
-
-        let selectFriendsView = SelectFriendsViewExpence(
-            friends: PersonContainer.shared.getPeople(),
-            selectedFriends: selectedFriendsBinding
-        )
-        let hostingController = UIHostingController(rootView: selectFriendsView)
-        present(hostingController, animated: true, completion: nil)
-    }
-
-    @objc private func showSplitMenu() {
-        let splitEvenAction = UIAction(title: "Разделить поровну",
-                                       image: UIImage(systemName: "person.2.fill"),
-                                       state: isSplitEven ? .on : .off) { [weak self] _ in
-            self?.isSplitEven = true
-            self?.expenseView.totalTextField.isEnabled = true
-            self?.expenseView.splitButton.setTitle("Разделить поровну", for: .normal)
-            self?.updateDebts()
-            self?.expenseView.tableView.reloadData()
-            self?.showSplitMenu()
+    private func setupSplitButton() {
+        let splitEvenAction = UIAction(
+            title: "Разделить поровну",
+            image: UIImage(systemName: "person.2.fill"),
+            state: isSplitEven ? .on : .off
+        ) { [weak self] _ in
+            self?.handleSplitEvenSelection()
         }
 
-        let enterManuallyAction = UIAction(title: "Ввести вручную", image: UIImage(systemName: "pencil"), state: isSplitEven ? .off : .on) { [weak self] _ in
-            self?.isSplitEven = false
-            self?.expenseView.totalTextField.isEnabled = false
-            self?.expenseView.splitButton.setTitle("Ввести вручную", for: .normal)
-            self?.updateDebts()
-            self?.expenseView.tableView.reloadData()
-            self?.showSplitMenu()
+        let enterManuallyAction = UIAction(
+            title: "Ввести вручную",
+            image: UIImage(systemName: "pencil"),
+            state: isSplitEven ? .off : .on
+        ) { [weak self] _ in
+            self?.handleManualEntrySelection()
         }
 
         let menu = UIMenu(title: "", children: [splitEvenAction, enterManuallyAction])
+
         expenseView.splitButton.showsMenuAsPrimaryAction = true
         expenseView.splitButton.menu = menu
+    }
+
+    private func handleSplitEvenSelection() {
+        isSplitEven = true
+        expenseView.totalTextField.isEnabled = true
+        expenseView.splitButton.setTitle("Разделить поровну", for: .normal)
+        updateDebts()
+        setupSplitButton()
+        expenseView.tableView.reloadData()
+    }
+
+    private func handleManualEntrySelection() {
+        isSplitEven = false
+        expenseView.totalTextField.isEnabled = false
+        expenseView.splitButton.setTitle("Ввести вручную", for: .normal)
+        updateDebts()
+        setupSplitButton()
+        expenseView.tableView.reloadData()
     }
 
     private func updateDebts() {
@@ -148,6 +146,8 @@ final class NewExpenseModalViewController: UIViewController {
         }
     }
 }
+
+// MARK: - Extensions
 
 extension NewExpenseModalViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -214,7 +214,22 @@ extension NewExpenseModalViewController: UITableViewDelegate {
         addFriendButton.setTitle("Добавить друзей", for: .normal)
         addFriendButton.setTitleColor(.systemBlue, for: .normal)
         addFriendButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        addFriendButton.addTarget(self, action: #selector(addFriendTapped), for: .touchUpInside)
+        addFriendButton.addAction(
+            UIAction { [weak self] _ in
+                let selectedFriendsBinding = Binding<[Person]>(
+                    get: { self?.friends ?? [] },
+                    set: { self?.friends = $0 }
+                )
+
+                let selectFriendsView = SelectFriendsViewExpence(
+                    friends: PersonContainer.shared.getPeople(),
+                    selectedFriends: selectedFriendsBinding
+                )
+                let hostingController = UIHostingController(rootView: selectFriendsView)
+                self?.present(hostingController, animated: true)
+            },
+            for: .touchUpInside
+        )
         footerView.addSubview(addFriendButton)
 
         addFriendButton.snp.makeConstraints { make in

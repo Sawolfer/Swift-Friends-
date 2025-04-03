@@ -10,6 +10,8 @@ import SnapKit
 
 final class NewExpenseModalView: UIView {
 
+    // MARK: - Properties
+
     private(set) lazy var totalTextField: UITextField = {
         let textField = UITextField()
         textField.text = "1000₽"
@@ -52,6 +54,8 @@ final class NewExpenseModalView: UIView {
         return tableView
     }()
 
+    // MARK: - Initializers
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -65,6 +69,8 @@ final class NewExpenseModalView: UIView {
     func setupView() {
         [totalTextField, tableView].forEach(self.addSubview)
     }
+
+    // MARK: - Constraints
 
     override func layoutSubviews() {
         super.layoutSubviews()
