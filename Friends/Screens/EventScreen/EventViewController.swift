@@ -40,7 +40,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
 
-        static let addButtonTitle: String = "Add +"
+        static let addButtonTitle: String = "Добавить +"
         static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
         static let addButtonOffsetBottom: CGFloat = 10
         static let addButtonWidth: CGFloat = 70
@@ -62,6 +62,7 @@ class EventViewController: UIViewController, EventViewProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         configureUI()
         presenter?.viewLoaded()
     }
@@ -222,6 +223,11 @@ class EventViewController: UIViewController, EventViewProtocol {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
         generator.selectionChanged()
+    }
+    
+    private func setupNavigationBar() {
+        title = "Встречи"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     // MARK: - Actions
