@@ -279,7 +279,7 @@ extension NewExpenseModalViewController: UITextFieldDelegate {
     }
 
     private func updateAddButtonState() {
-        if let text = expenseView.totalTextField.text, !text.isEmpty, text.count > 1, text != "0₽", !debts.contains(where: { $0 == 0 }) {
+        if let text = expenseView.totalTextField.text, !text.isEmpty, text.count > 1, text != "0₽", !debts.contains(where: { $0 == 0 }), !friends.isEmpty {
             navigationItem.rightBarButtonItem?.isEnabled = true
             navigationItem.rightBarButtonItem?.tintColor = .systemBlue
         } else {
