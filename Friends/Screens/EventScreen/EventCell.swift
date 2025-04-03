@@ -167,8 +167,7 @@ final class EventCell: UITableViewCell {
 
         let region = MKCoordinateRegion(
             center: coordinate,
-            latitudinalMeters: 250,
-            longitudinalMeters: 250
+            span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         )
         mapView.setRegion(region, animated: true)
 
