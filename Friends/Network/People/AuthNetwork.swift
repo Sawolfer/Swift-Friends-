@@ -17,7 +17,7 @@ class AuthNetwork {
     private let usersCollection = "users"
     private let authCollection = "auth"
 
-    // MARK: - Account Creation
+// MARK: - Account Creation
     func createAccount(name: String, username: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -26,12 +26,12 @@ class AuthNetwork {
                     completion(.failure(.custom(errorCode: 500, description: error.localizedDescription)))
                     return
                 }
-//              MARK: - check for unique username
+// MARK: - check for unique username
                 if let snapshot = snapshot, !snapshot.documents.isEmpty {
                     completion(.failure(.custom(errorCode: 409, description: "Username already exists")))
                     return
                 }
-//              MARK: - create new person
+// MARK: - create new person
                 let personId = UUID()
                 let person = Person(
                     id: personId,
@@ -42,7 +42,7 @@ class AuthNetwork {
                     friends: [],
                     debts: []
                 )
-//              MARK: - create auth document
+// MARK: - create auth document
                 let authData: [String: Any] = [
                     "userId": personId.uuidString,
                     "name": name,
@@ -72,7 +72,7 @@ class AuthNetwork {
             }
     }
 
-//  MARK: - Login
+// MARK: - Login
     func login(name: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -116,7 +116,7 @@ class AuthNetwork {
         cache.saveUserInfo(userInfo: userInfo)
     }
 
-//  MARK: - Name Unique check
+// MARK: - Name Unique check
     func checkNameAvailability(name: String, completion: @escaping (Result<Bool, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
@@ -130,7 +130,7 @@ class AuthNetwork {
                 completion(.success(isAvailable))
             }
     }
-//  MARK: - Hash Password
+// MARK: - Hash Password
     func hashPassword(_ password: String) -> String {
         let data = Data(password.utf8)
         let hash = SHA256.hash(data: data)
