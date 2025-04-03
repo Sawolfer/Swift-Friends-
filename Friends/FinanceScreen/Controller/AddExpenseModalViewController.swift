@@ -18,7 +18,7 @@ final class AddExpenseModalViewController: UIViewController {
     var isSearchActive: Bool = false
     var isAllPeopleShown: Bool = true
 
-    let people: [Person] = PersonContainer.shared.getPeople()
+    let people: [Person] = []
     var filteredPeople: [Person] = []
     var selectedPeople: Set<Person> = []
 
@@ -133,11 +133,10 @@ extension AddExpenseModalViewController: UITableViewDataSource {
         var person: Person!
         if isSearchActive && !filteredPeople.isEmpty {
             person = filteredPeople[indexPath.row]
-
-            cell.configure(with: person, isDebitor: PersonContainer.shared.isDebitor(person))
+            cell.configure(with: person, isDebitor: true)
         } else if isAllPeopleShown {
             person = people[indexPath.row]
-            cell.configure(with: person, isDebitor: PersonContainer.shared.isDebitor(person))
+            cell.configure(with: person, isDebitor: false)
         } else {
             var resetTextField = false
             person = selectedPeople[selectedPeople.index(selectedPeople.startIndex, offsetBy: indexPath.row)]

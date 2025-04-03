@@ -13,170 +13,78 @@ class PeopleNetwork: PeopleNetworkProtocol {
     private let firestore = Firestore.firestore()
     private let storage = Storage.storage()
     private let usersCollection = "users"
-//TODO: make authorization and login systems 
 
-// MARK: - User Account Logic
-    func createAccount(_ person: Person, completion: @escaping (Bool) -> Void) {
-        let userRef = firestore.collection(usersCollection).document(
-            person.id.uuidString)
+    // MARK: - User Account Logic
+    func createAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+        let userRef = firestore.collection(usersCollection).document(person.id.uuidString)
         do {
             try userRef.setData(from: person)
-            print("User successfully created")
-            completion(true)
+            completion(.success(()))
         } catch {
-            print("Error while creating account: \(error.localizedDescription)")
-            completion(false)
+            completion(.failure(.download))
         }
     }
-    func updateAccount(_ person: Person, completion: @escaping (Bool) -> Void) {
-        let userRef = firestore.collection(usersCollection).document(
-            person.id.uuidString)
+
+    func updateAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+        let userRef = firestore.collection(usersCollection).document(person.id.uuidString)
         do {
             try userRef.setData(from: person, merge: true)
-            print("User data successfully updated")
-            completion(true)
+            completion(.success(()))
         } catch {
-            print("Error updating user data: \(error.localizedDescription)")
-            completion(false)
+            completion(.failure(.download))
         }
     }
-    func deleteAccount(with id: UUID, completion: @escaping (Bool) -> Void) {
-        let userRef = firestore.collection(usersCollection).document(
-            id.uuidString)
+
+    func deleteAccount(with id: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+        let userRef = firestore.collection(usersCollection).document(id.uuidString)
         userRef.delete { error in
             if let error = error {
-                print("Error deleting user: \(error.localizedDescription)")
-                completion(false)
+                completion(.failure(.custom(errorCode: 420, description: error.localizedDescription)))
                 return
             }
-            print("User successfully deleted")
+            completion(.success(()))
         }
     }
-//   MARK: - Upload new icon
-//    TODO: remove previous icon before adding new one
-    func uploadIcon(for person: Person, image: UIImage) {
-        guard let imageData = person.icon.pngData() else {
-            print("No image data available")
+
+    func uploadIcon(for person: Person, image: UIImage, completion: @escaping (Result<URL, NetworkError>) -> Void) {
+        guard let imageData = image.pngData() else {
+            completion(.failure(.custom(errorCode: 412, description: "No image data")))
             return
         }
 
         let userStorage = storage.reference().child("users/\(person.id.uuidString)/icon.jpg")
-        userStorage.putData(imageData, metadata: nil) { _, error in
-            if let error = error {
-                print("Error uploading image: \(error.localizedDescription)")
-                return
-            }
-            userStorage.downloadURL { url, error in
-                if let error = error {
-                    print("Error getting download URL: \(error.localizedDescription)")
-                } else {
-                    print("Successfully uploaded icon image")
-                    return
-                }
-            }
-        }
 
-    }
-//  MARK: - Friends Management
-//    TODO: add friends from both sides
-    func addFriend(
-        _ person: Person, to friendId: UUID,
-        completion: @escaping (Bool) -> Void
-    ) {
-        firestore.collection(usersCollection).document(person.id.uuidString)
-            .updateData([
-                "friends": FieldValue.arrayUnion([friendId.uuidString])
-            ]) { error in
+        userStorage.delete { error in
+            userStorage.putData(imageData, metadata: nil) { _, error in
                 if let error = error {
-                    print("Error adding friend: \(error.localizedDescription)")
-                    completion(false)
+                    completion(.failure(.custom(errorCode: 412, description: error.localizedDescription)))
                     return
                 }
-                print("Friend successfully added")
-                completion(true)
-            }
-    }
-    func loadFriends(person: Person, completion: @escaping ([Person]) -> Void) {
-        firestore.collection(usersCollection).document(person.id.uuidString)
-            .getDocument { snapshot, error in
-                if let error = error {
-                    print(
-                        "Error while loading friends: \(error.localizedDescription)"
-                    )
-                    completion([])
-                    return
-                }
-                guard let data = snapshot?.data(),
-                    let friendsIds = data["friends"] as? [UUID]
-                else {
-                    completion([])
-                    return
-                }
-                let group = DispatchGroup()
-                var friends: [Person] = []
-
-                for friendId in friendsIds {
-                    group.enter()
-                    self.firestore.collection(self.usersCollection).document(
-                        friendId.uuidString
-                    ).getDocument { friendSnapshot, error in
+                userStorage.downloadURL { url, error in
+                    if let error = error {
+                        completion(.failure(.download))
+                        return
+                    }
+                    guard let url = url else {
+                        completion(.failure(.custom(errorCode: 412, description: "No download URL")))
+                        return
+                    }
+                    let userRef = self.firestore.collection("users").document(person.id.uuidString)
+                    userRef.updateData([
+                        "imageURL": url.absoluteString
+                    ]) { error in
                         if let error = error {
-                            print(
-                                "Error loading friend \(friendId): \(error.localizedDescription)"
-                            )
-                        } else if let friendData = friendSnapshot?.data() {
-                            if let friend = try? Firestore.Decoder().decode(
-                                Person.self, from: friendData)
-                            {
-                                friends.append(friend)
-                            }
+                            completion(.failure(.custom(errorCode: 413, description: "Failed to update user profile: \(error.localizedDescription)")))
+                            return
                         }
-                        group.leave()
+                        completion(.success(url))
                     }
                 }
-
-                group.notify(queue: .main) {
-                    completion(friends)
-                }
-            }
-    }
-//    TODO: remove friends from both sides
-    func removeFriend(
-        person: Person, with friendId: UUID,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let userRef = firestore.collection(usersCollection).document(
-            person.id.uuidString)
-        userRef.getDocument { snapshot, error in
-            if let error = error {
-                print(
-                    "Error while removing friend: \(error.localizedDescription)"
-                )
-                completion(false)
-                return
-            }
-            guard let data = snapshot?.data(),
-                var friends = data["friends"] as? [String]
-            else {
-                completion(false)
-                return
-            }
-            friends.removeAll { $0 == friendId.uuidString }
-
-            userRef.updateData(["friends": friends]) { error in
-                if let error = error {
-                    print("Error writing data: \(error.localizedDescription)")
-                    completion(!false)
-                    return
-                } else {
-                    completion(true)
-                    return
-                }
             }
         }
     }
-    // MARK: - Find Users
-    func findUser(by prefix: String, completion: @escaping ([Person]) -> Void) {
+
+    func findUser(by prefix: String, completion: @escaping (Result<[Person], NetworkError>) -> Void) {
         let start = prefix
         let end = prefix + "\u{f8ff}"
 
@@ -185,15 +93,13 @@ class PeopleNetwork: PeopleNetworkProtocol {
             .whereField("name", isLessThan: end)
             .getDocuments { snapshot, error in
                 if let error = error {
-                    print("Error finding users: \(error.localizedDescription)")
-                    completion([])
+                    completion(.failure(.custom(errorCode: 435, description: error.localizedDescription)))
                     return
                 }
-                let users =
-                    snapshot?.documents.compactMap { document -> Person? in
-                        try? document.data(as: Person.self)
-                    } ?? []
-                completion(users)
+                let users = snapshot?.documents.compactMap { document -> Person? in
+                    try? document.data(as: Person.self)
+                } ?? []
+                completion(.success(users))
             }
     }
 }
