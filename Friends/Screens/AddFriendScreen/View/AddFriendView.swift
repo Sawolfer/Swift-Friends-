@@ -25,7 +25,7 @@ struct AddFriendView: View {
                             // TODO: Add Friend Action
                             viewModel.addFriend(friendId: person.id)
                         }) {
-                            Image(systemName: "person.fill.checkmark")
+                            Image(systemName: "plus")
                         }
                     }
                 }
