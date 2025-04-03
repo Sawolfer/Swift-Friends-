@@ -25,8 +25,7 @@ struct Person: Codable {
     }
 }
 //MARK: - Equatable
-extension Person: Identifiable, Equatable, Hashable {
-}
+extension Person: Identifiable, Equatable, Hashable {}
 
 //MARK: - Debt Functions
 extension Person {
@@ -36,7 +35,6 @@ extension Person {
     func getDebitors() -> [Debt] {
         debts.filter { $0.personTo == self }
     }
-
     mutating func addDebt(_ debt: Debt) {
         debts.append(debt)
     }
