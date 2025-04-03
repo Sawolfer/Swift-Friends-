@@ -20,18 +20,11 @@ enum EventModels {
         var startTime: Date?
         var endTime: Date?
         var location: Location?
-        var attendiesInfo: [AttendeeInfo]
-        var isTimeFixed: Bool
-        var creationDate: Date
-        var startTime: Date?
-        var endTime: Date?
-        var location: Location?
     }
 
     struct AttendeeInfo: Codable {
         var id: UUID
         var status: AttendanceStatus
-        var pickedCells: Set<TimeGrid.Cell>?
         var pickedCells: Set<TimeGrid.Cell>?
     }
 
