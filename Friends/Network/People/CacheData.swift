@@ -10,7 +10,7 @@ import Security
 
 class CahcheUserInfo {
 
-    private let service = "com.friends.cacheuserinfo"
+    private let service = "sirius.Friends.cacheinfo"
     private let account = "userCredentials"
 
     func saveUserInfo(userInfo: [String: Any]) {
