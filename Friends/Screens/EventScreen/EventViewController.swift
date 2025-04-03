@@ -17,7 +17,7 @@ class EventViewController: UIViewController, EventViewProtocol {
     private enum Constants {
         static let backgroundLightHex: String = "F5F5F5"
 
-        static let tableViewTopOffset: CGFloat = 175
+        static let tableViewTopOffset: CGFloat = 245
         static let tableOffsetH: CGFloat = 20
         static let heightForRow: CGFloat = 170
         static let heightForRowAnimated: CGFloat = 100
@@ -40,10 +40,10 @@ class EventViewController: UIViewController, EventViewProtocol {
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
 
-        static let addButtonTitle: String = "Add +"
-        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
+        static let addButtonTitle: String = "Добавить +"
+        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
         static let addButtonOffsetBottom: CGFloat = 10
-        static let addButtonWidth: CGFloat = 70
+        static let addButtonWidth: CGFloat = 100
         static let addButtonHeight: CGFloat = 30
         static let addButtonCornerRadius: CGFloat = 15
     }
@@ -62,6 +62,7 @@ class EventViewController: UIViewController, EventViewProtocol {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupNavigationBar()
         configureUI()
         presenter?.viewLoaded()
     }
@@ -213,7 +214,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         eventsTableLeadingConstraint?.update(offset: leftOffset)
         eventsTableTrailingConstraint?.update(offset: rightOffset)
 
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseInOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: .zero, options: .curveEaseInOut, animations: {
             self.view.layoutIfNeeded()
         })
     }
@@ -222,6 +223,11 @@ class EventViewController: UIViewController, EventViewProtocol {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
         generator.selectionChanged()
+    }
+
+    private func setupNavigationBar() {
+        title = "Встречи"
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     // MARK: - Actions
