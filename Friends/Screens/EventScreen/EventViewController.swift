@@ -34,7 +34,7 @@ class EventViewController: UIViewController, EventViewProtocol {
 
         static let tableAnimateOffsetMultiplier: CGFloat = 2
 
-        static let segmentedOffsetH: CGFloat = 20
+        static let segmentedOffsetH: CGFloat = 15
         static let segmentedOffsetBottom: CGFloat = 55
 
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
@@ -130,19 +130,19 @@ class EventViewController: UIViewController, EventViewProtocol {
         navigationController?.navigationBar.compactAppearance = appearance
     }
 
-    func showEvents(events: [EventModel]) {
+    func showEvents(events: [EventModels.Event]) {
         eventsTable.reloadData()
     }
 
-    func showArchiveEvents(events: [EventModel]) {
+    func showArchiveEvents(events: [EventModels.Event]) {
         archiveTable.reloadData()
     }
 
-    func updateEvent(at index: Int, event: EventModel) {
+    func updateEvent(at index: Int, event: EventModels.Event) {
         eventsTable.reloadRows(at: [IndexPath(row: index, section: 0)], with: .automatic)
     }
 
-    func moveEventToArchive(event: EventModel, from index: Int) {
+    func moveEventToArchive(event: EventModels.Event, from index: Int) {
         eventsTable.performBatchUpdates({
             eventsTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
         }, completion: { _ in
@@ -152,7 +152,7 @@ class EventViewController: UIViewController, EventViewProtocol {
         })
     }
 
-    func moveEventFromArchive(event: EventModel, from index: Int) {
+    func moveEventFromArchive(event: EventModels.Event, from index: Int) {
         archiveTable.performBatchUpdates({
             archiveTable.deleteRows(at: [IndexPath(row: index, section: 0)], with: .left)
         }, completion: { _ in
@@ -246,7 +246,6 @@ class EventViewController: UIViewController, EventViewProtocol {
         }
 
         segmented.segmentChanged = { [weak self] selectedIndex in
-            self?.presenter?.didSelectSegment(at: selectedIndex)
             self?.moveTables(to: selectedIndex)
         }
     }

@@ -24,13 +24,13 @@ class TabBarController: UITabBarController {
 
         let secondViewController = UINavigationController(rootViewController: EventAssembly.build())
         secondViewController.tabBarItem = UITabBarItem(title: "Встречи",
-                                                       image: UIImage(systemName: "person.3"),
-                                                       selectedImage: UIImage(systemName: "person.3.fill"))
+                                                       image: UIImage(systemName: "balloon.2"),
+                                                       selectedImage: UIImage(systemName: "balloon.2.fill"))
 
         let thirdViewController = UINavigationController(rootViewController: FriendsViewController())
         thirdViewController.tabBarItem = UITabBarItem(title: "Друзья",
-                                                       image: UIImage(systemName: "person"),
-                                                       selectedImage: UIImage(systemName: "person"))
+                                                       image: UIImage(systemName: "person.2"),
+                                                       selectedImage: UIImage(systemName: "person.2.fill"))
 
         viewControllers = [firstViewController, secondViewController, thirdViewController]
 
