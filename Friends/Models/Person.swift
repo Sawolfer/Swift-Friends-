@@ -32,6 +32,8 @@ extension Person: Identifiable, Equatable, Hashable {
     }
 }
 
+extension Person: Identifiable, Hashable{}
+
 //MARK: - Debt Functions
 extension Person {
     func getDebts() -> [Debt] {

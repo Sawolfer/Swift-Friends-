@@ -113,7 +113,7 @@ class AuthNetwork {
 // MARK: - Cache Account (placeholder)
 
     private func cacheUserData(person: Person) {
-        let cache = CahcheUserInfo()
+        let cache = UserDataCache()
         let userInfo: [String: Any] = [
             "username": person.username,
             "password": person.password
