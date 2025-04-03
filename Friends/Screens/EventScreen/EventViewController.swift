@@ -34,7 +34,7 @@ class EventViewController: UIViewController, EventViewProtocol {
 
         static let tableAnimateOffsetMultiplier: CGFloat = 2
 
-        static let segmentedOffsetH: CGFloat = 20
+        static let segmentedOffsetH: CGFloat = 15
         static let segmentedOffsetBottom: CGFloat = 55
 
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
