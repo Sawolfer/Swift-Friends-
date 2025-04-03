@@ -26,7 +26,7 @@ struct Person: Codable {
 }
 // MARK: - Equatable
 
-extension Person: Identifiable, Equatable, Hashable {}
+extension Person: Identifiable, Hashable{}
 
 // MARK: - Debt Functions
 
