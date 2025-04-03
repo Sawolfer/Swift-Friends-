@@ -8,7 +8,7 @@
 import Foundation
 
 protocol FriendsNetworkProtocol {
-    func sendFriendRequest(_ person: Person, to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func sendFriendRequest(id: UUID, to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void)
     func loadFriends(id: UUID, completion: @escaping (Result<[Person], NetworkError>) -> Void)
-    func removeFriend(person: Person, with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void)
+    func removeFriend(id: UUID, with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void)
 }

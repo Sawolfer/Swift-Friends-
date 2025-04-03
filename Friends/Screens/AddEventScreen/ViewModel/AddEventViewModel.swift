@@ -37,7 +37,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func loadFriends() {
-        let id = UUID(uuidString: "C33A54A8-29C2-426A-BFA3-F3097F5F938D")!
+        let id = UUID(uuidString: "C33A54A8-29C2-426A-BFA3-F3097F5F938D")! // TODO: remove
         friendsProvider.loadFriends(id: id) { [weak self] result in
             switch result {
             case .success(let friends):

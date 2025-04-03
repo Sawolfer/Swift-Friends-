@@ -23,12 +23,14 @@ struct AddFriendView: View {
                         Spacer()
                         Button(action: {
                             // TODO: Add Friend Action
+                            viewModel.addFriend(friendId: person.id)
                         }) {
-                            Image(systemName: "plus")
+                            Image(systemName: "person.fill.checkmark")
                         }
                     }
                 }
             }
+            .navigationTitle("Add Friend")
             .searchable(text: $viewModel.searchText, prompt: "Search by username")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)

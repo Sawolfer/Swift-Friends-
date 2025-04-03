@@ -13,21 +13,21 @@ class FriendsNetwork: FriendsNetworkProtocol {
     private let usersCollection = "users"
     private let friendRequestsCollection = "friendRequests"
 
-    func sendFriendRequest(_ person: Person, to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func sendFriendRequest(id: UUID, to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         let batch = firestore.batch()
         let requestId = UUID().uuidString
 
         let requestRef = firestore.collection(friendRequestsCollection).document(requestId)
         let requestData: [String: Any] = [
             "id": requestId,
-            "fromUserId": person.id.uuidString,
+            "fromUserId": id.uuidString,
             "toUserId": friendId.uuidString,
             "status": "pending",
             "createdAt": Timestamp(date: Date())
         ]
         batch.setData(requestData, forDocument: requestRef)
 
-        let userRef = firestore.collection(usersCollection).document(person.id.uuidString)
+        let userRef = firestore.collection(usersCollection).document(id.uuidString)
         let friendRef = firestore.collection(usersCollection).document(friendId.uuidString)
 
         batch.updateData([
@@ -35,7 +35,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
         ], forDocument: userRef)
 
         batch.updateData([
-            "friends": FieldValue.arrayUnion([person.id.uuidString])
+            "friends": FieldValue.arrayUnion([id.uuidString])
         ], forDocument: friendRef)
 
         batch.commit { error in
@@ -85,10 +85,10 @@ class FriendsNetwork: FriendsNetworkProtocol {
             }
     }
 
-    func removeFriend(person: Person, with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func removeFriend(id: UUID, with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         let batch = firestore.batch()
 
-        let userRef = firestore.collection(usersCollection).document(person.id.uuidString)
+        let userRef = firestore.collection(usersCollection).document(id.uuidString)
         let friendRef = firestore.collection(usersCollection).document(friendId.uuidString)
 
         batch.updateData([
@@ -96,7 +96,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
         ], forDocument: userRef)
 
         batch.updateData([
-            "friends": FieldValue.arrayRemove([person.id.uuidString])
+            "friends": FieldValue.arrayRemove([id.uuidString])
         ], forDocument: friendRef)
 
         batch.commit { error in
