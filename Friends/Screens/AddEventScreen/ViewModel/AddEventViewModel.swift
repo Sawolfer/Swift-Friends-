@@ -18,6 +18,9 @@ final class AddEventViewModel: NSObject, ObservableObject {
 
     let rows = 16
     let columns = 7
+
+    let rows = 16
+    let columns = 7
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE"

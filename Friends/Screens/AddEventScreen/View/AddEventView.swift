@@ -9,6 +9,7 @@ import SwiftUI
 
 struct AddEventView: View {
     @StateObject private var viewModel = AddEventViewModel()
+    @StateObject private var viewModel = AddEventViewModel()
     @State var isShowingSelectFriendsView: Bool = false
     @Environment(\.dismiss) var dismiss
 
