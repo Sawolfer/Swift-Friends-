@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 enum NetworkError: Error {
     case download
     case upload

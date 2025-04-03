@@ -17,17 +17,18 @@ struct Person: Codable {
     var icon: UIImage {
         if let imageURL = imageURL,
             let imageData = try? Data(contentsOf: imageURL),
-            let image = UIImage(data: imageData)
-        {
+            let image = UIImage(data: imageData) {
             return image
         }
-        return UIImage(systemName: "person.circle")!
+        return UIImage(systemName: "person.circle") ?? UIImage()
     }
 }
-//MARK: - Equatable
+// MARK: - Equatable
+
 extension Person: Identifiable, Equatable, Hashable {}
 
-//MARK: - Debt Functions
+// MARK: - Debt Functions
+
 extension Person {
     func getDebts() -> [Debt] {
         debts.filter { $0.personFrom == self }
@@ -47,7 +48,8 @@ extension Person {
     }
 }
 
-//TODO: remove container
+// TODO: remove container
+
 class PersonContainer {
     let user: Person
 
@@ -69,8 +71,6 @@ class PersonContainer {
             return debtFrom
         case .to:
             return debtTo
-        default:
-            return []
         }
     }
 
@@ -185,9 +185,6 @@ class PersonContainer {
             return debtFrom.reduce(0) { $0 + $1.debt }
         case .to:
             return debtTo.reduce(0) { $0 + $1.debt }
-        default:
-            return 0
-
         }
     }
 }
