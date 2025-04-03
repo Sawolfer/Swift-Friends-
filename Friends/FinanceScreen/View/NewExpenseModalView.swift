@@ -48,7 +48,7 @@ final class NewExpenseModalView: UIView {
         let tableView = UITableView()
         tableView.register(PersonCell.self, forCellReuseIdentifier: PersonCell.personCellIdentifier)
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .systemGray6
+        tableView.backgroundColor = .background
         tableView.separatorStyle = .none
 
         return tableView

@@ -62,7 +62,7 @@ final class NewExpenseModalViewController: UIViewController {
     // MARK: - Setup Methods
 
     private func setupUI() {
-        expenseView.backgroundColor = .systemGray6
+        expenseView.backgroundColor = .background
         expenseView.totalTextField.delegate = self
         expenseView.tableView.delegate = self
         expenseView.tableView.dataSource = self
