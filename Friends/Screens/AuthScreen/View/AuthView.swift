@@ -69,6 +69,11 @@ struct AuthView: View {
             }
             .padding(.bottom, 50)
         }
+        .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(Color.background)
     }
+}
+
+#Preview {
+    AuthView()
 }
