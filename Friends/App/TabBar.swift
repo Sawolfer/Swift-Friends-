@@ -17,7 +17,8 @@ class TabBarController: UITabBarController {
 
     private func checkUserLoginStatus() {
         DispatchQueue.main.async { [weak self] in
-            if AppCache.shared.user != nil {
+            let userDataCache = UserDataCache()
+            if let userData = userDataCache.retrieveUserInfo() {
                 self?.setupUI()
             } else {
                 self?.presentAuthController()
