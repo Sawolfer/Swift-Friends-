@@ -166,6 +166,11 @@ class EventViewController: UIViewController, EventViewProtocol {
         self.navigationController?.present(viewController, animated: true)
     }
 
+    func displayViewEventViewController(_ viewController: UIViewController) {
+        self.navigationController?.present(viewController, animated: true)
+    }
+
+
     // MARK: - Private functions
 
     private func configureUI() {

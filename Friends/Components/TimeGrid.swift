@@ -54,6 +54,10 @@ struct TimeGrid: View {
             .highPriorityGesture(
                 DragGesture(minimumDistance: 0)
                     .onChanged { value in
+                        if !isEditable {
+                            return
+                        }
+
                         let cell = getCell(at: value.location, cellSize: cellSize)
 
                         if !isDragging {
@@ -66,6 +70,10 @@ struct TimeGrid: View {
                         toggleTempRect(start: startCell ?? Cell(row: 0, column: 0), end: cell, mode: mode)
                     }
                     .onEnded { _ in
+                        if !isEditable {
+                            return
+                        }
+                        
                         isDragging = false
                         switch mode {
                         case .select:
