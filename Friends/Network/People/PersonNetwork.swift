@@ -105,23 +105,28 @@ class PersonNetwork: PersonNetworkProtocol {
     }
 
     func findUser(by userId: UUID, completion: @escaping (Result<Person, NetworkError>) -> Void) {
-            firestore.collection(usersCollection).document(userId.uuidString).getDocument() { snapshot, error in
-                if let error = error {
-                    completion(.failure(.custom(errorCode: 436, description: error.localizedDescription)))
-                    return
+        firestore.collection(usersCollection).document(userId.uuidString).getDocument { snapshot, error in
+            if let error = error {
+                completion(.failure(.custom(errorCode: 436, description: error.localizedDescription)))
+                return
+            }
+
+            guard let document = snapshot, document.exists else {
+                completion(.failure(.custom(errorCode: 437, description: "User not found")))
+                return
+            }
+
+            do {
+                var person = try document.data(as: Person.self)
+
+                if document.data()?["debts"] == nil {
+                    person.debts = []
                 }
 
-                guard let document = snapshot, document.exists else {
-                    completion(.failure(.custom(errorCode: 437, description: "User not found")))
-                    return
-                }
-
-                do {
-                    let person = try document.data(as: Person.self)
-                    completion(.success(person))
-                } catch {
-                    completion(.failure(.custom(errorCode: 439, description: error.localizedDescription)))
-                }
+                completion(.success(person))
+            } catch {
+                completion(.failure(.custom(errorCode: 439, description: "Failed to decode user: \(error.localizedDescription)")))
             }
         }
+    }
 }
