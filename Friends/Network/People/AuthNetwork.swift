@@ -50,7 +50,7 @@ class AuthNetwork {
                     "userId": personId.uuidString,
                     "name": name,
                     "username": username,
-                    "password": self.hashPassword(password)
+                    "password": password
                 ]
 
                 let batch = self.firestore.batch()
@@ -80,7 +80,7 @@ class AuthNetwork {
     func login(name: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
             .whereField("name", isEqualTo: name)
-            .whereField("password", isEqualTo: self.hashPassword(password))
+            .whereField("password", isEqualTo: password)
             .getDocuments { snapshot, error in
 
                 if let error = error {
@@ -138,9 +138,9 @@ class AuthNetwork {
     }
 // MARK: - Hash Password
 
-    func hashPassword(_ password: String) -> String {
-        let data = Data(password.utf8)
-        let hash = SHA256.hash(data: data)
-        return hash.compactMap { String(format: "%02x", $0) }.joined()
-    }
+//    func hashPassword(_ password: String) -> String {
+//        let data = Data(password.utf8)
+//        let hash = SHA256.hash(data: data)
+//        return hash.compactMap { String(format: "%02x", $0) }.joined()
+//    }
 }
