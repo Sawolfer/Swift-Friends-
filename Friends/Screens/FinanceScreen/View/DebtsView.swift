@@ -9,28 +9,8 @@ import UIKit
 
 class DebtsView: UIView {
 
-    let debtsProvider = DebtsNetwork()
-
-    private var debts: [Debt] = [] {
-        didSet {
-            tableView.reloadData()
-        }
-    }
-
-    private func loadDebts() {
-        guard let user = AppCache.shared.user else { return }
-
-        debtsProvider.loadDebts(for: user) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let debtResponse):
-                    self?.debts = debtResponse
-                case .failure(let error):
-                    print(error.localizedDescription)
-                    self?.debts = []
-                }
-            }
-        }
+    private var debts: [Debt] {
+        return PersonContainer.shared.getDebts(dest: DebtType.from)
     }
 
     private lazy var tableView: UITableView = {
@@ -46,7 +26,6 @@ class DebtsView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
-        loadDebts()
     }
 
     @available(*, unavailable)

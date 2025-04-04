@@ -58,14 +58,20 @@ class PersonContainer {
 
     static let shared: PersonContainer = PersonContainer()
 
-    private var debtFrom: [Debt]
+    private var debtFrom: [Debt] = []
     private var debtTo: [Debt]
 
     //    TODO: убрать временную реализацию
     private init() {
         self.user = Person(id: UUID(), name: "TestUser", username: "testUser", password: "12435-adsfa-34141234", debts: [])
-        self.debtFrom = []
-        self.debtTo = []
+        self.debtFrom = [
+            Debt(personTo: Person(id: UUID(), name: "", username: "", password: "", debts: []), personFrom: Person(id: UUID(), name: "Соня", username: "", password: "", debts: []), debt: 346),
+            Debt(personTo: Person(id: UUID(), name: "", username: "", password: "", debts: []), personFrom: Person(id: UUID(), name: "Миша", username: "", password: "", debts: []), debt: 200)
+        ]
+        self.debtTo = [
+            Debt(personTo: Person(id: UUID(), name: "Алекс", username: "", password: "", debts: []), personFrom: Person(id: UUID(), name: "", username: "", password: "", debts: []), debt: 1005),
+            Debt(personTo: Person(id: UUID(), name: "Сергей", username: "", password: "", debts: []), personFrom: Person(id: UUID(), name: "", username: "", password: "", debts: []), debt: 55)
+        ]
     }
 
     public func getDebts(dest: DebtType) -> [Debt] {
