@@ -40,10 +40,10 @@ class EventViewController: UIViewController, EventViewProtocol {
         static let goingStatusImage: UIImage? = UIImage(systemName: "checkmark.circle.fill")
         static let declinedStatusImage: UIImage? = UIImage(systemName: "x.circle.fill")
 
-        static let addButtonTitle: String = "Add +"
-        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 16)
+        static let addButtonTitle: String = "Добавить +"
+        static let addButtonTitleFont: UIFont = UIFont.systemFont(ofSize: 14, weight: .bold)
         static let addButtonOffsetBottom: CGFloat = 10
-        static let addButtonWidth: CGFloat = 70
+        static let addButtonWidth: CGFloat = 100
         static let addButtonHeight: CGFloat = 30
         static let addButtonCornerRadius: CGFloat = 15
     }
