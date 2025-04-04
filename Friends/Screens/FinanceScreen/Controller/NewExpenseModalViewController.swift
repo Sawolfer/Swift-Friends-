@@ -20,6 +20,10 @@ final class NewExpenseModalViewController: UIViewController {
 
     private var isSplitEven: Bool = true
     private var debts: [Double] = []
+    private var loadedFriends: [Person] = []
+    private let friendsProvider = FriendsNetwork()
+    private let debtsProvider = DebtsNetwork()
+    private var user: Person? = AppCache.shared.user
     private var friends: [Person] = [] {
         didSet {
             var newDebts: [Double] = []
@@ -57,6 +61,7 @@ final class NewExpenseModalViewController: UIViewController {
         setupActions()
         setupNavigationBar()
         updateDebts()
+        loadFriends()
     }
 
     // MARK: - Setup Methods
@@ -79,10 +84,33 @@ final class NewExpenseModalViewController: UIViewController {
             self?.dismiss(animated: true)
         })
 
-        let addButton = UIBarButtonItem(title: "Добавить",
-                                        primaryAction: UIAction { [weak self] _ in
-            self?.dismiss(animated: true)
-        })
+        let addButton = UIBarButtonItem(
+            title: "Добавить",
+            image: nil,
+            primaryAction: UIAction { [weak self] _ in
+                guard let self = self, let user = self.user else { return }
+
+                for (index, friend) in (self.friends).enumerated() {
+                    guard index < (self.debts.count) else { break }
+
+                    if let debt = self.debts[index] as? Double {
+                        self.debtsProvider.addDebt(
+                            user,
+                            to: Debt(personTo: friend, personFrom: user, debt: debt),
+                            completion: { result in
+                                switch result {
+                                case .success(let friends):
+                                    print(friends)
+                                case .failure(let error):
+                                    print(error.localizedDescription)
+                                }
+                            }
+                        )
+                    }
+                }
+                self.dismiss(animated: true)
+            }
+        )
 
         navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = addButton
@@ -143,6 +171,19 @@ final class NewExpenseModalViewController: UIViewController {
         } else {
             let total = debts.reduce(0, +)
             expenseView.totalTextField.text = "\(total)₽"
+        }
+    }
+
+    func loadFriends() {
+        let id = UUID(uuidString: "C33A54A8-29C2-426A-BFA3-F3097F5F938D")! // TODO: remove
+        friendsProvider.loadFriends(id: id) { [weak self] result in
+            switch result {
+            case .success(let friends):
+                self?.loadedFriends = friends
+                print(friends)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
         }
     }
 }
@@ -222,7 +263,7 @@ extension NewExpenseModalViewController: UITableViewDelegate {
                 )
 
                 let selectFriendsView = SelectFriendsViewExpence(
-                    friends: PersonContainer.shared.getPeople(),
+                    friends: self?.loadedFriends ?? [],
                     selectedFriends: selectedFriendsBinding
                 )
                 let hostingController = UIHostingController(rootView: selectFriendsView)

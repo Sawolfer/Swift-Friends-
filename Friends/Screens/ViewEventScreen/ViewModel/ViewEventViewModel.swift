@@ -31,7 +31,7 @@ final class ViewEventViewModel: ObservableObject {
         return formatter
     }()
     private let generator = UIImpactFeedbackGenerator(style: .medium)
-    private let peopleProvider = PeopleNetwork()
+    private let peopleProvider = PersonNetwork()
     private let id = UUID(uuidString: "3320018A-B889-46F4-B895-D5A799AFC53A")!
 
     // MARK: - Public properties
