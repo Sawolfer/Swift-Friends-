@@ -32,6 +32,7 @@ final class ViewEventViewModel: ObservableObject {
     }()
     private let generator = UIImpactFeedbackGenerator(style: .medium)
     private let peopleProvider = PersonNetwork()
+
     private let id = AppCache.shared.user!.id
 
     // MARK: - Public properties

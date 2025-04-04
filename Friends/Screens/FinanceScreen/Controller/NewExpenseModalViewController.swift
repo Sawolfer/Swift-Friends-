@@ -20,6 +20,15 @@ final class NewExpenseModalViewController: UIViewController {
 
     private var isSplitEven: Bool = true
     private var debts: [Double] = []
+    private var loadedFriends: [Person] = [
+        Person(id: UUID(), name: "Алекс", username: "", password: "", debts: []),
+        Person(id: UUID(), name: "Миша", username: "", password: "", debts: []),
+        Person(id: UUID(), name: "Сергей", username: "", password: "", debts: []),
+        Person(id: UUID(), name: "Соня", username: "", password: "", debts: [])
+    ]
+    private let friendsProvider = FriendsNetwork()
+    private let debtsProvider = DebtsNetwork()
+    private var user: Person? = AppCache.shared.user
     private var friends: [Person] = [] {
         didSet {
             var newDebts: [Double] = []
@@ -79,9 +88,11 @@ final class NewExpenseModalViewController: UIViewController {
             self?.dismiss(animated: true)
         })
 
-        let addButton = UIBarButtonItem(title: "Добавить",
-                                        primaryAction: UIAction { [weak self] _ in
-            self?.dismiss(animated: true)
+        let addButton = UIBarButtonItem(
+            title: "Добавить",
+            image: nil,
+            primaryAction: UIAction { [weak self] _ in
+                self?.dismiss(animated: true)
         })
 
         navigationItem.leftBarButtonItem = cancelButton
@@ -138,11 +149,14 @@ final class NewExpenseModalViewController: UIViewController {
 
         if isSplitEven {
             let splitAmount = totalAmount / Double(friends.count)
-            debts = Array(repeating: splitAmount, count: friends.count)
+            let roundedSplitAmount = splitAmount.rounded(toPlaces: 1)
+            debts = Array(repeating: roundedSplitAmount, count: friends.count)
             expenseView.tableView.reloadData()
         } else {
+            debts = debts.map { $0.rounded(toPlaces: 1) }
             let total = debts.reduce(0, +)
-            expenseView.totalTextField.text = "\(total)₽"
+            let roundedTotal = total.rounded(toPlaces: 1)
+            expenseView.totalTextField.text = "\(roundedTotal)₽"
         }
     }
 }
@@ -164,7 +178,8 @@ extension NewExpenseModalViewController: UITableViewDataSource {
         }
         let person = friends[indexPath.row]
         cell.configure(with: person, isDebitor: true, isEditable: !isSplitEven, resetTextField: false)
-        cell.debtTextFieldView.text = debts[indexPath.row].description
+        let roundedDebt = debts[indexPath.row].rounded(toPlaces: 1)
+        cell.debtTextFieldView.text = String(format: "%.1f", roundedDebt)
         cell.delegate = self
 
         if indexPath.row == 0 {
@@ -222,7 +237,7 @@ extension NewExpenseModalViewController: UITableViewDelegate {
                 )
 
                 let selectFriendsView = SelectFriendsViewExpence(
-                    friends: PersonContainer.shared.getPeople(),
+                    friends: self?.loadedFriends ?? [],
                     selectedFriends: selectedFriendsBinding
                 )
                 let hostingController = UIHostingController(rootView: selectFriendsView)
@@ -293,8 +308,15 @@ extension NewExpenseModalViewController: NewExpenseModalViewControllerDelegate {
     func updateSelectedPersonDebt(personId: UUID, debt: Double) {
         guard let person = friends.first(where: { $0.id == personId }), let index = friends.firstIndex(of: person) else { return }
 
-        debts[index] = debt
+        debts[index] = debt.rounded(toPlaces: 1)
         updateDebts()
         updateAddButtonState()
+    }
+}
+
+extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
     }
 }
