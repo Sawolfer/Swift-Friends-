@@ -19,8 +19,8 @@ struct AddEventView: View {
 
             List {
                 Section {
-                    TextField("Title", text: $viewModel.event.title)
-                    TextField("Description", text: $viewModel.event.description)
+                    TextField("Название", text: $viewModel.event.title)
+                    TextField("Описание", text: $viewModel.event.description)
                 }
 
                 Section {
@@ -30,7 +30,7 @@ struct AddEventView: View {
                 Section {
                     FriendsList(viewModel: viewModel, isShowingSelectFriendsView: $isShowingSelectFriendsView)
                 } header: {
-                    Text("friends")
+                    Text("Друзья")
                 }
 
                 Section {
@@ -48,12 +48,12 @@ struct AddEventView: View {
                     .listRowBackground(Color.white)
                 } header: {
                     HStack {
-                        Text("Time")
+                        Text("Время")
                         Spacer()
                         Button(action: {
                             viewModel.selectAllCells()
                         }, label: {
-                            Text("Select All")
+                            Text("Выбрать все")
                                 .textCase(.none)
                                 .font(.system(size: 16))
                                 .fontWeight(.medium)
@@ -62,7 +62,7 @@ struct AddEventView: View {
                         Button(action: {
                             viewModel.clearCells()
                         }, label: {
-                            Text("Clear")
+                            Text("Отчистить")
                                 .textCase(.none)
                                 .font(.system(size: 16))
                         })
@@ -89,17 +89,17 @@ struct AddEventView: View {
             ZStack(alignment: .trailing) {
                 HStack {
                     Spacer()
-                    Text("New Event")
+                    Text("Новая встреча")
                         .fontWeight(.medium)
                     Spacer()
                 }
 
                 HStack {
-                    Button("Cancel") {
+                    Button("Отмена") {
                         dismiss()
                     }
                     Spacer()
-                    Button("Create") {
+                    Button("Создать") {
                         viewModel.addEvent()
                         dismiss()
                     }
@@ -126,7 +126,7 @@ struct AddEventView: View {
                 }
             }
 
-            Button(viewModel.selectedFriends.isEmpty ? "Add Friends" : "Edit List") {
+            Button(viewModel.selectedFriends.isEmpty ? "Добавить друзей" : "Редактировать") {
                 isShowingSelectFriendsView = true
             }
         }
@@ -142,7 +142,7 @@ struct AddEventView: View {
                     .resizable()
                     .frame(width: 25, height: 25)
                     .foregroundStyle(Color.blue)
-                Toggle("Location", isOn: $addLocation)
+                Toggle("Геолокация", isOn: $addLocation)
             }
 
             if addLocation {

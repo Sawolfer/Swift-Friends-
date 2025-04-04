@@ -30,8 +30,8 @@ struct AddFriendView: View {
                     }
                 }
             }
-            .navigationTitle("Add Friend")
-            .searchable(text: $viewModel.searchText, prompt: "Search by username")
+            .navigationTitle("Добавить друга")
+            .searchable(text: $viewModel.searchText, prompt: "Поиск по логину")
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .onChange(of: viewModel.searchText) { newValue in
