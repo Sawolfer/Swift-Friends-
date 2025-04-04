@@ -43,13 +43,9 @@ final class EventPresenter: EventPresenterProtocol {
         cell.configure(with: event)
     }
 
-    func didSelectSegment(at index: Int) {
-        // TODO: Настроить логика переключения между таблицами
-    }
-
     func didAcceptEvent(at index: Int) {
         let event = dataManager.loadEvents()[index]
-        dataManager.updateEventStatus(status: .going, at: index)
+        dataManager.updateEventAttendanceStatus(status: .attending, at: index)
         view?.updateEvent(at: index, event: event)
     }
 

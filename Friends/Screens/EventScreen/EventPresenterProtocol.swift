@@ -12,7 +12,6 @@ protocol EventPresenterProtocol: AnyObject {
     func numberOfArchived() -> Int
     func configureEvent(cell: EventCell, at index: Int)
     func configureArchived(cell: EventCell, at index: Int)
-    func didSelectSegment(at index: Int)
     func didAcceptEvent(at index: Int)
     func didDeclineEvent(at index: Int)
     func didRestoreEventFromArchive(at index: Int)

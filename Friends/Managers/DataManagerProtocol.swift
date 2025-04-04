@@ -6,10 +6,10 @@
 //
 
 protocol DataManagerProtocol {
-    func loadEvents() -> [EventModel]
-    func addEvent(_ event: EventModel)
-    func updateEventStatus(status: GoingStatus, at index: Int)
-    func loadArchive() -> [EventModel]
+    func loadEvents() -> [EventModels.Event]
+    func addEvent(_ event: EventModels.Event)
+    func updateEventAttendanceStatus(status: EventModels.AttendanceStatus, at index: Int)
+    func loadArchive() -> [EventModels.Event]
     func moveToArchive(eventIndex: Int)
     func restoreFromArchive(eventIndex: Int)
 }

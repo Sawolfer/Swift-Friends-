@@ -23,6 +23,7 @@ struct FriendsView: View {
     }
 
     @StateObject var viewModel: FriendsViewModel = FriendsViewModel()
+    @State var showAddFriendScreen = false
 
     var body: some View {
         ZStack {
@@ -33,7 +34,7 @@ struct FriendsView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        // TODO: Действие при нажатии
+                        showAddFriendScreen = true
                     }, label: {
                         Text("Добавить +")
                             .frame(width: Constants.addButtonWidth, height: Constants.addButtonHeight)
@@ -46,6 +47,9 @@ struct FriendsView: View {
                 }
                 ListsView(viewModel: viewModel)
             }
+        }
+        .sheet(isPresented: $showAddFriendScreen) {
+            AddFriendView()
         }
     }
 }

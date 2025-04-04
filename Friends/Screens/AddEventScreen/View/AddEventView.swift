@@ -76,6 +76,9 @@ struct AddEventView: View {
             }
         }
         .background(Color.background)
+        .onAppear {
+            viewModel.loadFriends()
+        }
     }
 
     private struct Header: View {
@@ -97,6 +100,7 @@ struct AddEventView: View {
                     }
                     Spacer()
                     Button("Create") {
+                        viewModel.addEvent()
                         dismiss()
                     }
                     .disabled(viewModel.event.title.isEmpty || viewModel.selectedCells.isEmpty)
