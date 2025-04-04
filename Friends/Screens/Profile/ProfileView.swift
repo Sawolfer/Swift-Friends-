@@ -15,7 +15,7 @@ final class ProfileView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 100
-        imageView.image = UIImage(systemName: "person.circle")
+        imageView.image = AppCache.shared.user?.icon
         return imageView
     }()
 
@@ -23,7 +23,7 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 26, weight: .medium)
         label.textColor = .label
-        label.text = "Alyona Maksimova"
+        label.text = AppCache.shared.user?.name
         return label
     }()
 
@@ -42,8 +42,40 @@ final class ProfileView: UIView {
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         button.setTitle("Удалить аккаунт", for: .normal)
+        button.addAction(UIAction { [weak self] _ in
+            guard let personID = AppCache.shared.user?.id else { return }
+            self?.onDeleteAccount(for: personID)
+        }, for: .touchUpInside)
         return button
     }()
+
+    func mock() {
+        print("adadasds")
+    }
+
+    func onDeleteAccount(for personId: UUID) {
+        let personNet = PersonNetwork()
+        print("rfradsfa")
+        personNet.deleteAccount(with: personId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    AppCache.shared.clearCache { _ in }
+                    UserDataCache().deleteUserInfo()
+
+                    if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                       let delegate = scene.delegate as? SceneDelegate {
+                        let loginVC = AuthViewController()
+                        let nav = UINavigationController(rootViewController: loginVC)
+                        delegate.window?.rootViewController = nav
+                    }
+
+                case .failure(let error):
+                    return
+                }
+            }
+        }
+    }
 
     public override init(frame: CGRect) {
         super.init(frame: frame)

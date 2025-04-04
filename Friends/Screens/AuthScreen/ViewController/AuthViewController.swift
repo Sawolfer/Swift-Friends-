@@ -10,11 +10,20 @@ import SwiftUI
 import SnapKit
 
 final class AuthViewController: UIViewController {
-    
+
+    var onAuthSuccess: (() -> Void)?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let swiftUIView = AuthView()
+        let viewModel = AuthViewModel()
+        viewModel.onAuthSuccess = { [weak self] in
+            self?.dismiss(animated: true) {
+                self?.onAuthSuccess?() // Notify `TabBarController` after closing
+            }
+        }
+
+        let swiftUIView = AuthView(viewModel: viewModel)
         let hostingController = UIHostingController(rootView: swiftUIView)
 
         addChild(hostingController)
@@ -27,4 +36,3 @@ final class AuthViewController: UIViewController {
         hostingController.didMove(toParent: self)
     }
 }
-

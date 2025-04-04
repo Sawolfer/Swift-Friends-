@@ -13,7 +13,7 @@ final class AddFriendViewModel: ObservableObject {
     @Published var errorMessage = ""
     @Published var isLoading: Bool = false
 
-    private let peopleProvider = PeopleNetwork()
+    private let peopleProvider = PersonNetwork()
     private let friendProvider = FriendsNetwork()
 
     func searchUsers() {

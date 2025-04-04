@@ -1,5 +1,5 @@
 //
-//  PeopleNetwork.swift
+//  PersonNetwork.swift
 //  Friends
 //
 //  Created by Савва Пономарев on 01.04.2025.
@@ -9,7 +9,7 @@ import FirebaseFirestore
 import FirebaseStorage
 import Foundation
 
-class PeopleNetwork: PeopleNetworkProtocol {
+class PersonNetwork: PersonNetworkProtocol {
     private let firestore = Firestore.firestore()
     private let storage = Storage.storage()
     private let usersCollection = "users"
@@ -103,5 +103,4 @@ class PeopleNetwork: PeopleNetworkProtocol {
                 completion(.success(users))
             }
     }
-
 }

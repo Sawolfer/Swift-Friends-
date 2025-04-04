@@ -14,6 +14,7 @@ struct Person: Codable {
     var imageURL: URL?
     var friends: [UUID] = []
     var debts: [Debt]
+    var groups: [UUID] = []
 
     var icon: UIImage {
         if let imageURL = imageURL,
