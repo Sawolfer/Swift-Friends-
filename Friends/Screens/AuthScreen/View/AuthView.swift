@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct AuthView: View {
-    @StateObject var viewModel = AuthViewModel()
+    @StateObject var viewModel: AuthViewModel
 
     var body: some View {
         VStack {
@@ -72,8 +72,4 @@ struct AuthView: View {
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(Color.background)
     }
-}
-
-#Preview {
-    AuthView()
 }

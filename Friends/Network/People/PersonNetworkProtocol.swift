@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol PeopleNetworkProtocol {
+protocol PersonNetworkProtocol {
     // MARK: - User Account Logic
 
     func createAccount(_ person: Person, completion: @escaping (Result<Void, NetworkError>) -> Void)

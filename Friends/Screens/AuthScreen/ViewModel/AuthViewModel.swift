@@ -19,7 +19,9 @@ final class AuthViewModel: ObservableObject {
     @Published var password = ""
     @Published var errorMessage = ""
     @Published var showErrorAlert = false
+
     private let authProvider = AuthNetwork()
+    var onAuthSuccess: (() -> Void)?
 
     func authenticate() {
         if username.isEmpty {
@@ -59,7 +61,11 @@ final class AuthViewModel: ObservableObject {
             authProvider.createAccount(name: name, username: username, password: password) { [weak self] result in
                 switch result {
                 case .success(let person):
-                    print("account created")
+                    print("Account created")
+                    AppCache.shared.user = person  // Simulate storing the logged-in user
+                    DispatchQueue.main.async {
+                        self?.onAuthSuccess?() // Notify success
+                    }
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                     self?.showErrorAlert = true
@@ -69,7 +75,11 @@ final class AuthViewModel: ObservableObject {
             authProvider.login(name: name, password: password) { [weak self] result in
                 switch result {
                 case .success(let person):
-                    print("login success")
+                    print("Login success")
+                    AppCache.shared.user = person // Simulate storing the logged-in user
+                    DispatchQueue.main.async {
+                        self?.onAuthSuccess?() // Notify success
+                    }
                 case .failure(let error):
                     self?.errorMessage = error.localizedDescription
                     self?.showErrorAlert = true

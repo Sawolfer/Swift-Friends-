@@ -12,8 +12,27 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkUserLoginStatus()
+    }
 
-        setupUI()
+    private func checkUserLoginStatus() {
+        DispatchQueue.main.async { [weak self] in
+            if AppCache.shared.user != nil {
+                self?.setupUI()
+            } else {
+                self?.presentAuthController()
+            }
+        }
+    }
+
+    private func presentAuthController() {
+        let authVC = AuthViewController()
+        authVC.onAuthSuccess = { [weak self] in
+            self?.setupUI()
+        }
+        let navController = UINavigationController(rootViewController: authVC)
+        navController.modalPresentationStyle = .overFullScreen
+        present(navController, animated: true)
     }
 
     private func setupUI() {
@@ -36,5 +55,4 @@ class TabBarController: UITabBarController {
 
         selectedIndex = 0
     }
-
 }
