@@ -62,7 +62,9 @@ final class EventPresenter: EventPresenterProtocol {
     }
 
     func didSelectEvent(at index: Int) {
-        // TODO: Логика обработки выбора события
+        let event = dataManager.loadEvents()[index]
+        let viewEventVC = ViewEventViewController(event: event)
+        view?.displayViewEventViewController(viewEventVC)
     }
 
     func addEvent() {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ViewEventView: View {
-    @StateObject private var viewModel = ViewEventViewModel(eventId: UUID())
+    @StateObject var viewModel: ViewEventViewModel
     @State var isShowingSelectFriendsView: Bool = false
     @Environment(\.dismiss) var dismiss
 
@@ -19,8 +19,8 @@ struct ViewEventView: View {
 
             List {
                 Section {
-                    TextField("Title", text: $viewModel.event.title)
-                    TextField("Description", text: $viewModel.event.description)
+                    Text(viewModel.event.title)
+                    Text(viewModel.event.description)
                 }
 
                 Section {
@@ -41,7 +41,7 @@ struct ViewEventView: View {
                         HStack {
                             HoursView()
 
-                            TimeGrid(selectedCells: $viewModel.selectedCells, rows: 16, columns: 7)
+                            TimeGrid(selectedCells: $viewModel.selectedCells, rows: 16, columns: 7, isEditable: viewModel.myStatus == .noReply)
                         }
                     }
                     .padding(.vertical)
@@ -74,7 +74,7 @@ struct ViewEventView: View {
         }
         .background(Color.background)
         .onAppear {
-            viewModel.loadEvent()
+            viewModel.loadFriends()
         }
     }
 
@@ -179,8 +179,4 @@ struct ViewEventView: View {
             }
         }
     }
-}
-
-#Preview {
-    ViewEventView()
 }

@@ -13,4 +13,5 @@ protocol EventViewProtocol: AnyObject {
     func moveEventToArchive(event: EventModels.Event, from index: Int)
     func moveEventFromArchive(event: EventModels.Event, from index: Int)
     func displayAddEventViewController(_ viewController: UIViewController)
+    func displayViewEventViewController(_ viewController: UIViewController)
 }

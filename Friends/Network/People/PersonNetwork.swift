@@ -103,4 +103,25 @@ class PersonNetwork: PersonNetworkProtocol {
                 completion(.success(users))
             }
     }
+
+    func findUser(by userId: UUID, completion: @escaping (Result<Person, NetworkError>) -> Void) {
+            firestore.collection(usersCollection).document(userId.uuidString).getDocument() { snapshot, error in
+                if let error = error {
+                    completion(.failure(.custom(errorCode: 436, description: error.localizedDescription)))
+                    return
+                }
+
+                guard let document = snapshot, document.exists else {
+                    completion(.failure(.custom(errorCode: 437, description: "User not found")))
+                    return
+                }
+
+                do {
+                    let person = try document.data(as: Person.self)
+                    completion(.success(person))
+                } catch {
+                    completion(.failure(.custom(errorCode: 439, description: error.localizedDescription)))
+                }
+            }
+        }
 }
