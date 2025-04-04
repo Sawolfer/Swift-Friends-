@@ -14,14 +14,26 @@
 		B46C74D02D9E84FE0021BF26 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = B46C74CF2D9E84FE0021BF26 /* FirebaseStorage */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CAC0DDD32D9F53060017B5FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 39E396A22D932EA300C43CC4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 39E396A92D932EA300C43CC4;
+			remoteInfo = Friends;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		394D942D2D9EB71C00187B5D /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		394D95562D9EB92D00187B5D /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39BBDF862D9DA89200DDCDDA /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
 		39E396AA2D932EA300C43CC4 /* Friends.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Friends.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
-		8ADAE96B2D9F171000D75599 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
-		8ADAEB912D9F522F00D75599 /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
+
+		CAC0DD7F2D9F52F10017B5FC /* Friends.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = Friends.xcodeproj; sourceTree = "<group>"; };
+		CAC0DDCD2D9F53060017B5FC /* FriendsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FriendsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -43,6 +55,11 @@
 			path = Friends;
 			sourceTree = "<group>";
 		};
+		CAC0DDCE2D9F53060017B5FC /* FriendsUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = FriendsUITests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +72,13 @@
 				B46C74CA2D9E84FE0021BF26 /* FirebaseAuth in Frameworks */,
 				B46C74D02D9E84FE0021BF26 /* FirebaseStorage in Frameworks */,
 				B46C74CC2D9E84FE0021BF26 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAC0DDCA2D9F53060017B5FC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				39E396AC2D932EA300C43CC4 /* Friends */,
+				CAC0DDCE2D9F53060017B5FC /* FriendsUITests */,
 				39E396AB2D932EA300C43CC4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -92,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				39E396AA2D932EA300C43CC4 /* Friends.app */,
+				CAC0DDCD2D9F53060017B5FC /* FriendsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -103,14 +129,8 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8ADAE96C2D9F171000D75599 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		8ADAEB922D9F522F00D75599 /* Products */ = {
+		CAC0DD802D9F52F10017B5FC /* Products */ = {
+
 			isa = PBXGroup;
 			children = (
 			);
@@ -148,6 +168,29 @@
 			productReference = 39E396AA2D932EA300C43CC4 /* Friends.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CAC0DDCC2D9F53060017B5FC /* FriendsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAC0DDDA2D9F53060017B5FC /* Build configuration list for PBXNativeTarget "FriendsUITests" */;
+			buildPhases = (
+				CAC0DDC92D9F53060017B5FC /* Sources */,
+				CAC0DDCA2D9F53060017B5FC /* Frameworks */,
+				CAC0DDCB2D9F53060017B5FC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAC0DDD42D9F53060017B5FC /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CAC0DDCE2D9F53060017B5FC /* FriendsUITests */,
+			);
+			name = FriendsUITests;
+			packageProductDependencies = (
+			);
+			productName = FriendsUITests;
+			productReference = CAC0DDCD2D9F53060017B5FC /* FriendsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -160,6 +203,10 @@
 				TargetAttributes = {
 					39E396A92D932EA300C43CC4 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					CAC0DDCC2D9F53060017B5FC = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 39E396A92D932EA300C43CC4;
 					};
 				};
 			};
@@ -204,16 +251,28 @@
 					ProductGroup = 39EE0B9F2D99B301005E6AF4 /* Products */;
 					ProjectRef = 39EE0B9E2D99B301005E6AF4 /* Friends.xcodeproj */;
 				},
+				{
+					ProductGroup = CAC0DD802D9F52F10017B5FC /* Products */;
+					ProjectRef = CAC0DD7F2D9F52F10017B5FC /* Friends.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
 				39E396A92D932EA300C43CC4 /* Friends */,
+				CAC0DDCC2D9F53060017B5FC /* FriendsUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		39E396A82D932EA300C43CC4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAC0DDCB2D9F53060017B5FC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -252,7 +311,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CAC0DDC92D9F53060017B5FC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CAC0DDD42D9F53060017B5FC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 39E396A92D932EA300C43CC4 /* Friends */;
+			targetProxy = CAC0DDD32D9F53060017B5FC /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		39E396BE2D932EA500C43CC4 /* Debug */ = {
@@ -436,6 +510,40 @@
 			};
 			name = Release;
 		};
+		CAC0DDD52D9F53060017B5FC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8U7D8W8J2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maksimova.FriendsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Friends;
+			};
+			name = Debug;
+		};
+		CAC0DDD62D9F53060017B5FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8U7D8W8J2D;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.maksimova.FriendsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Friends;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -453,6 +561,15 @@
 			buildConfigurations = (
 				39E396BE2D932EA500C43CC4 /* Debug */,
 				39E396BF2D932EA500C43CC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAC0DDDA2D9F53060017B5FC /* Build configuration list for PBXNativeTarget "FriendsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAC0DDD52D9F53060017B5FC /* Debug */,
+				CAC0DDD62D9F53060017B5FC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

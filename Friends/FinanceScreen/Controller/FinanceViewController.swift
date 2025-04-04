@@ -75,6 +75,8 @@ class FinanceViewController: UIViewController {
         let titleLabel = UILabel()
         titleLabel.text = "Деньги"
         titleLabel.font = .systemFont(ofSize: 34, weight: .bold)
+        titleLabel.isAccessibilityElement = true
+        titleLabel.accessibilityIdentifier = "customTitleLabel"
 
         if let navigationBar = navigationController?.navigationBar {
             navigationBar.addSubview(titleLabel)
@@ -90,6 +92,8 @@ class FinanceViewController: UIViewController {
         avatarButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         avatarButton.clipsToBounds = true
         avatarButton.layer.cornerRadius = 20
+        avatarButton.isAccessibilityElement = true
+        avatarButton.accessibilityIdentifier = "avatarButton"
 
         avatarButton.addAction(UIAction { [weak self] _ in
             let profileVC = ProfileViewController()
