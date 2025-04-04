@@ -45,7 +45,7 @@ final class AuthViewModel: ObservableObject {
                 return
             }
 
-            authProvider.checkNameAvailability(name: username) { [weak self] result in
+            authProvider.checkNameAvailability(username: username) { [weak self] result in
                 switch result {
                 case .success(let isAvailable):
                     if !isAvailable {
@@ -76,7 +76,7 @@ final class AuthViewModel: ObservableObject {
                 }
             }
         } else {
-            authProvider.login(name: name, password: password) { [weak self] result in
+            authProvider.login(username: username, password: password) { [weak self] result in
                 switch result {
                 case .success(let person):
                     print("Login success")

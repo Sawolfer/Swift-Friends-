@@ -20,7 +20,7 @@ class AuthNetwork {
 
     func createAccount(name: String, username: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
-            .whereField("name", isEqualTo: name)
+            .whereField("username", isEqualTo: username)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(.custom(errorCode: 500, description: error.localizedDescription)))
@@ -76,13 +76,15 @@ class AuthNetwork {
     }
 
 // MARK: - Login
+    func login(username: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
+        let trimmedName = username.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
 
-    func login(name: String, password: String, completion: @escaping (Result<Person, NetworkError>) -> Void) {
         firestore.collection(authCollection)
-            .whereField("name", isEqualTo: name)
-            .whereField("password", isEqualTo: password)
+            .whereField("username", isEqualTo: trimmedName)
+            .whereField("password", isEqualTo: trimmedPassword)
             .getDocuments { snapshot, error in
-
+                print(trimmedName, trimmedPassword)
                 if let error = error {
                     completion(.failure(.custom(errorCode: 500, description: error.localizedDescription)))
                     return
@@ -115,17 +117,17 @@ class AuthNetwork {
     private func cacheUserData(person: Person) {
         let cache = UserDataCache()
         let userInfo: [String: Any] = [
-            "username": person.username,
-            "password": person.password
+            "username": person.username.trimmingCharacters(in: .whitespacesAndNewlines),
+            "password": person.password.trimmingCharacters(in: .whitespacesAndNewlines)
         ]
         cache.saveUserInfo(userInfo: userInfo)
     }
 
 // MARK: - Name Unique check
 
-    func checkNameAvailability(name: String, completion: @escaping (Result<Bool, NetworkError>) -> Void) {
+    func checkNameAvailability(username: String, completion: @escaping (Result<Bool, NetworkError>) -> Void) {
         firestore.collection(authCollection)
-            .whereField("name", isEqualTo: name)
+            .whereField("username", isEqualTo: username)
             .getDocuments { snapshot, error in
                 if let error = error {
                     completion(.failure(.custom(errorCode: 500, description: error.localizedDescription)))
