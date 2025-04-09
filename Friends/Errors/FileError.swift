@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum File: Error {
+enum FileError: Error {
     case download
     case upload
     case custom(errorCode: Int, description: String)

@@ -60,7 +60,7 @@ final class ProfileView: UIView {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    AppCache.shared.clearCache { _ in }
+                    AppCache.shared.clear { _ in }
                     UserDataCache().deleteUserInfo()
 
                     if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -70,7 +70,7 @@ final class ProfileView: UIView {
                         delegate.window?.rootViewController = nav
                     }
 
-                case .failure(let error):
+                case .failure(_):
                     return
                 }
             }

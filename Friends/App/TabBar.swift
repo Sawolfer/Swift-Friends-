@@ -15,13 +15,47 @@ class TabBarController: UITabBarController {
         checkUserLoginStatus()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AppCache.shared.save { result in
+            switch result {
+                case .success(_):
+                    print("data saved succesfully")
+                case .failure:
+                    print("error while saving data")
+            }
+        }
+    }
+
     private func checkUserLoginStatus() {
         DispatchQueue.main.async { [weak self] in
             let userDataCache = UserDataCache()
             if let userData = userDataCache.retrieveUserInfo() {
+                userData.keys.forEach { person in
+                    print("\(person), \(String(describing: userData[person]))")
+                }
+                self?.loadCache{ result in
+                    switch result {
+                        case .success:
+                            break
+                        case .failure:
+                            self?.presentAuthController()
+                    }
+                }
                 self?.setupUI()
             } else {
                 self?.presentAuthController()
+            }
+        }
+    }
+
+    private func loadCache(completion: @escaping (Result<Bool, AuthError>) -> Void) {
+        AppCache.shared.load{ result in
+            switch result {
+                case .success(_):
+                    completion(.success(true))
+                case .failure(let error):
+                    completion(.failure(error))
             }
         }
     }
@@ -54,6 +88,6 @@ class TabBarController: UITabBarController {
 
         viewControllers = [firstViewController, secondViewController, thirdViewController]
 
-        selectedIndex = 0
+        selectedIndex = 1
     }
 }

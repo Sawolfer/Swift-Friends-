@@ -26,7 +26,8 @@ final class AddEventViewModel: NSObject, ObservableObject {
     private let generator = UIImpactFeedbackGenerator(style: .medium)
     private let friendsProvider = FriendsNetwork()
     private let eventProvider = EventsNetworkCommunications()
-    let id = UUID(uuidString:"1BAEF9C3-52DD-4BCA-838E-720E5D5A1F29")! // TODO: remove
+    let id = UUID(uuidString:"1BAEF9C3-52DD-4BCA-838E-720E5D5A1F29")!
+// TODO: make parsing id from loginned user 
 
     func selectAllCells() {
         for row in 0..<rows {
