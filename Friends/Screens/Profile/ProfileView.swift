@@ -35,6 +35,21 @@ final class ProfileView: UIView {
         return label
     }()
 
+    private(set) lazy var logOutButton: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .systemBlue
+        button.layer.cornerRadius = 12
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
+        button.setTitle("Выйти", for: .normal)
+        button.addAction(UIAction { [weak self] _ in
+            guard let personID = AppCache.shared.user?.id else { return }
+            self?.onLogout()
+        }, for: .touchUpInside)
+        return button
+    }()
+
+    
     private(set) lazy var deleteButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = .systemRed
@@ -51,6 +66,23 @@ final class ProfileView: UIView {
 
     func mock() {
         print("adadasds")
+    }
+
+    func onLogout() {
+        AppCache.shared.clear { _ in }
+        UserDataCache().deleteUserInfo()
+
+        DispatchQueue.main.async {
+            let authVC = AuthViewController()
+            let navController = UINavigationController(rootViewController: authVC)
+            navController.modalPresentationStyle = .overFullScreen
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                window.rootViewController = navController
+                window.makeKeyAndVisible()
+            }
+        }
     }
 
     func onDeleteAccount(for personId: UUID) {
@@ -88,7 +120,7 @@ final class ProfileView: UIView {
     }
 
     func setupView() {
-        [avatarImageView, nameLabel, deleteButton, dangerLabel].forEach(self.addSubview)
+        [avatarImageView, nameLabel, logOutButton, deleteButton, dangerLabel].forEach(self.addSubview)
     }
 
     // MARK: - Constraints
@@ -107,6 +139,13 @@ final class ProfileView: UIView {
             make.centerX.equalToSuperview()
         }
 
+        logOutButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(200)
+            make.height.equalTo(50)
+            make.top.equalTo(nameLabel.snp.bottom).offset(20)
+        }
+
         deleteButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.equalTo(200)
@@ -120,3 +159,4 @@ final class ProfileView: UIView {
         }
     }
 }
+

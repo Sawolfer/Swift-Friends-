@@ -19,10 +19,10 @@ class TabBarController: UITabBarController {
         super.viewWillDisappear(animated)
         AppCache.shared.save { result in
             switch result {
-                case .success(_):
-                    print("data saved succesfully")
-                case .failure:
-                    print("error while saving data")
+            case .success(_):
+                print("data saved succesfully")
+            case .failure:
+                print("error while saving data")
             }
         }
     }
@@ -34,12 +34,12 @@ class TabBarController: UITabBarController {
                 userData.keys.forEach { person in
                     print("\(person), \(String(describing: userData[person]))")
                 }
-                self?.loadCache{ result in
+                self?.loadCache { result in
                     switch result {
-                        case .success:
-                            break
-                        case .failure:
-                            self?.presentAuthController()
+                    case .success:
+                        break
+                    case .failure:
+                        self?.presentAuthController()
                     }
                 }
                 self?.setupUI()
@@ -49,13 +49,15 @@ class TabBarController: UITabBarController {
         }
     }
 
-    private func loadCache(completion: @escaping (Result<Bool, AuthError>) -> Void) {
-        AppCache.shared.load{ result in
+    private func loadCache(
+        completion: @escaping (Result<Bool, AuthError>) -> Void
+    ) {
+        AppCache.shared.load { result in
             switch result {
-                case .success(_):
-                    completion(.success(true))
-                case .failure(let error):
-                    completion(.failure(error))
+            case .success(_):
+                completion(.success(true))
+            case .failure(let error):
+                completion(.failure(error))
             }
         }
     }
@@ -71,22 +73,36 @@ class TabBarController: UITabBarController {
     }
 
     private func setupUI() {
-        let firstViewController = UINavigationController(rootViewController: FinanceViewController())
-        firstViewController.tabBarItem = UITabBarItem(title: "Деньги",
-                                                      image: UIImage(systemName: "creditcard"),
-                                                      selectedImage: UIImage(systemName: "creditcard.fill"))
+        let firstViewController = UINavigationController(
+            rootViewController: FinanceViewController()
+        )
+        firstViewController.tabBarItem = UITabBarItem(
+            title: "Деньги",
+            image: UIImage(systemName: "creditcard"),
+            selectedImage: UIImage(systemName: "creditcard.fill")
+        )
 
-        let secondViewController = UINavigationController(rootViewController: EventAssembly.build())
-        secondViewController.tabBarItem = UITabBarItem(title: "Встречи",
-                                                       image: UIImage(systemName: "balloon.2"),
-                                                       selectedImage: UIImage(systemName: "balloon.2.fill"))
+        let secondViewController = UINavigationController(
+            rootViewController: EventAssembly.build()
+        )
+        secondViewController.tabBarItem = UITabBarItem(
+            title: "Встречи",
+            image: UIImage(systemName: "balloon.2"),
+            selectedImage: UIImage(systemName: "balloon.2.fill")
+        )
 
-        let thirdViewController = UINavigationController(rootViewController: FriendsViewController())
-        thirdViewController.tabBarItem = UITabBarItem(title: "Друзья",
-                                                       image: UIImage(systemName: "person.2"),
-                                                       selectedImage: UIImage(systemName: "person.2.fill"))
+        let thirdViewController = UINavigationController(
+            rootViewController: FriendsViewController()
+        )
+        thirdViewController.tabBarItem = UITabBarItem(
+            title: "Друзья",
+            image: UIImage(systemName: "person.2"),
+            selectedImage: UIImage(systemName: "person.2.fill")
+        )
 
-        viewControllers = [firstViewController, secondViewController, thirdViewController]
+        viewControllers = [
+            firstViewController, secondViewController, thirdViewController,
+        ]
 
         selectedIndex = 1
     }
