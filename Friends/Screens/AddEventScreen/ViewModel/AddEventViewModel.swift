@@ -26,8 +26,8 @@ final class AddEventViewModel: NSObject, ObservableObject {
     private let generator = UIImpactFeedbackGenerator(style: .medium)
     private let friendsProvider = FriendsNetwork()
     private let eventProvider = EventsNetworkCommunications()
-    let id = UUID(uuidString:"1BAEF9C3-52DD-4BCA-838E-720E5D5A1F29")!
-// TODO: make parsing id from loginned user 
+    private let cache = AppCache.shared
+// TODO: make parsing id from loginned user
 
     func selectAllCells() {
         for row in 0..<rows {
@@ -39,6 +39,10 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func loadFriends() {
+        guard let id = cache.user?.id else {
+            print("No id for loadFriends timur")
+            return
+        }
         friendsProvider.loadFriends(id: id) { [weak self] result in
             switch result {
             case .success(let friends):
@@ -51,6 +55,10 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func addEvent() {
+        guard let id = cache.user?.id else {
+            print("No id for addEvent timur")
+            return
+        }
         event.id = UUID()
         event.hostId = id
         event.attendiesInfo = Array(selectedFriends).map { EventModels.AttendeeInfo(id: $0.id, status: .noReply) }

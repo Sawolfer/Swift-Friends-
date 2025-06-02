@@ -20,20 +20,39 @@ final class NewExpenseModalViewController: UIViewController {
 
     private var isSplitEven: Bool = true
     private var debts: [Double] = []
-    private var friends: [Person] = [] {
-        didSet {
-            var newDebts: [Double] = []
-            for friend in friends {
-                if let index = oldValue.firstIndex(where: { $0.id == friend.id }) {
-                    newDebts.append(debts[index])
-                } else {
-                    newDebts.append(0)
-                }
+//    private var friends: [Person] = [] {
+//        didSet {
+//            var newDebts: [Double] = []
+//            for friend in friends {
+//                if let index = oldValue.firstIndex(where: { $0.id == friend.id }) {
+//                    newDebts.append(debts[index])
+//                } else {
+//                    newDebts.append(0)
+//                }
+//            }
+//            debts = newDebts
+//            expenseView.tableView.reloadData()
+//            updateDebts()
+//            updateAddButtonState()
+//        }
+//    }
+    private let cache = AppCache.shared
+    private let friendsProvider = FriendsNetwork()
+    private var friends: [Person] = []
+
+    private func loadFriends() {
+        guard let id = cache.user?.id else {
+            print("No id for loadFriends alyon")
+            return
+        }
+        friendsProvider.loadFriends(id: id) { [weak self] result in
+            switch result {
+            case .success(let friends):
+                self?.friends = friends
+                print(friends)
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-            debts = newDebts
-            expenseView.tableView.reloadData()
-            updateDebts()
-            updateAddButtonState()
         }
     }
 
@@ -53,6 +72,7 @@ final class NewExpenseModalViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadFriends()
         setupUI()
         setupActions()
         setupNavigationBar()
@@ -222,7 +242,7 @@ extension NewExpenseModalViewController: UITableViewDelegate {
                 )
 
                 let selectFriendsView = SelectFriendsViewExpence(
-                    friends: PersonContainer.shared.getPeople(),
+                    friends: self?.friends ?? [],
                     selectedFriends: selectedFriendsBinding
                 )
                 let hostingController = UIHostingController(rootView: selectFriendsView)

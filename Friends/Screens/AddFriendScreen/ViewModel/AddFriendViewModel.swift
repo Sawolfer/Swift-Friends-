@@ -15,6 +15,7 @@ final class AddFriendViewModel: ObservableObject {
 
     private let peopleProvider = PersonNetwork()
     private let friendProvider = FriendsNetwork()
+    private let cache = AppCache.shared
 
     func searchUsers() {
         peopleProvider.findUser(by: searchText) { [weak self] result in
@@ -28,7 +29,10 @@ final class AddFriendViewModel: ObservableObject {
     }
 
     func isFriend(friendId: UUID, completion: @escaping (Bool) -> Void) {
-        let id = UUID(uuidString: "89D5A287-3DF5-4F41-90B7-CFD8BD61D4C8")!
+        guard let id = cache.user?.id else {
+            print("no user for isFriend")
+            return
+        }
         friendProvider.loadFriends(id: id) { [weak self] result in
             switch result {
             case .success(let friends):
@@ -45,7 +49,10 @@ final class AddFriendViewModel: ObservableObject {
     }
 
     func addFriend(friendId: UUID) {
-        let id = UUID(uuidString: "89D5A287-3DF5-4F41-90B7-CFD8BD61D4C8")!
+        guard let id = cache.user?.id else {
+            print("no user for addFriend")
+            return
+        }
         friendProvider.sendFriendRequest(id: id, to: friendId) { _ in }
     }
 }
