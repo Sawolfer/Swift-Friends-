@@ -16,11 +16,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
     private let id: UUID
 
     init() {
-        guard let id = self.cache.user?.id else {
-            self.id = UUID()
-            return
-        }
-        self.id = id
+        self.id = cache.user.id
     }
 
     func sendFriendRequest(to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {

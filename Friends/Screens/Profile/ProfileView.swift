@@ -15,7 +15,7 @@ final class ProfileView: UIView {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 100
-        imageView.image = AppCache.shared.user?.icon
+        imageView.image = AppCache.shared.user.icon
         return imageView
     }()
 
@@ -23,7 +23,7 @@ final class ProfileView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 26, weight: .medium)
         label.textColor = .label
-        label.text = AppCache.shared.user?.name
+        label.text = AppCache.shared.user.name
         return label
     }()
 
@@ -43,7 +43,7 @@ final class ProfileView: UIView {
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         button.setTitle("Выйти", for: .normal)
         button.addAction(UIAction { [weak self] _ in
-            guard let personID = AppCache.shared.user?.id else { return }
+            let personID = AppCache.shared.user.id
             self?.onLogout()
         }, for: .touchUpInside)
         return button
@@ -58,7 +58,7 @@ final class ProfileView: UIView {
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         button.setTitle("Удалить аккаунт", for: .normal)
         button.addAction(UIAction { [weak self] _ in
-            guard let personID = AppCache.shared.user?.id else { return }
+            let personID = AppCache.shared.user.id
             self?.onDeleteAccount(for: personID)
         }, for: .touchUpInside)
         return button

@@ -16,11 +16,25 @@ struct AppData: Codable {
 }
 
 class AppCache {
-    static let shared = AppCache()
+    static let initialUser = Person(
+        id: UUID(),
+        name: "init",
+        username: "init",
+        password: "init",
+        debts: []
+    )
+    static var shared = AppCache(user: initialUser)
 
-    // MARK: - Cache
+    // MARK: - Cache Properties
 
-    var user: Person?
+    private var _user: Person
+    var user: Person {
+        get { _user }
+        set {
+            _user = newValue
+
+        }
+    }
 
     // MARK: - App Data
 
@@ -29,42 +43,39 @@ class AppCache {
     var friends: [Person] = []
     var icons: [UUID: URL] = [:]
 
+    // MARK: - Private Properties
+
     private var fileManager: FileManager
-    private var fileName = "friends.json"
     private let cacheURL: URL
 
-    private init(fileManager: FileManager = .default) {
-        self.fileManager = fileManager
-        let cacheDirectory = FileManager.default.urls(
-            for: .cachesDirectory, in: .userDomainMask
-        ).first
+    // MARK: - Initialization
 
-        cacheURL = cacheDirectory!.appendingPathComponent("app_data.json")
+    init(user: Person, fileManager: FileManager = .default) {
+        self._user = user
+        self.fileManager = fileManager
+        let cacheDirectory = fileManager.urls(
+            for: .cachesDirectory, in: .userDomainMask
+        ).first!
+
+        cacheURL = cacheDirectory.appendingPathComponent("app_data.json")
     }
 
     // MARK: - Public Functions
 
     func save(completion: @escaping ((Result<Bool, FileError>) -> Void)) {
-        guard let currentUser = user else {
-            completion(
-                .failure(.custom(errorCode: 400, description: "User not set")))
-            return
-        }
-
         let appData = AppData(
-            user: currentUser,
-            events: events,
-            debts: debts,
-            friends: friends,
-            icons: icons
+            user: self.user,
+            events: self.events,
+            debts: self.debts,
+            friends: self.friends,
+            icons: self.icons
         )
+
         do {
             try saveData(appData)
             completion(.success(true))
         } catch {
-            completion(
-                .failure(
-                    .custom(errorCode: 312, description: "Error saving data")))
+            completion(.failure(.custom(errorCode: 312, description: "Error saving data")))
         }
     }
 
@@ -76,13 +87,10 @@ class AppCache {
                     self.insertLoadedData(appData)
                     completion(.success(appData))
                 case .failure(let error):
-                    completion(
-                        .failure(
-                            .custom(
-                                errorCode: 315,
-                                description:
-                                    "Error while saving loaded data, \(error)"))
-                    )
+                    completion(.failure(.custom(
+                        errorCode: 315,
+                        description: "Error while saving loaded data, \(error)"
+                    )))
                 }
             }
         }
@@ -93,15 +101,14 @@ class AppCache {
             try clearData()
             completion(.success(true))
         } catch {
-            completion(
-                .failure(
-                    .custom(
-                        errorCode: 315, description: "Error while cleaning data"
-                    )))
+            completion(.failure(.custom(
+                errorCode: 315,
+                description: "Error while cleaning data"
+            )))
         }
     }
 
-    // MARK: - Privat Functions
+    // MARK: - Private Functions
 
     private func saveData(_ data: AppData) throws {
         let jsonData = try JSONEncoder().encode(data)
@@ -109,35 +116,29 @@ class AppCache {
         try jsonData.write(to: cacheURL)
     }
 
-    private func loadData(
-        completion: @escaping ((Result<AppData, AuthError>) -> Void)
-    ) {
+    private func loadData(completion: @escaping ((Result<AppData, AuthError>) -> Void)) {
         guard fileManager.fileExists(atPath: cacheURL.path) else {
-            completion(
-                .failure(
-                    .custom(errorCode: 313, description: "Cache file not found")
-                ))
+            completion(.failure(.custom(
+                errorCode: 313,
+                description: "Cache file not found"
+            )))
             return
         }
 
         do {
             let jsonData = try Data(contentsOf: cacheURL)
-            let decodedData = try JSONDecoder().decode(
-                AppData.self, from: jsonData)
+            let decodedData = try JSONDecoder().decode(AppData.self, from: jsonData)
             completion(.success(decodedData))
         } catch {
-            completion(
-                .failure(
-                    .custom(
-                        errorCode: 314,
-                        description:
-                            "Failed to load or decode data: \(error.localizedDescription)"
-                    )))
+            completion(.failure(.custom(
+                errorCode: 314,
+                description: "Failed to load or decode data: \(error.localizedDescription)"
+            )))
         }
     }
 
     private func insertLoadedData(_ data: AppData) {
-        self.user = data.user
+        self._user = data.user
         self.events = data.events
         self.debts = data.debts
         self.friends = data.friends
@@ -145,7 +146,6 @@ class AppCache {
     }
 
     private func clearData() throws {
-        user = nil
         events = []
         debts = []
         friends = []
@@ -160,7 +160,15 @@ class AppCache {
         let directoryURL = cacheURL.deletingLastPathComponent()
         if !fileManager.fileExists(atPath: directoryURL.path) {
             try fileManager.createDirectory(
-                at: directoryURL, withIntermediateDirectories: true)
+                at: directoryURL,
+                withIntermediateDirectories: true
+            )
         }
+    }
+}
+
+extension AppCache {
+    static func setupShared(user: Person) {
+        shared = AppCache(user: user)
     }
 }

@@ -51,10 +51,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func addEvent() {
-        guard let id = cache.user?.id else {
-            print("No id for loadFriends timur")
-            return
-        }
+        let id = cache.user.id
         event.id = UUID()
         event.hostId = id
         event.attendiesInfo = Array(selectedFriends).map { EventModels.AttendeeInfo(id: $0.id, status: .noReply) }
