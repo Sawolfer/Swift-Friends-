@@ -12,8 +12,18 @@ class FriendsNetwork: FriendsNetworkProtocol {
     private let firestore = Firestore.firestore()
     private let usersCollection = "users"
     private let friendRequestsCollection = "friendRequests"
+    private let cache = AppCache.shared
+    private let id: UUID
 
-    func sendFriendRequest(id: UUID, to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    init() {
+        guard let id = self.cache.user?.id else {
+            self.id = UUID()
+            return
+        }
+        self.id = id
+    }
+
+    func sendFriendRequest(to friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         let batch = firestore.batch()
         let requestId = UUID().uuidString
 
@@ -47,7 +57,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
         }
     }
 
-    func loadFriends(id: UUID, completion: @escaping (Result<[Person], NetworkError>) -> Void) {
+    func loadFriends(completion: @escaping (Result<[Person], NetworkError>) -> Void) {
         firestore.collection(usersCollection).document(id.uuidString)
             .getDocument { snapshot, error in
                 if let error = error {
@@ -85,7 +95,7 @@ class FriendsNetwork: FriendsNetworkProtocol {
             }
     }
 
-    func removeFriend(id: UUID, with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
+    func removeFriend(with friendId: UUID, completion: @escaping (Result<Void, NetworkError>) -> Void) {
         let batch = firestore.batch()
 
         let userRef = firestore.collection(usersCollection).document(id.uuidString)

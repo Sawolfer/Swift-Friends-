@@ -39,11 +39,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
     }
 
     func loadFriends() {
-        guard let id = cache.user?.id else {
-            print("No id for loadFriends timur")
-            return
-        }
-        friendsProvider.loadFriends(id: id) { [weak self] result in
+        friendsProvider.loadFriends() { [weak self] result in
             switch result {
             case .success(let friends):
                 self?.friends = friends
@@ -56,7 +52,7 @@ final class AddEventViewModel: NSObject, ObservableObject {
 
     func addEvent() {
         guard let id = cache.user?.id else {
-            print("No id for addEvent timur")
+            print("No id for loadFriends timur")
             return
         }
         event.id = UUID()

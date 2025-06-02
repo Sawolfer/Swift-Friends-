@@ -29,11 +29,7 @@ final class AddFriendViewModel: ObservableObject {
     }
 
     func isFriend(friendId: UUID, completion: @escaping (Bool) -> Void) {
-        guard let id = cache.user?.id else {
-            print("no user for isFriend")
-            return
-        }
-        friendProvider.loadFriends(id: id) { [weak self] result in
+        friendProvider.loadFriends() { [weak self] result in
             switch result {
             case .success(let friends):
                 if friends.contains(where: { $0.id == friendId }) {
@@ -49,10 +45,6 @@ final class AddFriendViewModel: ObservableObject {
     }
 
     func addFriend(friendId: UUID) {
-        guard let id = cache.user?.id else {
-            print("no user for addFriend")
-            return
-        }
-        friendProvider.sendFriendRequest(id: id, to: friendId) { _ in }
+        friendProvider.sendFriendRequest(to: friendId) { _ in }
     }
 }

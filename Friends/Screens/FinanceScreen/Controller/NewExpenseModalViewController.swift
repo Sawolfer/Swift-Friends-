@@ -41,11 +41,7 @@ final class NewExpenseModalViewController: UIViewController {
     private var friends: [Person] = []
 
     private func loadFriends() {
-        guard let id = cache.user?.id else {
-            print("No id for loadFriends alyon")
-            return
-        }
-        friendsProvider.loadFriends(id: id) { [weak self] result in
+        friendsProvider.loadFriends() { [weak self] result in
             switch result {
             case .success(let friends):
                 self?.friends = friends
